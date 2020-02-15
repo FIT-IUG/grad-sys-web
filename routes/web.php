@@ -18,9 +18,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Auth::routes();
+Auth::routes();
 
-Route::view('login',function (){
+Route::view('login', function () {
     return 'hh';
 });
 
@@ -36,5 +36,5 @@ Route::post('fire', 'Firebase\FirebaseController@store')->name('firebase.store')
 
 Route::namespace('Firebase')->prefix('system')->name('admin.')->middleware('auth')
     ->group(function () {
-    Route::resource('student','');
-});
+        Route::resource('student', '');
+    });
