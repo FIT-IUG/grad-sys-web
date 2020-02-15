@@ -18,7 +18,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+//Auth::routes();
+
+Route::view('login',function (){
+    return 'hh';
+});
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -26,5 +30,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('firebase', 'Firebase\FirebaseController@index');
 Route::get('getData', 'Firebase\FirebaseController@getData');
 
-Route::get('create','Firebase\FirebaseController@create');
-Route::post('fire','Firebase\FirebaseController@store')->name('firebase.store');
+Route::get('create', 'Firebase\FirebaseController@create');
+Route::post('fire', 'Firebase\FirebaseController@store')->name('firebase.store');
+
+
+Route::namespace('Firebase')->prefix('system')->name('admin.')->middleware('auth')
+    ->group(function () {
+    Route::resource('student','');
+});

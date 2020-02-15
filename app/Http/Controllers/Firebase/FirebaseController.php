@@ -22,37 +22,37 @@ class FirebaseController extends controller
         $database = $firebase->getdatabase();
         try {
             $createpost = $database
-                ->getreference('users/user')
+                ->getreference('users')
                 ->push([
                     'id' => 1,
                     'name' => 'osama'
                 ]);
             $createpost = $database
-                ->getreference('Admins/Admin')
+                ->getreference('Admins')
                 ->push([
                     'id' => 1,
                     'name' => 'osama'
                 ]);
             $createpost = $database
-                ->getreference('Teachers/Teacher')
+                ->getreference('Teachers')
                 ->push([
                     'id' => 1,
                     'name' => 'osama'
                 ]);
             $createpost = $database
-                ->getreference('Students/Student')
+                ->getreference('Students')
                 ->push([
                     'id' => 1,
                     'name' => 'osama'
                 ]);
             $createpost = $database
-                ->getreference('Groups/group')
+                ->getreference('Groups')
                 ->push([
                     'id' => 1,
                     'name' => 'osama'
                 ]);
             $createpost = $database
-                ->getreference('Projects/projects')
+                ->getreference('Projects')
                 ->push([
                     'id' => 1,
                     'name' => 'osama'
@@ -64,9 +64,14 @@ class FirebaseController extends controller
                     'name' => 'osama'
                 ]);
             $createpost = $database
-                ->getreference('group_student/1')
+                ->getreference('group_student')
                 ->push([
                     'id' => 1,
+                    'name' => 'osama'
+                ]);
+            $createpost = $database
+                ->getreference('Courses')
+                ->ush([
                     'name' => 'osama'
                 ]);
         } catch (ApiException $e) {
@@ -114,7 +119,7 @@ class FirebaseController extends controller
         $createpost = $database
             ->getreference('users/1')
             ->push([
-                'name' => ''.$name
+                'name' => '' . $name
             ]);
 
         echo '<pre>';
@@ -123,7 +128,8 @@ class FirebaseController extends controller
         return $name;
     }
 
-    public  function firebaseReady(){
+    public function firebaseReady()
+    {
         $serviceaccount = serviceaccount::fromjsonfile(__dir__ . '/fugg_firebasekey.json');
         $firebase = (new factory)
             ->withserviceaccount($serviceaccount)
