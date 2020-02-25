@@ -13,24 +13,32 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Mail\StudentMakePasswordMail;
+
+
+Auth::routes();
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Route::get('/email', function () {
+    return new StudentMakePasswordMail();
+});
+
+Route::namespace('Firebase')->group(function () {
+
+});
+Route::get('/students/export', 'Firebase\StudentsController@export');
+Route::get('/ex', 'Firebase\StudentsController@import');
+Route::get('/export', function () {
+    return view('export');
+});
+Route::post('export', 'Firebase\StudentsController@import')->name('exportStudent');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::get('firebase', 'Firebase\FirebaseController@index');
-Route::get('getData', 'Firebase\FirebaseController@getData');
+Auth::routes();
 
-Route::get('create', 'Firebase\FirebaseController@create');
-Route::post('fire', 'Firebase\FirebaseController@store')->name('firebase.store');
-
-
-Route::namespace('Firebase')->prefix('system')->name('admin.')->middleware('auth')
-    ->group(function () {
-        Route::resource('student', '');
-    });
+Route::get('/home', 'HomeController@index')->name('home');

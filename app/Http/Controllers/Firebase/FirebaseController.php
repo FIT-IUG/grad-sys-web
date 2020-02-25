@@ -2,84 +2,93 @@
 
 namespace app\http\controllers\firebase;
 
-use app\http\controllers\controller;
+use App\Http\Controllers\Firebase\MainController;
 use illuminate\http\request;
+use Kreait\Firebase\Database;
 use Kreait\Firebase\Exception\ApiException;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
 
-class FirebaseController extends controller
+class FirebaseController extends MainController
 {
     public function index()
     {
 
-        $serviceaccount = serviceaccount::fromjsonfile(__dir__ . '/fugg_firebasekey.json');
-        $firebase = (new factory)
-            ->withserviceaccount($serviceaccount)
-            ->withdatabaseuri('https://fugg-system.firebaseio.com')
-            ->create();
-
-        $database = $firebase->getdatabase();
+        $database = $this->firebase;
+//        $counterRef = $database->getReference('counter');
+//        $key = $database->getReference('users')->push()->getKey();
+//        dd($key);
         try {
-            $createpost = $database
-                ->getreference('users')
-                ->push([
+            $createFirebase = $database
+                ->getreference('users/1')
+                ->set([
                     'id' => 1,
-                    'name' => 'osama'
+                    'name' => 'user',
+//                    'std' => 120161616,
+                    'email' => 'student@example.com',
+//                    'department' => 'Software development',
+                    'password' => 'password',
+                    'created_at' => Database::SERVER_TIMESTAMP,
+                    'updated_at' => '',
+                    'email_verified_at' => '',
                 ]);
-            $createpost = $database
-                ->getreference('Admins')
-                ->push([
+            $createFirebase = $database
+                ->getreference('admins')
+                ->set([
                     'id' => 1,
-                    'name' => 'osama'
+                    'name' => 'admin',
+                    'email' => 'admin@example.com',
+                    'password' => 'password'
                 ]);
-            $createpost = $database
-                ->getreference('Teachers')
-                ->push([
+            $createFirebase = $database
+                ->getreference('teachers')
+                ->set([
                     'id' => 1,
-                    'name' => 'osama'
+                    'name' => 'teacher',
+                    'email' => 'teacher@example.com',
+                    'password' => 'password',
+                    'mobile_number' => '0599999999'
                 ]);
-            $createpost = $database
-                ->getreference('Students')
-                ->push([
+            $createFirebase = $database
+                ->getreference('students')
+                ->set([
                     'id' => 1,
-                    'name' => 'osama'
+                    'name' => 'student',
+                    'std' => 120161616,
+                    'email' => 'student@example.com',
+                    'mobile_number' => '0599999999',
+                    'department' => 'Software development',
+                    'password' => 'password',
                 ]);
-            $createpost = $database
-                ->getreference('Groups')
-                ->push([
+            $createFirebase = $database
+                ->getreference('groups')
+                ->set([
                     'id' => 1,
-                    'name' => 'osama'
+                    'course_code' => 'this is course code',
+                    'student_id' => 1,//team leader
+                    'teacher_id' => 1,
                 ]);
-            $createpost = $database
-                ->getreference('Projects')
-                ->push([
+            $createFirebase = $database
+                ->getreference('projects')
+                ->set([
                     'id' => 1,
-                    'name' => 'osama'
+                    'title' => 'this is project title',
+                    'description' => 'this is project description',
+                    'group_id' => 1
                 ]);
-            $createpost = $database
-                ->getreference('project_group')
-                ->push([
-                    'id' => 1,
-                    'name' => 'osama'
-                ]);
-            $createpost = $database
+            $createFirebase = $database
                 ->getreference('group_student')
-                ->push([
+                ->set([
                     'id' => 1,
-                    'name' => 'osama'
-                ]);
-            $createpost = $database
-                ->getreference('Courses')
-                ->ush([
-                    'name' => 'osama'
+                    'group_id' => 1,
+                    'student_id' => 1
                 ]);
         } catch (ApiException $e) {
         }
 
         echo '<pre>';
         try {
-            print_r($createpost->getvalue());
+            print_r($createFirebase->getvalue());
         } catch (ApiException $e) {
         }
         echo '</pre>';
@@ -95,9 +104,18 @@ class FirebaseController extends controller
             ->withdatabaseuri('https://fugg-system.firebaseio.com')
             ->create();
         $database = $firebase->getdatabase();
-        $createpost = $database->getreference('users')
+        $createFirebase = $database->getreference('users')
             ->getvalue();
-        return response()->json($createpost);
+        return response()->json($createFirebase);
+    }
+
+    public function test()
+    {
+        $database = (new Factory())->createDatabase();
+        $reference = $database->getReference('Admins/name/admin');
+        $snapshot = $reference->getSnapshot();
+        $value = $snapshot->getValue();
+        dd($value);
     }
 
     public function create()
@@ -116,14 +134,14 @@ class FirebaseController extends controller
             ->create();
 
         $database = $firebase->getdatabase();
-        $createpost = $database
+        $createFirebase = $database
             ->getreference('users/1')
-            ->push([
+            ->set([
                 'name' => '' . $name
             ]);
 
         echo '<pre>';
-        print_r($createpost->getvalue());
+        print_r($createFirebase->getvalue());
         echo '</pre>';
         return $name;
     }
