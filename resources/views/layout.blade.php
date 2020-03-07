@@ -22,12 +22,12 @@
                     <div class="col-sm-6">
                         <h1 class="m-0 text-dark">الصفحة الرئيسية</h1>
                     </div><!-- /.col -->
-{{--                    <div class="col-sm-6">--}}
-{{--                        <ol class="breadcrumb float-sm-left">--}}
-{{--                            <li class="breadcrumb-item"><a href="#">خانه</a></li>--}}
-{{--                            <li class="breadcrumb-item active">داشبورد ورژن 2</li>--}}
-{{--                        </ol>--}}
-{{--                    </div><!-- /.col -->--}}
+                    {{--                    <div class="col-sm-6">--}}
+                    {{--                        <ol class="breadcrumb float-sm-left">--}}
+                    {{--                            <li class="breadcrumb-item"><a href="#">خانه</a></li>--}}
+                    {{--                            <li class="breadcrumb-item active">داشبورد ورژن 2</li>--}}
+                    {{--                        </ol>--}}
+                    {{--                    </div><!-- /.col -->--}}
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
@@ -49,7 +49,8 @@
                             <div class="icon">
                                 <i class="ion ion-bag"></i>
                             </div>
-                            <a href="#" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
+                            <a href="#" class="small-box-footer">اطلاعات بیشتر <i
+                                    class="fa fa-arrow-circle-left"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -64,7 +65,8 @@
                             <div class="icon">
                                 <i class="ion ion-stats-bars"></i>
                             </div>
-                            <a href="#" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
+                            <a href="#" class="small-box-footer">اطلاعات بیشتر <i
+                                    class="fa fa-arrow-circle-left"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -79,7 +81,8 @@
                             <div class="icon">
                                 <i class="ion ion-person-add"></i>
                             </div>
-                            <a href="#" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
+                            <a href="#" class="small-box-footer">اطلاعات بیشتر <i
+                                    class="fa fa-arrow-circle-left"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -94,7 +97,8 @@
                             <div class="icon">
                                 <i class="ion ion-pie-graph"></i>
                             </div>
-                            <a href="#" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
+                            <a href="#" class="small-box-footer">اطلاعات بیشتر <i
+                                    class="fa fa-arrow-circle-left"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -108,9 +112,9 @@
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-   @includeIf('layouts.footer')
+@includeIf('layouts.footer')
 
-    <!-- Control Sidebar -->
+<!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
         <!-- Control sidebar content goes here -->
     </aside>
@@ -119,10 +123,9 @@
 <!-- ./wrapper -->
 @includeIf('layouts.footer-meta')
 @if(session()->has('success'))
-    <input id="message" value="{{\Illuminate\Support\Facades\Session::pull('success')}}" style="display: none">
+    <input id="message" value="{{session()->get('success')}}" style="display: none">
     <script type="text/javascript">
         const message = document.getElementById('message').value;
-        alert(message);
         $.notify(message, "success");
     </script>
     {{session()->remove('success')}}

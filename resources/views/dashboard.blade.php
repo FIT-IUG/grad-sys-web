@@ -21,7 +21,7 @@
                         <label for="exampleInputEmail1">الرقم الجامعي</label>
                         <input type="text" class="form-control @error('std') is-invalid  @enderror"
                                id="exampleInputEmail1" name="std" value="{{old('std')}}">
-                        @error('std8')
+                        @error('std')
                         <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                         @enderror
                     </div>
@@ -71,10 +71,10 @@
     <div class="col-md-4">
         <div class="card card-primary">
             <div class="card-header">
-                <h3 class="card-title">إرسال ملف تجريبي</h3>
+                <h3 class="card-title">إرسال ملف إكسل</h3>
             </div>
             <!-- /.card-header -->
-            <form role="form" method="POST" action="{{route('upload_students_file')}}"
+            <form role="form" method="POST" action="{{route('exportStudents')}}"
                   enctype="multipart/form-data">
                 @csrf
                 <div class="card-body">
@@ -99,17 +99,18 @@
             </form>
         </div>
     </div>
-    <script src="../../public/tostarNotify/build/toastr.min.js"></script>
-    <div>
+{{--        <script src="../../public/tostarNotify/build/toastr.min.js"></script>--}}
+    {{--    <div>--}}
+    {{--        <script>--}}
+    {{--            toastr.info('Are you the 6 fingered man?');--}}
+    {{--        </script>--}}
+    {{--    </div>--}}
+    {{--    <div>--}}
+{{--    @if(session()->has('success'))--}}
         <script>
-            toastr.info('Are you the 6 fingered man?');
+            // $.notify(sessionStorage.getItem('success'), "success");
+            $.notify("test", "success");
         </script>
-    </div>
-{{--    <div>--}}
-        @if(session()->has('success'))
-            <script>
-                $.notify(sessionStorage.getItem('success'), "success");
-            </script>
-        @endif
-{{--    </div>--}}
+{{--    @endif--}}
+    {{--    </div>--}}
 @endsection

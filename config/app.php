@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ar',
 
     /*
     |--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'ar',
 
     /*
     |--------------------------------------------------------------------------
@@ -165,6 +165,8 @@ return [
         /*
          * Package Service Providers...
          */
+        Kreait\Laravel\Firebase\ServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -225,6 +227,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
 
     ],
 

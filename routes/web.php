@@ -27,8 +27,10 @@ Route::get('logout', 'AuthController@logout')->name('logout');
 
 
 Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
-    Route::get('', 'AdminController@dashboard')->name('dashboard');
-    Route::get('home', 'AdminController@index')->name('home');
-    Route::post('uploadStudentFile', 'AdminController@uploadStudentExcelFile')->name('upload_students_file');
+    Route::get('/', 'AdminController@index')->name('dashboard');
+//    Route::get('home', 'AdminController@index')->name('home');
+    Route::post('uploadStudentFile', 'AdminController@exportStudentExcel')->name('exportStudents');
     Route::post('storeStudent', 'AdminController@storeStudent')->name('student.store');
 });
+
+Route::view('test','test');
