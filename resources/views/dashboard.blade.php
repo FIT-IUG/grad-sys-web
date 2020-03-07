@@ -1,0 +1,115 @@
+@extends('layout')
+@section('title','الصفحة الرئيسية')
+@section('content')
+    <div class="col-md-8">
+        <div class="card card-info">
+            <div class="card-header">
+                <h3 class="card-title">تسجيل طالب يدوياا</h3>
+            </div>
+            <div class="card-body">
+                <form action="{{route('student.store')}}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">الاسم</label>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror"
+                               id="exampleInputEmail1" name="name" value="{{old('name')}}">
+                        @error('name')
+                        <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">الرقم الجامعي</label>
+                        <input type="text" class="form-control @error('std') is-invalid  @enderror"
+                               id="exampleInputEmail1" name="std" value="{{old('std')}}">
+                        @error('std8')
+                        <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">الإيميل</label>
+                        <input type="email" class="form-control @error('email') is-invalid  @enderror"
+                               id="exampleInputEmail1" name="email" value="{{old('email')}}">
+                        @error('email')
+                        <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label>التخصص</label>
+                        <select class="form-control @error('department') is-invalid  @enderror" name="department">
+                            <option value=""></option>
+                            @foreach($departments as $department)
+                                <option value="{{$department}}"
+                                        @if(old('department') == $department) selected @endif>{{$department}}</option>
+                            @endforeach
+                        </select>
+                        @error('department')
+                        <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    {{--                    <div class="form-group">--}}
+                    {{--                        <label for="exampleInputEmail1">التخصص</label>--}}
+                    {{--                        <input type="text" class="form-control @error('department') is-invalid  @enderror"--}}
+                    {{--                               id="exampleInputEmail1" name="department" value="{{old('department')}}">--}}
+                    {{--                        --}}
+                    {{--                    </div>--}}
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">رقم الجوال</label>
+                        <input type="text" class="form-control @error('mobile_number') is-invalid  @enderror"
+                               id="exampleInputEmail1" name="mobile_number" value="{{old('mobile_number')}}">
+                        @error('mobile_number')
+                        <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <button type="submit" class="btn btn-primary">تسجيل</button>
+                </form>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    {{--    upload file form--}}
+
+    <div class="col-md-4">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">إرسال ملف تجريبي</h3>
+            </div>
+            <!-- /.card-header -->
+            <form role="form" method="POST" action="{{route('upload_students_file')}}"
+                  enctype="multipart/form-data">
+                @csrf
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="exampleInputFile">ارسال ملف</label>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file"
+                                       class="custom-file-input @error('excelFile') is-invalid @enderror"
+                                       id="exampleInputFile" value="إستعراض" name="excelFile" required>
+                                <label class="custom-file-label" for="exampleInputFile">اختار الملف</label>
+                            </div>
+                        </div>
+                        @error('excelFile')
+                        <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">ارسال</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="../../public/tostarNotify/build/toastr.min.js"></script>
+    <div>
+        <script>
+            toastr.info('Are you the 6 fingered man?');
+        </script>
+    </div>
+{{--    <div>--}}
+        @if(session()->has('success'))
+            <script>
+                $.notify(sessionStorage.getItem('success'), "success");
+            </script>
+        @endif
+{{--    </div>--}}
+@endsection
