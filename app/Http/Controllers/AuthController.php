@@ -17,7 +17,7 @@ class AuthController extends Controller
 
     public function check(LoginRequest $request)
     {
-        $firebase = firebaseCreateData();
+
         $auth = firebaseCreateAuth();
         $email = $request->get('email');
         $password = $request->get('password');
@@ -51,7 +51,7 @@ class AuthController extends Controller
     {
         //remove remember token value and clear sessions
         firebaseCreateData()->getReference('users/' . session()->get('userId'))
-            ->update(['remember_token' => ''])->getValue();
+            ->update(['remember_token' => '']);
         Session::remove('userId');
         Session::remove('token');
         return redirect()->route('login');

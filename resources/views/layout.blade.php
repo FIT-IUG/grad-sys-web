@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <title>@yield('title')</title>
     @includeIf('layouts.header')
 </head>
@@ -21,19 +20,11 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="m-0 text-dark">الصفحة الرئيسية</h1>
-                    </div><!-- /.col -->
-                    {{--                    <div class="col-sm-6">--}}
-                    {{--                        <ol class="breadcrumb float-sm-left">--}}
-                    {{--                            <li class="breadcrumb-item"><a href="#">خانه</a></li>--}}
-                    {{--                            <li class="breadcrumb-item active">داشبورد ورژن 2</li>--}}
-                    {{--                        </ol>--}}
-                    {{--                    </div><!-- /.col -->--}}
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- /.content-header -->
 
-        <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
                 <!-- Small boxes (Stat box) -->
@@ -101,34 +92,19 @@
                                     class="fa fa-arrow-circle-left"></i></a>
                         </div>
                     </div>
-                    <!-- ./col -->
                 </div>
-                <!-- /.row -->
                 <div class="row">
                     @yield('content')
                 </div>
-            </div><!-- /.container-fluid -->
+            </div>
         </section>
-        <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
-@includeIf('layouts.footer')
+    @includeIf('layouts.footer')
 
-<!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
     </aside>
-    <!-- /.control-sidebar -->
 </div>
-<!-- ./wrapper -->
 @includeIf('layouts.footer-meta')
-@if(session()->has('success'))
-    <input id="message" value="{{session()->get('success')}}" style="display: none">
-    <script type="text/javascript">
-        const message = document.getElementById('message').value;
-        $.notify(message, "success");
-    </script>
-    {{session()->remove('success')}}
-@endif
+@includeIf('layouts.notify')
 </body>
 </html>

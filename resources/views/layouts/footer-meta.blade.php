@@ -36,6 +36,7 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('assets/dist/js/demo.js')}}"></script>
 
+<script src="{{asset('assets/loginAssets/js/main.js')}}"></script>
 <script src="{{asset('assets/dist/js/notify.min.js')}}"></script>
 
 @stack('script')

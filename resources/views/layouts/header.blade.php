@@ -1,3 +1,6 @@
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="icon" type="image/png" href="{{asset('assets/loginAssets/images/icons/favicon.ico')}}"/>
 <!-- Tell the browser to be responsive to screen width -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Font Awesome -->
@@ -25,5 +28,8 @@
 <!-- template rtl version -->
 <link rel="stylesheet" href="{{asset('assets/dist/css/custom-style.css')}}">
 
-<link href="{{asset('tostarNotify/build/toastr.min.css')}}" rel="stylesheet"/>
+{{--<link href="{{asset('tostarNotify/build/toastr.min.css')}}" rel="stylesheet"/>--}}
+<link rel="stylesheet" type="text/css" href="{{asset('assets/loginAssets/css/util.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('assets/loginAssets/css/main.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('assets/loginAssets/css/more.css')}}">
 @stack('style')
