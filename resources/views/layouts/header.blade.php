@@ -10,15 +10,15 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}">
 <!-- iCheck -->
-{{--<link rel="stylesheet" href="{{asset('assets/')}}plugins/iCheck/flat/blue.css">--}}
+<link rel="stylesheet" href="{{asset('assets/plugins/iCheck/flat/blue.css')}}">
 <!-- Morris chart -->
 {{--<link rel="stylesheet" href="{{asset('assets/')}}plugins/morris/morris.css">--}}
 <!-- jvectormap -->
-{{--<link rel="stylesheet" href="{{asset('assets/')}}plugins/jvectormap/jquery-jvectormap-1.2.2.css">--}}
+<link rel="stylesheet" href="{{asset('assets/plugins/jvectormap/jquery-jvectormap-1.2.2.css')}}">
 <!-- Date Picker -->
-{{--<link rel="stylesheet" href="{{asset('assets/')}}plugins/datepicker/datepicker3.css">--}}
+<link rel="stylesheet" href="{{asset('assets/plugins/datepicker/datepicker3.css')}}">
 <!-- Daterange picker -->
-{{--<link rel="stylesheet" href="{{asset('assets/')}}plugins/daterangepicker/daterangepicker-bs3.css">--}}
+<link rel="stylesheet" href="{{asset('assets/plugins/daterangepicker/daterangepicker-bs3.css')}}">
 <!-- bootstrap wysihtml5 - text editor -->
 <link rel="stylesheet" href="{{asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}">
 <!-- Google Font: Source Sans Pro -->
@@ -28,8 +28,7 @@
 <!-- template rtl version -->
 <link rel="stylesheet" href="{{asset('assets/dist/css/custom-style.css')}}">
 
-{{--<link href="{{asset('tostarNotify/build/toastr.min.css')}}" rel="stylesheet"/>--}}
-<link rel="stylesheet" type="text/css" href="{{asset('assets/loginAssets/css/util.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('assets/loginAssets/css/main.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('assets/loginAssets/css/more.css')}}">
+{{--<link rel="stylesheet" type="text/css" href="{{asset('assets/loginAssets/css/util.css')}}">--}}
+{{--<link rel="stylesheet" type="text/css" href="{{asset('assets/loginAssets/css/main.css')}}">--}}
+{{--<link rel="stylesheet" type="text/css" href="{{asset('assets/loginAssets/css/more.css')}}">--}}
 @stack('style')

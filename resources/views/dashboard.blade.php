@@ -1,6 +1,7 @@
 @extends('layout')
 @section('title','الصفحة الرئيسية')
 @section('content')
+    {{-- user manually registration --}}
     <div class="col-md-8">
         <div class="card card-info">
             <div class="card-header">
@@ -46,12 +47,6 @@
                         <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                         @enderror
                     </div>
-                    {{--                    <div class="form-group">--}}
-                    {{--                        <label for="exampleInputEmail1">التخصص</label>--}}
-                    {{--                        <input type="text" class="form-control @error('department') is-invalid  @enderror"--}}
-                    {{--                               id="exampleInputEmail1" name="department" value="{{old('department')}}">--}}
-                    {{--                        --}}
-                    {{--                    </div>--}}
                     <div class="form-group">
                         <label for="exampleInputEmail1">رقم الجوال</label>
                         <input type="text" class="form-control @error('mobile_number') is-invalid  @enderror"
@@ -63,17 +58,14 @@
                     <button type="submit" class="btn btn-primary">تسجيل</button>
                 </form>
             </div>
-            <!-- /.card-body -->
         </div>
     </div>
-    {{--    upload file form--}}
-
+    {{-- export users from excel file --}}
     <div class="col-md-4">
         <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">إرسال ملف إكسل</h3>
             </div>
-            <!-- /.card-header -->
             <form role="form" method="POST" action="{{route('exportStudents')}}"
                   enctype="multipart/form-data">
                 @csrf
@@ -99,18 +91,4 @@
             </form>
         </div>
     </div>
-{{--        <script src="../../public/tostarNotify/build/toastr.min.js"></script>--}}
-    {{--    <div>--}}
-    {{--        <script>--}}
-    {{--            toastr.info('Are you the 6 fingered man?');--}}
-    {{--        </script>--}}
-    {{--    </div>--}}
-    {{--    <div>--}}
-{{--    @if(session()->has('success'))--}}
-        <script>
-            // $.notify(sessionStorage.getItem('success'), "success");
-            $.notify("test", "success");
-        </script>
-{{--    @endif--}}
-    {{--    </div>--}}
 @endsection

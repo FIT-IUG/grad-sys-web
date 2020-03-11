@@ -23,6 +23,7 @@ class AuthController extends Controller
         $password = $request->get('password');
 
         try {
+//            $auth->createUserWithEmailAndPassword($email, $password);
             //verify user if exist
             $uid = $auth->verifyPassword($email, $password)->uid;
             $token = $auth->createCustomToken($uid)->getPayload();
@@ -32,8 +33,8 @@ class AuthController extends Controller
             //search at user by email and add remember token to every login user
             foreach ($users as $key => $user) {
                 if ($user['email'] == $email) {
-                    $userDataAfterAddToken = Arr::set($user, 'remember_token', encrypt($token));
-                    $userToAddToken->getReference('users/' . $key)->set($userDataAfterAddToken);
+                    $userWithToken = Arr::set($user, 'remember_token', encrypt($token));
+                    $userToAddToken->getReference('users/' . $key)->set($userWithToken);
                     Session::put('userId', $key);
                     Session::put('token', $token);
                     return redirect()->route('dashboard');

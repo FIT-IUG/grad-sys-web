@@ -17,8 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::get('firebase', 'FirebaseController@store');
+Route::get('createUser', 'FirebaseController@createUser');
 
 
 Route::get('login', 'AuthController@login')->name('login');
@@ -32,5 +32,3 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
     Route::post('uploadStudentFile', 'AdminController@exportStudentExcel')->name('exportStudents');
     Route::post('storeStudent', 'AdminController@storeStudent')->name('student.store');
 });
-
-Route::view('test','test');

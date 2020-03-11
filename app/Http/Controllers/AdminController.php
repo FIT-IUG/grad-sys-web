@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ExportExcelRequest;
 use App\Http\Requests\RegisterStudentRequest;
 use App\Imports\StudentsImport;
+use Illuminate\Support\Facades\Gate;
 use Kreait\Firebase\Exception\ApiException;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -20,12 +21,17 @@ class AdminController extends Controller
 
     public function storeStudent(RegisterStudentRequest $request)
     {
-        try {
-            firebaseCreateData()->getReference('users')->push($request);
-            return redirect()->back()->with('success', 'تم تسجيل الطالب بنجاح.');
-        } catch (ApiException $e) {
-            return redirect()->back()->with('error', 'حصلت مشكلة في تسجيل الطالب.');
-        }
+
+        if (Gate::denies('create_student')) {
+            return 'denies';
+        } else
+            return 'ok';
+//        try {
+//            firebaseCreateData()->getReference('users')->push($request);
+//            return redirect()->back()->with('success', 'تم تسجيل الطالب بنجاح.');
+//        } catch (ApiException $e) {
+//            return redirect()->back()->with('error', 'حصلت مشكلة في تسجيل الطالب.');
+//        }
     }
 
     public function exportStudentExcel(ExportExcelRequest $request)
@@ -50,6 +56,20 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'تم رفع الملف بنجاح.');
     }
 
+    public function test()
+    {
+//        $role = firebaseCreateData()->getReference('users/' . session()->get('userId') . '/role')->getValue();
+//        dd($role == 'admin');
+//        dd(session()->get('userId'));
+//        if (Gate::allows('edit-settings'))
+            return view('test');
+//        else
+//            return 'u are not admin';
+    }
 
+    public function test2()
+    {
+        return view('test2');
+    }
 
 }
