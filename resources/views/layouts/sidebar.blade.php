@@ -1,5 +1,5 @@
 <!-- Brand Logo -->
-<a href="index3.html" class="brand-link">
+<a href="{{route('dashboard')}}" class="brand-link">
     {{--    <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"--}}
     {{--         style="opacity: .8">--}}
     <span class="brand-text font-weight-light">كلية تكنولوجيا المعلومات</span>
@@ -41,7 +41,15 @@
                             </p>
                         </a>
                     </li>
-                @elseif(hasRole('teacher'))
+                    <li class="nav-item menu-open">
+                        <a href="{{route('admin.settings')}}" class="nav-link active">
+                            <i class="nav-icon fa fa-dashboard"></i>
+                            <p>
+                                اعدادات النظام
+                            </p>
+                        </a>
+                    </li>
+                @elseif(hasRole('supervisor'))
                     <li class="nav-item menu-open">
                         <a href="{{route('dashboard')}}" class="nav-link active">
                             <i class="nav-icon fa fa-dashboard"></i>

@@ -13,21 +13,21 @@
 
             <form action="{{route('login.check')}}" method="post">
                 @csrf
-                <div class="input-group mb-3">
-                    <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
-                           placeholder="ایمیل" value="{{old('email')}}" required>
+                <div class="input-group mb-3">{{-- style="direction: ltr;"--}}
+                    <input type="text" class="form-control @error('email') is-invalid @enderror" name="email"
+                           placeholder="الإيميل" value="{{old('email')}}" required>
                     <div class="input-group-append">
                         <span class="fa fa-envelope input-group-text"></span>
                     </div>
                     @error('email')
                     <div class="invalid-feedback">
-                        <strong>{{ ($message) }}</strong>
+                        <strong>{{$message}}</strong>
                     </div>
                     @enderror
                 </div>
                 <div class="input-group mb-3">
                     <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"
-                           placeholder="رمز عبور" required>
+                           placeholder="كلمة السر" required>
                     <div class="input-group-append">
                         <span class="fa fa-lock input-group-text"></span>
                     </div>
@@ -38,14 +38,6 @@
                     @enderror
                 </div>
                 <div class="row">
-                {{--                    <div class="col-7">--}}
-                {{--                        <div class="checkbox icheck">--}}
-                {{--                            <label class="">--}}
-                {{--                                <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> یاد آوری من--}}
-                {{--                            </label>--}}
-                {{--                        </div>--}}
-                {{--                    </div>--}}
-                <!-- /.col -->
                     <div class="col-lg-5">
                         <button type="submit" class="btn btn-primary btn-block btn-flat">تسجيل الدخول</button>
                     </div>

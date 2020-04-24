@@ -8,16 +8,6 @@ use Kreait\Firebase\Exception\ApiException;
 class UniqueStudentDataRule implements Rule
 {
     /**
-     * Create a new rule instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Determine if the validation rule passes.
      *
      * @param string $attribute
@@ -27,11 +17,12 @@ class UniqueStudentDataRule implements Rule
      */
     public function passes($attribute, $value)
     {
-
-        $users = firebaseCreateData()->getReference('users')->getValue();
-        foreach ($users as $user)
-            if ($user[$attribute] == $value)
-                return false;
+//        if row has value there is a similar value.
+//        $users = firebaseCreateData()->getReference('users')->getValue();
+        $row = app('firebase.firestore')->database()
+            ->collection('students')->where($attribute, '=', $value)->documents()->rows();
+        if ($row != null)
+            return false;
         return true;
     }
 

@@ -202,7 +202,7 @@
 
 
   function ConvertNumberToPersion() {
-        let persian = { 0: '۰', 1: '۱', 2: '۲', 3: '۳', 4: '۴', 5: '۵', 6: '۶', 7: '۷', 8: '۸', 9: '۹' };
+        let persian = { 0: '۰', 1: '١', 2: '۲', 3: '۳', 4: '٤', 5: '٥', 6: '٦', 7: '۷', 8: '۸', 9: '۹' };
         function traverse(el) {
             if (el.nodeType == 3) {
                 var list = el.data.match(/[0-9]/g);
@@ -218,6 +218,6 @@
         traverse(document.body);
     }
 
-  ConvertNumberToPersion()
+  // ConvertNumberToPersion()
 
 })(jQuery)

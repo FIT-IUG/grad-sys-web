@@ -1,67 +1,36 @@
+/* arabic */
 @font-face {
-    font-family: Vazir;
-    src: url('../fonts/Vazir.eot');
-    src: url('../fonts/Vazir.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/Vazir.woff2') format('woff2'),
-    url('../fonts/Vazir.woff') format('woff'),
-    url('../fonts/Vazir.ttf') format('truetype');
-    font-weight: normal;
+    font-family: 'Amiri';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Amiri Regular'), local('Amiri-Regular'), url(https://fonts.gstatic.com/s/amiri/v13/J7aRnpd8CGxBHpUrtLMA7w.woff2) format('woff2');
+    unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE80-FEFC;
+}
+/* latin-ext */
+@font-face {
+    font-family: 'Amiri';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Amiri Regular'), local('Amiri-Regular'), url(https://fonts.gstatic.com/s/amiri/v13/J7aRnpd8CGxBHpUgtLMA7w.woff2) format('woff2');
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+    font-family: 'Amiri';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Amiri Regular'), local('Amiri-Regular'), url(https://fonts.gstatic.com/s/amiri/v13/J7aRnpd8CGxBHpUutLM.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-@font-face {
-    font-family: Vazir;
-    src: url('../fonts/Vazir-Bold.eot');
-    src: url('../fonts/Vazir-Bold.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/Vazir-Bold.woff2') format('woff2'),
-    url('../fonts/Vazir-Bold.woff') format('woff'),
-    url('../fonts/Vazir-Bold.ttf') format('truetype');
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: Vazir;
-    src: url('../fonts/Vazir-Light.eot');
-    src: url('../fonts/Vazir-Light.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/Vazir-Light.woff2') format('woff2'),
-    url('../fonts/Vazir-Light.woff') format('woff'),
-    url('../fonts/Vazir-Light.ttf') format('truetype');
-    font-weight: 300;
-}
-
-@font-face {
-    font-family: Vazir;
-    src: url('../fonts/Vazir-Medium.eot');
-    src: url('../fonts/Vazir-Medium.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/Vazir-Medium.woff2') format('woff2'),
-    url('../fonts/Vazir-Medium.woff') format('woff'),
-    url('../fonts/Vazir-Medium.ttf') format('truetype');
-    font-weight: 500;
-}
-
-@font-face {
-    font-family: Vazir;
-    src: url('../fonts/Vazir-Thin.eot');
-    src: url('../fonts/Vazir-Thin.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/Vazir-Thin.woff2') format('woff2'),
-    url('../fonts/Vazir-Thin.woff') format('woff'),
-    url('../fonts/Vazir-Thin.ttf') format('truetype');
-    font-weight: 100;
-}
-
-@font-face {
-    font-family: Vazir;
-    src: url('../fonts/Vazir-Black.eot');
-    src: url('../fonts/Vazir-Black.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/Vazir-Black.woff2') format('woff2'),
-    url('../fonts/Vazir-Black.woff') format('woff'),
-    url('../fonts/Vazir-Black.ttf') format('truetype');
-    font-weight: 900;
-}
 
 /*---------------------------------- End of fonts ---------------------------------- */
 
 body {
-    font-family: 'Vazir', sans-serif !important;
+    font-family: 'Amiri', serif !important;
 }
 
 .ltr {
@@ -269,5 +238,5 @@ ul {
 /*---------------------------------- Persian Date Picker ---------------------------------- */
 
 .datepicker-plot-area {
-    font-family: 'Vazir', sans-serif;
+    font-family: 'Amiri', serif ;
 }

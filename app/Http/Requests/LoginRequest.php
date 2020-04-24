@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CheckEmailRule;
+use App\Rules\CheckPasswordRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
@@ -24,8 +26,8 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email',
-            'password' => 'required|between:8,16'
+            'email' => ['required', 'email', new CheckEmailRule()],
+            'password' => ['required', 'between:8,16', new CheckPasswordRule()]
         ];
     }
 }

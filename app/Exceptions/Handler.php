@@ -3,6 +3,8 @@
 namespace App\Exceptions;
 
 use Exception;
+use Google\Cloud\Core\Exception\ServiceException;
+use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -36,6 +38,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        if ($exception instanceof ConnectException){}
         parent::report($exception);
     }
 
@@ -50,6 +53,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof ConnectException){
+            return redirect()->back()->with('error','حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
+        }elseif ($exception instanceof  ServiceException){
+            return redirect()->back()->with('error','حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
+        }
+
         return parent::render($request, $exception);
     }
 }

@@ -22,13 +22,21 @@
 <!-- bootstrap wysihtml5 - text editor -->
 <link rel="stylesheet" href="{{asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}">
 <!-- Google Font: Source Sans Pro -->
-<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Amiri&display=swap&subset=arabic" rel="stylesheet">
+<!-- Animate -->
+<link rel="stylesheet" href="{{asset('assets/loginAssets/vendor/animate/animate.css')}}">
+<!-- Select2 -->
+<link rel="stylesheet" href="{{asset('assets/plugins/select2/select2.min.css')}}">
 <!-- bootstrap rtl -->
 <link rel="stylesheet" href="{{asset('assets/dist/css/bootstrap-rtl.min.css')}}">
 <!-- template rtl version -->
 <link rel="stylesheet" href="{{asset('assets/dist/css/custom-style.css')}}">
+{{-- file to edit at defualt css. --}}
+<link rel="stylesheet" href="{{asset('assets/edit.css')}}">
 
 {{--<link rel="stylesheet" type="text/css" href="{{asset('assets/loginAssets/css/util.css')}}">--}}
 {{--<link rel="stylesheet" type="text/css" href="{{asset('assets/loginAssets/css/main.css')}}">--}}
 {{--<link rel="stylesheet" type="text/css" href="{{asset('assets/loginAssets/css/more.css')}}">--}}
+
+
 @stack('style')

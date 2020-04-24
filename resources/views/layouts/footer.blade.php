@@ -1,3 +1,3 @@
 <footer class="main-footer">
-    <strong>CopyLeft &copy; 2020 <a href="http://github.com/mratwan/">IUG-IT</a>.</strong>
+    <strong>جميع الحقوق محفوظة لدى  <a href="http://dnntest.iugaza.edu.ps/fit/">كلية تكنولوجيا المعلومات - الجامعة الإسلامية - غزة</a> &copy; 2020.</strong>
 </footer>
