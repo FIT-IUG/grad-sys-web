@@ -29,10 +29,7 @@ class AuthController extends Controller
 
         try {
             //verify user if exist
-//            $uid = firebaseAuth()->verifyPassword($email, $password)->uid;
-            $uid = firebaseCreateAuth()->verifyPassword($email, $password)->uid;
-//            $uid = app('firebase.auth')->verifyPassword($email, $password)->uid;
-//            dd($uid);
+            $uid = app('firebase.auth')->verifyPassword($email, $password)->uid;
 
             // create user if not exists
 //            firestoreCollection('users')->newDocument()
