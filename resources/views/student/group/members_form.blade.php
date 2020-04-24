@@ -47,9 +47,11 @@
                                 </option>
                             @endforeach
                         </select>
-                        @if(old('membersStd')[0] == null)
-                            <div class="alert alert-danger" style="margin-top: 10px">الرقم الجامعي مطلوب</div>
-                        @endif
+                        @isset(old('membersStd')[0])
+                            @if(old('membersStd')[0] == null)
+                                <div class="alert alert-danger" style="margin-top: 10px">الرقم الجامعي مطلوب</div>
+                            @endif
+                        @endisset
                     </div>
                 </div>
                 {{--team member 2 data--}}
@@ -70,10 +72,12 @@
                                 </option>
                             @endforeach
                         </select>
+                        @isset(old('membersStd')[1])
 
-                        @if(old('membersStd')[1] == null)
-                            <div class="alert alert-danger" style="margin-top: 10px">الرقم الجامعي مطلوب</div>
-                        @endif
+                            @if(old('membersStd')[1] == null)
+                                <div class="alert alert-danger" style="margin-top: 10px">الرقم الجامعي مطلوب</div>
+                            @endif
+                        @endisset
                     </div>
                 </div>
                 {{--team member 3 data--}}
@@ -94,10 +98,11 @@
                                 </option>
                             @endforeach
                         </select>
-                        @if(old('membersStd')[2] == null)
-                            <div class="alert alert-danger" style="margin-top: 10px">الرقم الجامعي مطلوب</div>
-                        @endif
-
+                        @isset(old('membersStd')[2])
+                            @if(old('membersStd')[2] == null)
+                                <div class="alert alert-danger" style="margin-top: 10px">الرقم الجامعي مطلوب</div>
+                            @endif
+                        @endisset
                     </div>
                 </div>
                 {{-- departments --}}
