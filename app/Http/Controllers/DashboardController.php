@@ -16,8 +16,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-//        dd(Str::title('student').'Controller');
-//        getDocumentIndex('students');
         $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'مالتيميديا', 'موبايل', 'تكنولوجيا المعلومات'];//'','','','',''
         $teachers = ['خالد', 'احمد', 'محمد'];
         $number_of_students = collectionSize('students');

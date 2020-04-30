@@ -17,13 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-Route::get('firebase', 'FirebaseController@firebase');
-Route::get('firestore', 'FirebaseController@firestore');
-Route::get('php', 'FirebaseController@php');
-Route::get('createUser', 'FirebaseController@createUser');
-
-
 Route::get('login', 'AuthController@login')->name('login');
 Route::post('login', 'AuthController@check')->name('login.check');
 Route::get('logout', 'AuthController@logout')->name('logout');
