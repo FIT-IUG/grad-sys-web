@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('login', 'AuthController@login')->name('login');
+Route::get('تسجيل-الدخول', 'AuthController@login')->name('login');
 Route::post('login', 'AuthController@check')->name('login.check');
 Route::get('logout', 'AuthController@logout')->name('logout');
 
@@ -25,11 +25,11 @@ Route::get('logout', 'AuthController@logout')->name('logout');
 Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
     Route::get('/الإعدادات', 'Admincontroller@settings')->name('admin.settings');
-    Route::post('/الإعدادات', 'Admincontroller@update')->name('admin.settings.update');
+    Route::post('/settings', 'Admincontroller@updateSettings')->name('admin.settings.update');
 //    Route::get('home', 'DashboardController@index')->name('home');
-    Route::post('uploadStudentFile', 'DashboardController@exportStudentsExcel')->name('exportStudents');
-    Route::post('uploadTeachersFile', 'DashboardController@exportTeachersExcel')->name('exportTeachers');
-    Route::post('storeStudent', 'DashboardController@storeStudent')->name('student.store');
+    Route::post('uploadStudentFile', 'AdminController@exportStudentsExcel')->name('exportStudents');
+    Route::post('uploadTeachersFile', 'AdminController@exportTeachersExcel')->name('exportTeachers');
+    Route::post('storeStudent', 'AdminController@storeStudent')->name('student.store');
     Route::post('storeGroupMembers', 'StudentController@storeGroupMembers')->name('group.members.store');
     Route::post('storeGroupSupervisor', 'StudentController@storeGroupSupervisor')->name('group.supervisor.store');
     Route::post('acceptTeamJoinRequest', 'StudentController@acceptTeamJoinRequest')->name('acceptTeamJoinRequest');
@@ -38,7 +38,8 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
 });
 
 //Route::view('test', 'test');
-Route::get('test', function () {
-    teacherGenerator(10);
-    return 'done';
-})->name('test');
+//Route::get('test', function () {
+//    teacherGenerator(10);
+//    return 'done';
+//})->name('test');
+ Route::get('test','AdminController@test');

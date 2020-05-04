@@ -17,9 +17,9 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">الرقم الجامعي</label>
-                    <input type="text" class="form-control @error('std') is-invalid  @enderror"
-                           id="exampleInputEmail1" name="std" value="{{old('std')}}">
-                    @error('std')
+                    <input type="text" class="form-control @error('user_id') is-invalid  @enderror"
+                           id="exampleInputEmail1" name="user_id" value="{{old('user_id')}}">
+                    @error('user_id')
                     <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                     @enderror
                 </div>

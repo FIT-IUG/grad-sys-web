@@ -13,14 +13,12 @@ class UniqueStudentDataRule implements Rule
      * @param string $attribute
      * @param mixed $value
      * @return bool
-     * @throws ApiException
      */
     public function passes($attribute, $value)
     {
 //        if row has value there is a similar value.
-//        $users = firebaseCreateData()->getReference('users')->getValue();
-        $row = app('firebase.firestore')->database()
-            ->collection('students')->where($attribute, '=', $value)->documents()->rows();
+        $row = firestoreCollection('users')->where('role', '=', 'student')
+            ->where($attribute, '=', $value)->documents()->rows();
         if ($row != null)
             return false;
         return true;

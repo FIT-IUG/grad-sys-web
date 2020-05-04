@@ -28,7 +28,7 @@ class RegisterStudentRequest extends FormRequest
             'name' => 'required:alpha',
             'email' => ['required', 'email', new UniqueStudentDataRule()],
             'mobile_number' => ['required', 'numeric', 'digits:10', new UniqueStudentDataRule],
-            'std' => ['required', 'numeric', 'digits:9', new UniqueStudentDataRule()],
+            'user_id' => ['required', 'numeric', 'digits:9', new UniqueStudentDataRule()],
             'department' => 'required',
         ];
     }

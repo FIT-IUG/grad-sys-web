@@ -6,43 +6,16 @@ use Kreait\Firebase\ServiceAccount;
 
 //use \Faker\Generator as Faker;
 
-function firebaseCreateData()
-{
-    $jsonLink = ServiceAccount::fromjsonfile(app_path('Http/Controllers/firebaseKey.json'));
-    return (new Factory)
-        ->withServiceAccount($jsonLink)
-        ->createDatabase();
-}
-
-function firebaseCreateAuth()
-{
-    $jsonLink = ServiceAccount::fromjsonfile(app_path('Http/Controllers/firebaseKey.json'));
-    return (new Factory)
-        ->withServiceAccount($jsonLink)
-        ->createAuth();
-}
-
 function hasRole($role)
 {
-//    $userRole = firebaseCreateData()->getReference('users/' . session()->get('uid') . '/role')->getValue();
     if (getRole() == $role)
         return true;
     return false;
 }
 
 
-function hasRoles($roles)
-{
-//    $userRole = firebaseCreateData()->getReference('users/' . session()->get('userId') . '/role')->getValue();
-    foreach ($roles as $role)
-        if (getRole() == $role)
-            return true;
-    return false;
-}
-
 function firestoreCollection($collection_name): Google\Cloud\Firestore\CollectionReference
 {
-//    dd(app('firebase.firestore')->database()->collection($collection_name));
     return app('firebase.firestore')->database()->collection($collection_name);
 }
 
@@ -51,22 +24,12 @@ function collectionSize($collection_name)
     return app('firebase.firestore')->database()->collection($collection_name)->documents()->size();
 }
 
-//get last index for document to create new document
-//function getDocumentIndex($collection_name)
-//{
-//
-//    dd(firestoreCollection($collection_name)->newDocument()->set(['name' => 'hh']));
-//    $index = \Illuminate\Support\Arr::last(firestoreCollection($collection_name)->documents()->rows());
-//    $index = \Illuminate\Support\Arr::last(firestoreCollection($collection_name)->documents()->getIterator()->ksort());
-//    dd(firestoreCollection($collection_name)->documents()->rows());
-//    return $index->id() + 1;
-//}
-
 function getNotification($notification_key)
 {
     try {
-        $email = firestoreCollection('users')->document(session()->get('uid'))->snapshot()->data()['email'];
-        $std = firestoreCollection('students')->where('email', '=', $email)->documents()->rows()[0]->data()['std'];
+        $email = firestoreCollection('users')->document(session()->get('uid'))->snapshot()->get('email');
+        $std = firestoreCollection('users')->where('role', '=', 'student')
+            ->where('email', '=', $email)->documents()->rows()[0]->data()['std'];
         return firestoreCollection('notifications')
             ->where('to', '=', $std)
             ->documents()->rows()[0]->data()[$notification_key];
@@ -77,7 +40,7 @@ function getNotification($notification_key)
 
 function getRole()
 {
-    return firestoreCollection('users')->document(session()->get('uid'))->snapshot()->data()['role'];
+    return firestoreCollection('users')->document(session()->get('uid'))->snapshot()->get('role');
 }
 
 function inGroup()
@@ -107,13 +70,9 @@ function isTeamLeader()
     return false;
 }
 
-function getStudentStd()
+function getUserId()
 {
-
-    $email = firestoreCollection('users')->document(session()->get('uid'))->snapshot()->data()['email'];
-//    dd($email);
-//    dd(firestoreCollection('students')->where('email', '=', $email)->documents()->rows());
-    return firestoreCollection('students')->where('email', '=', $email)->documents()->rows()[0]->data()['std'];
+    return firestoreCollection('users')->document(session()->get('uid'))->snapshot()->get('user_id');
 }
 
 function firebaseAuth(): \Kreait\Firebase\Auth
@@ -217,3 +176,12 @@ function teacherGenerator($number_of_teachers)
     }
 }
 
+function numberOfTeamedStudents(){
+    $groups = firestoreCollection('groups')->documents()->rows();
+    $leadersStd = Arr::pluck($groups, 'leaderStudentStd');
+    $members_std = Arr::pluck($groups, 'membersStd');
+    $members_std = Arr::flatten($members_std);
+
+    $registered_groups_std = Arr::collapse([$leadersStd, $members_std]);
+    return sizeof($registered_groups_std);
+}

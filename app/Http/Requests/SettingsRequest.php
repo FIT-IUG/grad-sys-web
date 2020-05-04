@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ExportExcelRequestStudents extends FormRequest
+class SettingsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,8 @@ class ExportExcelRequestStudents extends FormRequest
     public function rules()
     {
         return [
-            'excelFile' => ['file', 'mimes:xlsx,csv,xls']
+            'max_groups_members' => 'required',
+            'min_group_members' => 'required',
         ];
     }
 }

@@ -7,36 +7,33 @@
                 <div class="card-header">
                     <h3 class="card-title">إعدادات النظام</h3>
                 </div>
-                <form role="form" method="PUT" action="{{route('admin.settings.update')}}">
+                <form role="form" method="post" action="{{route('admin.settings.update')}}">
                     @csrf
                     <div class="card-body">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">آدرس ایمیل</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="ایمیل را وارد کنید">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="پسورد را وارد کنید">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputFile">ارسال فایل</label>
-                            <div class="input-group">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="exampleInputFile">
-                                    <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label>
-                                </div>
-                                <div class="input-group-append">
-                                    <span class="input-group-text" id="">Upload</span>
-                                </div>
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <label for="exampleInputEmail1">الحد الأقصى لعدد اعضاء الفريق</label>
+                                <input type="text"
+                                       class="form-control @error('max_group_members') is-invalid  @enderror"
+                                       name="max_group_members"
+                                       value="{{$settings['max_group_members']}}">
+                                @error('max_group_members')
+                                <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
+                                @enderror
                             </div>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1">مرا بخاطر بسپار</label>
+                            <div class="form-group col-md-3">
+                                <label for="exampleInputEmail1">الحد الادنى لعدد اعضاء الفريق</label>
+                                <input type="text"
+                                       class="form-control @error('min_group_members') is-invalid  @enderror"
+                                       name="min_group_members"
+                                       value="{{$settings['min_group_members']}}">
+                                @error('min_group_members')
+                                <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
                     </div>
                     <!-- /.card-body -->
-
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">ارسال</button>
                     </div>

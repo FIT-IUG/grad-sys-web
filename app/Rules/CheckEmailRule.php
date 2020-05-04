@@ -25,8 +25,8 @@ class CheckEmailRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        $size = firestoreCollection('users')->where('email', '=', $value)->documents()->size();
-        if ($size == 0)
+        $isEmpty = firestoreCollection('users')->where('email', '=', $value)->documents()->isEmpty();
+        if ($isEmpty)
             return false;
         return true;
     }
