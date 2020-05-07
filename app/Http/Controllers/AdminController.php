@@ -35,8 +35,12 @@ class AdminController extends Controller
     public function storeStudent(RegisterStudentRequest $request)
     {
         $student = Arr::collapse([$request->validated(), ['role' => 'student']]);
+
+//        dd(getLastIdForDocument('users'));
         try {
-            firestoreCollection('users')->newDocument()->create($student);
+            firebase('users')->push($student);
+            //Send Email
+            //            firestoreCollection('users')->newDocument()->create($student);
             return redirect()->back()->with('success', 'تم تسجيل الطالب بنجاح.');
         } catch (ApiException $e) {
             return redirect()->back()->with('error', 'حصلت مشكلة في تسجيل الطالب.');
@@ -50,15 +54,16 @@ class AdminController extends Controller
             if ($value[0] == 'id')
                 continue;
             try {
-                firestoreCollection('users')->newDocument()
-                    ->create([
-                        'user_id' => $value[0],
-                        'name' => $value[1],
-                        'role' => $value[2],
-                        'department' => $value[3],
-                        'mobile_number' => $value[4],
-                        'email' => $value[5],
-                    ]);
+//                firestoreCollection('users')->newDocument()
+//                    ->create(
+                firebase('users')->push([
+                    'user_id' => $value[0],
+                    'name' => $value[1],
+                    'role' => $value[2],
+                    'department' => $value[3],
+                    'mobile_number' => $value[4],
+                    'email' => $value[5],
+                ]);
             } catch (ApiException $e) {
                 return redirect()->back()->with('error', 'حصل مشكلة في رفع الملف.');
             }

@@ -8,11 +8,23 @@ use Kreait\Firebase\ServiceAccount;
 
 function hasRole($role)
 {
-    if (getRole() == $role)
+    $uid = session()->get('uid');
+    $user_role = firebase('users/' . $uid)->getValue()['role'];
+
+    if ($user_role == $role)
         return true;
     return false;
 }
 
+function firebase($collection_name): Kreait\Firebase\Database\Reference
+{
+    return app('firebase.database')->getReference('' . $collection_name);
+}
+
+function getLastIdForDocument($document_name)
+{
+    return last(app('firebase.database')->getReference($document_name)->getChildKeys());
+}
 
 function firestoreCollection($collection_name): Google\Cloud\Firestore\CollectionReference
 {
@@ -176,7 +188,8 @@ function teacherGenerator($number_of_teachers)
     }
 }
 
-function numberOfTeamedStudents(){
+function numberOfTeamedStudents()
+{
     $groups = firestoreCollection('groups')->documents()->rows();
     $leadersStd = Arr::pluck($groups, 'leaderStudentStd');
     $members_std = Arr::pluck($groups, 'membersStd');

@@ -22,8 +22,8 @@ class VerifyUser
             $uid = Session::get('uid');
             $sessionToken = Session::get('token');
 //            $user = firebaseCreateData()->getReference()->getChild('users/' . $uid)->getValue();
-            $user = app('firebase.firestore')->database()->collection('users')->document($uid)->snapshot()->data();
-            $token = $user['remember_token'];
+//            $user = app('firebase.firestore')->database()->collection('users')->document($uid)->snapshot()->data();
+            $token = firebase('users/'.$uid)->getChild('remember_token')->getValue();
             if ($sessionToken == $token)
                 return $next($request);
         } else

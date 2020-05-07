@@ -9,20 +9,47 @@ class DashboardController extends Controller
     public function index()
     {
         $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'مالتيميديا', 'موبايل', 'تكنولوجيا المعلومات'];
-        $teachers = firestoreCollection('users')
-            ->where('role', '=', 'teacher')->documents()->rows();
-        $teachers = Arr::pluck($teachers, 'name');
-        $number_of_students = firestoreCollection('users')->where('role', '=', 'student')->documents()->size();
-        $number_of_groups = collectionSize('groups');
-        $number_of_teamed_students = numberOfTeamedStudents();
+        $users = firebase('users')->getValue();
+        $teachers_name = [];
+        $index = 0;
+        foreach ($users as $user)
+            if ($user['role'] == 'teacher')
+                Arr::set($teachers_name, $index++, $user['name']);
+
+//        $teachers = firestoreCollection('users')
+//            ->where('role', '=', 'teacher')->documents()->rows();
+//        $teachers = Arr::pluck($teachers, 'name');
+//        dd(Arr::pluck($users));
+        $number_of_students = 0;
+        foreach ($users as $user) {
+            if ($user['role'] == 'student') {
+                $number_of_students++;
+            }
+        }
+//        dd(app('firebase.database')->getReference('groups')->getChildKeys());
+//        dd($number_of_students);
+//        $number_of_students = firestoreCollection('users')->where('role', '=', 'student')->documents()->size();
+//        dd(firebase('groups')->getValue());
+
+//        dd(last(app('firebase.database')->getReference('groups')->getChildKeys()));
+
+        $number_of_groups = sizeof(firebase('groups')->getValue());
+
+//        dd($number_of_groups);
+//        $number_of_groups = collectionSize('groups');
+        $number_of_teamed_students = 20;
+//        $number_of_teamed_students = numberOfTeamedStudents();
         $statistics = [
             'number_of_students' => $number_of_students,
             'number_of_groups' => $number_of_groups,
             'number_of_teamed_students' => $number_of_teamed_students
         ];
         $students = '';
+        app('firebase.database')->getReference('notifications/0')->set(['to' => '120125132', 'from' => '120125623', 'type' => 'join_group']);
         $notifications = [];
+
         if (hasRole('student')) {
+            dd('this is student');
 //            $groups = firestoreCollection('groups')->documents()->rows();
 //            $members_std = Arr::pluck($groups, 'membersStd');
             $students = $this->getStudentsWithoutTeam();
@@ -67,7 +94,7 @@ class DashboardController extends Controller
                     'initial_title' => $initial_title]];
             }
         }
-        return view('dashboard', ['departments' => $departments, 'teachers' => $teachers,
+        return view('dashboard', ['departments' => $departments, 'teachers' => $teachers_name,
             'statistics' => $statistics, 'students' => $students, 'notifications' => $notifications]);
     }
 

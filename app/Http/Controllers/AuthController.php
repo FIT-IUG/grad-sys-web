@@ -34,13 +34,15 @@ class AuthController extends Controller
             // create user if not exists
 //            firestoreCollection('users')->newDocument()
 //                ->create(['email' => $email, 'role' => 'student']);
+//            firebase('users/' . $uid)->set(['email' => $email]);
 
             //create token
             $token = Str::random(60);
 
             //store remember token
-            $user = firestoreCollection('users')->document($uid);
-            $user->update([['path' => 'remember_token', 'value' => $token]]);
+//            $user = firestoreCollection('users')->document($uid);
+            $user = firebase('users/' . $uid);
+            $user->update(['remember_token' => $token]);
 
             Session::put('uid', $uid);
             Session::put('token', $token);
