@@ -35,7 +35,7 @@
                             <td>{{$notification['initial_title']}}</td>
                             <td>
                                 <form
-                                    action="{{route('group.supervisor.replyRequest',['from'=>$notification['from'],'to'=>$notification['to']])}}"
+                                    action="{{route('group.teacher.replyRequest',['from'=>$notification['from'],'to'=>$notification['to']])}}"
                                     method="post">
                                     @csrf
                                     <button class="btn btn-success" name="reply" value="accept">قبول</button>
@@ -51,7 +51,7 @@
                             </td>
 
                             {{--                            <td>--}}
-                            {{--                                <form action="{{route('group.supervisor.acceptRequest')}}" method="post">--}}
+                            {{--                                <form action="{{route('group.teacher.acceptRequest')}}" method="post">--}}
                             {{--                                    <button type="submit"></button>--}}
                             {{--                                    <button type="submit"></button>--}}
                             {{--                                </form>--}}

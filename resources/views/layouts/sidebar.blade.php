@@ -8,16 +8,6 @@
 <!-- Sidebar -->
 <div class="sidebar" style="direction: ltr">
     <div style="direction: rtl">
-        <!-- Sidebar user panel (optional) -->
-    {{--        <div class="user-panel mt-3 pb-3 mb-3 d-flex">--}}
-    {{--            <div class="image">--}}
-    {{--                <img src="https://secure.gravatar.com/avatar/5ffa2a1ffeb767c60ab7e1052e385d5c?s=52&d=mm&r=g" class="img-circle elevation-2" alt="User Image">--}}
-    {{--            </div>--}}
-    {{--            <div class="info">--}}
-    {{--                <a href="#" class="d-block">كلية تكنولوجيا المعلومات</a>--}}
-    {{--            </div>--}}
-    {{--        </div>--}}
-
     <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -34,36 +24,10 @@
 
                 @if(hasRole('admin'))
                     <li class="nav-item menu-open">
-                        <a href="{{route('dashboard')}}" class="nav-link active">
-                            <i class="nav-icon fa fa-dashboard"></i>
-                            <p>
-                                أدمن
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item menu-open">
                         <a href="{{route('admin.settings')}}" class="nav-link active">
                             <i class="nav-icon fa fa-dashboard"></i>
                             <p>
                                 اعدادات النظام
-                            </p>
-                        </a>
-                    </li>
-                @elseif(hasRole('supervisor'))
-                    <li class="nav-item menu-open">
-                        <a href="{{route('dashboard')}}" class="nav-link active">
-                            <i class="nav-icon fa fa-dashboard"></i>
-                            <p>
-                                مدرس
-                            </p>
-                        </a>
-                    </li>
-                @elseif(hasRole('student'))
-                    <li class="nav-item menu-open">
-                        <a href="{{route('dashboard')}}" class="nav-link active">
-                            <i class="nav-icon fa fa-dashboard"></i>
-                            <p>
-                                طالب
                             </p>
                         </a>
                     </li>

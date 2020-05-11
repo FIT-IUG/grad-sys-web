@@ -3,18 +3,10 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
+use Kreait\Firebase\Exception\ApiException;
 
 class CheckEmailRule implements Rule
 {
-    /**
-     * Create a new rule instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
 
     /**
      * Determine if the validation rule passes.
@@ -22,13 +14,21 @@ class CheckEmailRule implements Rule
      * @param string $attribute
      * @param mixed $value
      * @return bool
+     * @throws ApiException
      */
     public function passes($attribute, $value)
     {
-        $isEmpty = firestoreCollection('users')->where('email', '=', $value)->documents()->isEmpty();
-        if ($isEmpty)
-            return false;
-        return true;
+//        check if email is exist
+//        $isEmpty = firestoreCollection('users')->where('email', '=', $value)->documents()->isEmpty();
+        $users = firebaseGetReference('users')->getValue();
+        foreach ($users as $user)
+            if ($user['email'] == $value)
+                return true;
+        return false;
+//            ->where('email', '=', $value)->documents()->isEmpty();
+//        if ($isEmpty)
+//            return false;
+//        return true;
     }
 
     /**

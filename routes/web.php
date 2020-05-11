@@ -32,10 +32,9 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
     Route::post('uploadTeachersFile', 'AdminController@exportTeachersExcel')->name('exportTeachers');
     Route::post('storeStudent', 'AdminController@storeStudent')->name('student.store');
     Route::post('storeGroupMembers', 'StudentController@storeGroupMembers')->name('group.members.store');
-    Route::post('storeGroupSupervisor', 'StudentController@storeGroupSupervisor')->name('group.supervisor.store');
+    Route::post('storeGroupSupervisor', 'StudentController@storeGroupSupervisor')->name('group.teacher.store');
     Route::post('acceptTeamJoinRequest', 'StudentController@acceptTeamJoinRequest')->name('acceptTeamJoinRequest');
-    // Route::resource('group', 'StudentController')->except(['destroy']);
-    Route::post('replyJoinGroupRequest', 'SupervisorController@replayToBeSupervisorRequest')->name('group.supervisor.replyRequest');
+    Route::post('replyJoinGroupRequest', 'SupervisorController@replayToBeSupervisorRequest')->name('group.teacher.replyRequest');
 });
 
 //Route::view('test', 'test');

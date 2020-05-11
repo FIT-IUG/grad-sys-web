@@ -5,7 +5,7 @@
         </div>
         <div class="card-body">
 {{--            <i class="fa fa-warning" style="padding-bottom: 20px;"><span style="padding-right: 4px;">الاسم يجب انت يكون رباعي.</span></i>--}}
-            <form action="{{route('group.supervisor.store')}}" method="POST">
+            <form action="{{route('group.teacher.store')}}" method="POST">
                 @csrf
                 <div class="form-group">
                     <label style="padding-bottom: 23px;">مشرف المجموعة</label>
@@ -14,11 +14,11 @@
                         <option value=""></option>
                         @foreach($teachers as $teacher)
                             <option value="{{$teacher}}"
-                                    @if(old('supervisor') == $teacher) selected @endif>{{$teacher}}
+                                    @if(old('teacher') == $teacher) selected @endif>{{$teacher}}
                             </option>
                         @endforeach
                     </select>
-                    @error('supervisor')
+                    @error('teacher')
                     <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                     @enderror
                 </div>

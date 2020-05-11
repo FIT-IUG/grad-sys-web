@@ -18,7 +18,7 @@ class AdminController extends Controller
     {
         $notifications = [];
         $statistics = '';
-        $settings = firestoreCollection('settings')->documents()->rows()[0]->data();
+        $settings = firebaseGetReference('settings')->getValue();
         return view('admin.settings')->with([
             'notifications' => $notifications,
             'statistics' => $statistics,
@@ -26,21 +26,12 @@ class AdminController extends Controller
         ]);
     }
 
-    public function updateSettings(SettingsRequest $request)
-    {
-        dd('this is update settings');
-    }
-
-
     public function storeStudent(RegisterStudentRequest $request)
     {
         $student = Arr::collapse([$request->validated(), ['role' => 'student']]);
-
-//        dd(getLastIdForDocument('users'));
         try {
-            firebase('users')->push($student);
+            firebaseGetReference('users')->push($student);
             //Send Email
-            //            firestoreCollection('users')->newDocument()->create($student);
             return redirect()->back()->with('success', 'تم تسجيل الطالب بنجاح.');
         } catch (ApiException $e) {
             return redirect()->back()->with('error', 'حصلت مشكلة في تسجيل الطالب.');
@@ -54,9 +45,7 @@ class AdminController extends Controller
             if ($value[0] == 'id')
                 continue;
             try {
-//                firestoreCollection('users')->newDocument()
-//                    ->create(
-                firebase('users')->push([
+                firebaseGetReference('users')->push([
                     'user_id' => $value[0],
                     'name' => $value[1],
                     'role' => $value[2],
@@ -64,6 +53,7 @@ class AdminController extends Controller
                     'mobile_number' => $value[4],
                     'email' => $value[5],
                 ]);
+//                send email
             } catch (ApiException $e) {
                 return redirect()->back()->with('error', 'حصل مشكلة في رفع الملف.');
             }
@@ -71,54 +61,9 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'تم رفع الملف بنجاح.');
     }
 
-    public function exportTeachersExcel(ExportExcelRequestTeachers $request)
+    public function updateSettings(SettingsRequest $settingsRequest)
     {
-
-        $array = Excel::toArray(new TeachersImport(), $request->file('excelFile'));
-//        $supervisor = firebaseCreateData()->getReference('teachers');
-
-        foreach ($array[0] as $value) {
-            if ($value[0] == 'name')
-                continue;
-            try {
-                firestoreCollection('teachers')->newDocument()
-                    ->create([
-                        'name' => $value[0],
-                        'email' => $value[1],
-                        'phone_number' => $value[2],
-                    ]);
-            } catch (ApiException $e) {
-                return redirect()->back()->with('error', 'حصل مشكلة في رفع الملف.');
-            }
-        }
-        return redirect()->back()->with('success', 'تم رفع الملف بنجاح.');
+        firebaseGetReference('settings')->set($settingsRequest->validated());
+        return redirect()->back()->with('success', 'تم تحديث إعدادات النظام بنجاح.');
     }
-
-
-//    public function getStudentsWithoutTeam()
-//    {
-//
-////        get students std from groups table, from all students (members and leaders)
-//        $groups = firestoreCollection('groups')->documents()->rows();
-//        $leadersStd = Arr::pluck($groups, 'leaderStudentStd');
-//        $members_std = Arr::pluck($groups, 'membersStd');
-//        $members_std = Arr::flatten($members_std);
-//
-//        $registered_groups_std = Arr::collapse([$leadersStd, $members_std]);
-//        $students = firestoreCollection('students')->documents()->rows();
-//        $students = Arr::pluck($students, 'std');
-//
-//        return array_diff($students, $registered_groups_std);
-//
-//    }
-
-//
-//    public function test(){
-//        $students = firestoreCollection('student')->documents()->rows();
-//        $users = firestoreCollection('users')->documents()->rows();
-//        foreach ($students as $student){
-//
-//        }
-//        dd('this is test');
-//    }
 }

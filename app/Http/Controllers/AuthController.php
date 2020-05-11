@@ -7,6 +7,7 @@ use Google\Cloud\Core\Exception\BadRequestException;
 use Google\Cloud\Core\Exception\ServiceException;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use Kreait\Firebase\Exception\ApiException;
 use Kreait\Firebase\Exception\AuthException;
 use Kreait\Firebase\Exception\FirebaseException;
 use Google\Cloud\Core\Exception\NotFoundException;
@@ -20,28 +21,20 @@ class AuthController extends Controller
 
     public function check(LoginRequest $request)
     {
+//        createUsers();
 
         $email = $request->get('email');
         $password = $request->get('password');
-
-        //create user in auth
-//        firebaseAuth()->createUserWithEmailAndPassword($email, $password);
 
         try {
             //verify user if exist
             $uid = app('firebase.auth')->verifyPassword($email, $password)->uid;
 
-            // create user if not exists
-//            firestoreCollection('users')->newDocument()
-//                ->create(['email' => $email, 'role' => 'student']);
-//            firebase('users/' . $uid)->set(['email' => $email]);
-
             //create token
             $token = Str::random(60);
 
             //store remember token
-//            $user = firestoreCollection('users')->document($uid);
-            $user = firebase('users/' . $uid);
+            $user = firebaseGetReference('users/' . $uid);
             $user->update(['remember_token' => $token]);
 
             Session::put('uid', $uid);
@@ -56,14 +49,20 @@ class AuthController extends Controller
         }
     }
 
+    public function createUsers()
+    {
+        $this->createUsers();
+        return 'create users';
+    }
+
     public function logout()
     {
         try {
             //      remove remember token value and clear sessions
-            firestoreCollection('users')
-                ->document(session()->get('uid'))
-                ->update([['path' => 'remember_token', 'value' => '']]);
-//      clear session
+            $uid = session()->get('uid');
+            firebaseGetReference('users/' . $uid)->update(['remember_token' => '']);
+
+            //      clear session
             Session::remove('uid');
             Session::remove('token');
 
@@ -71,6 +70,8 @@ class AuthController extends Controller
         } catch (BadRequestException $exception) {
             return redirect()->route('login')->with('error', 'انت غير مسجل.');
         } catch (ServiceException $exception) {
+            return redirect()->route('login')->with('error', 'حصلت مشكلة في الاتصال.');
+        } catch (ApiException $e) {
             return redirect()->route('login')->with('error', 'حصلت مشكلة في الاتصال.');
         }
 

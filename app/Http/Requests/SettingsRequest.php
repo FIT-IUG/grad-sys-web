@@ -24,7 +24,7 @@ class SettingsRequest extends FormRequest
     public function rules()
     {
         return [
-            'max_groups_members' => 'required',
+            'max_group_members' => 'required',
             'min_group_members' => 'required',
         ];
     }

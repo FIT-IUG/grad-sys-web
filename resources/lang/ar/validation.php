@@ -187,7 +187,7 @@ return [
         'teamMemberStd2' => 'الرقم الجامعي للعضو الثاني',
         'teamMember3' => 'اسم العضو الثالث',
         'teamMemberStd3' => 'الرقم الجامعي للعضو الثالث',
-        'supervisor' => 'المشرف',
+        'teacher' => 'المشرف',
         'graduateInFirstSemester' => 'خريج الفصل الأول',
         'initialProjectTitle' => 'العنوان المبدئي للمشروع',
         '' => '',

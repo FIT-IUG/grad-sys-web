@@ -8,51 +8,36 @@ class DashboardController extends Controller
 {
     public function index()
     {
+
         $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'مالتيميديا', 'موبايل', 'تكنولوجيا المعلومات'];
-        $users = firebase('users')->getValue();
+        $users = firebaseGetReference('users')->getValue();
         $teachers_name = [];
         $index = 0;
-        foreach ($users as $user)
-            if ($user['role'] == 'teacher')
-                Arr::set($teachers_name, $index++, $user['name']);
-
-//        $teachers = firestoreCollection('users')
-//            ->where('role', '=', 'teacher')->documents()->rows();
-//        $teachers = Arr::pluck($teachers, 'name');
-//        dd(Arr::pluck($users));
         $number_of_students = 0;
         foreach ($users as $user) {
-            if ($user['role'] == 'student') {
+            if ($user['role'] == 'teacher') {
+                Arr::set($teachers_name, $index++, $user['name']);
+            } elseif ($user['role'] == 'student') {
                 $number_of_students++;
             }
         }
-//        dd(app('firebase.database')->getReference('groups')->getChildKeys());
-//        dd($number_of_students);
-//        $number_of_students = firestoreCollection('users')->where('role', '=', 'student')->documents()->size();
-//        dd(firebase('groups')->getValue());
+        $number_of_groups = sizeof(firebaseGetReference('groups')->getValue());
 
-//        dd(last(app('firebase.database')->getReference('groups')->getChildKeys()));
-
-        $number_of_groups = sizeof(firebase('groups')->getValue());
-
-//        dd($number_of_groups);
 //        $number_of_groups = collectionSize('groups');
         $number_of_teamed_students = 20;
 //        $number_of_teamed_students = numberOfTeamedStudents();
-        $statistics = [
-            'number_of_students' => $number_of_students,
+        $statistics = ['number_of_students' => $number_of_students,
             'number_of_groups' => $number_of_groups,
-            'number_of_teamed_students' => $number_of_teamed_students
-        ];
+            'number_of_teamed_students' => $number_of_teamed_students];
         $students = '';
-        app('firebase.database')->getReference('notifications/0')->set(['to' => '120125132', 'from' => '120125623', 'type' => 'join_group']);
+//        app('firebase.database')->getReference('notifications/0')->set(['to' => '120125132', 'from' => '120125623', 'type' => 'join_group']);
         $notifications = [];
 
         if (hasRole('student')) {
-            dd('this is student');
 //            $groups = firestoreCollection('groups')->documents()->rows();
 //            $members_std = Arr::pluck($groups, 'membersStd');
             $students = $this->getStudentsWithoutTeam();
+            dd('this is student');
 
             $std = getUserId();
 
@@ -78,20 +63,24 @@ class DashboardController extends Controller
                 }
             }
         } elseif (hasRole('teacher')) {
-            $to = getUserId();
-            $notifications_for_supervisor = firestoreCollection('notifications')
-                ->where('to', '=', $to)
-                ->where('isAccept', '', 1)->documents()->rows();
+//            $teacher_id = getUserId();
+            $teacher_id = firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
+            $notifications_for_teacher = firebaseGetReference('notifications')->getValue();
             $i = 0;
-            foreach ($notifications_for_supervisor as $notification) {
-                $message = 'طلب لان تكون مشرف للمجموعة.';
-                $from = $notification['from'];
-                $from_name = firestoreCollection('users')->where('role', '=', 'student')
-                    ->where('std', '=', $from)
-                    ->documents()->rows()[0]->data()['name'];
-                $initial_title = firestoreCollection('groups')->where('leaderStudentStd', '=', $from)->documents()->rows()[0]->get('initialProjectTitle');
-                $notifications += [$i++ => ['from' => $from, 'message' => $message, 'to' => $to, 'from_name' => $from_name,
-                    'initial_title' => $initial_title]];
+            foreach ($notifications_for_teacher as $notification) {
+                if ($notification['to'] == $teacher_id){
+                    $message = 'طلب لان تكون مشرف للمجموعة.';
+                    $from = $notification['from'];
+                    $from_name = firebaseGetReference('users')->startAt($from)->getValue();
+                    dd($from_name);
+//                    $from_name = firestoreCollection('users')->where('role', '=', 'student')
+//                        ->where('std', '=', $from)
+//                        ->documents()->rows()[0]->data()['name'];
+                    $initial_title = firestoreCollection('groups')->where('leaderStudentStd', '=', $from)->documents()->rows()[0]->get('initialProjectTitle');
+                    $notifications += [$i++ => ['from' => $from, 'message' => $message, 'to' => $to, 'from_name' => $from_name,
+                        'initial_title' => $initial_title]];
+                }
+
             }
         }
         return view('dashboard', ['departments' => $departments, 'teachers' => $teachers_name,

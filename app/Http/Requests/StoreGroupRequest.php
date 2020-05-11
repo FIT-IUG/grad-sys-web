@@ -25,7 +25,7 @@ class StoreGroupRequest extends FormRequest
     {
         return [
 
-            'supervisor' => ['required'],
+            'teacher' => ['required'],
             'initialProjectTitle' => ['required'],
         ];
     }

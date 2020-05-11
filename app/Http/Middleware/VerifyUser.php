@@ -15,15 +15,14 @@ class VerifyUser
      * @param Request $request
      * @param Closure $next
      * @return mixed
+     * @throws ApiException
      */
     public function handle($request, Closure $next)
     {
         if (Session::has('uid')) {
             $uid = Session::get('uid');
             $sessionToken = Session::get('token');
-//            $user = firebaseCreateData()->getReference()->getChild('users/' . $uid)->getValue();
-//            $user = app('firebase.firestore')->database()->collection('users')->document($uid)->snapshot()->data();
-            $token = firebase('users/'.$uid)->getChild('remember_token')->getValue();
+            $token = firebaseGetReference('users/'.$uid)->getChild('remember_token')->getValue();
             if ($sessionToken == $token)
                 return $next($request);
         } else

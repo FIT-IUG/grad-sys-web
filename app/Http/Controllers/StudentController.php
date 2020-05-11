@@ -63,7 +63,7 @@ class StudentController extends Controller
         firestoreCollection('groups')->document($id)->set($data);
         firestoreCollection('notifications')->newDocument()->create([
             'from' => $leader_id,
-            'to' => $request->get('supervisor'),
+            'to' => $request->get('teacher'),
             'isAccept' => null,
             'type' => 'to_be_supervisor'
         ]);
