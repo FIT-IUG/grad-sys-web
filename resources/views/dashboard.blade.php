@@ -65,7 +65,8 @@
     @if(hasRole('student'))
         @if(!inGroup())
             @includeIf('student.group.members_form')
-        @elseif(isTeamLeader() && !isTeacherHasNotification())<!-- getNotification('isAccept') == 1 && -->
+        @elseif(isGroupLeader() && !
+isTeacherHasNotification())<!--  -->
         @includeIf('student.group.supervisor_initial_title_form')
         @elseif(isTeacherAccept() == null)
             <h1>انتظر رد المشرف على رسالتك.</h1>
@@ -76,6 +77,6 @@
         @endif
     @endif
     @if(hasRole('teacher'))
-        @includeIf('supervisor.index')
+        @includeIf('teacher.index')
     @endif
 @endsection

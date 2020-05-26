@@ -106,34 +106,34 @@
                     </div>
                 </div>
                 {{-- departments --}}
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label>التخصص </label>
-                        <h6 style="font-size: small">اذا كان طلاب المجموعة منتسبين لأكثر من تخصص يتم اختيار اكثر من
-                            قسم</h6>
-                        <select class="form-control select2 select2-hidden-accessible" multiple=""
-                                name="department[]"
-                                style="width: 100%;text-align: right" tabindex="-1" aria-hidden="true">
-                            <option></option>
-                            @foreach($departments as $department)
-                                <option value="{{$department}}"
-                                        {{-- Becouse there is multiple select it should be like this
-                                         to get old selectd options--}}
-                                        @if(old('department')[0] != null)
-                                        @foreach(old('department') as $oldDepartment)
-                                        @if($oldDepartment == $department ) selected @endif
-                                    @endforeach
-                                    @endif
-                                >{{$department}}
-                                </option>
-                            @endforeach
-                        </select>
-                        <h6></h6>
-                        @error('department')
-                        <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
+{{--                <div class="row">--}}
+{{--                    <div class="form-group col-md-12">--}}
+{{--                        <label>التخصص </label>--}}
+{{--                        <h6 style="font-size: small">اذا كان طلاب المجموعة منتسبين لأكثر من تخصص يتم اختيار اكثر من--}}
+{{--                            قسم</h6>--}}
+{{--                        <select class="form-control select2 select2-hidden-accessible" multiple=""--}}
+{{--                                name="department[]"--}}
+{{--                                style="width: 100%;text-align: right" tabindex="-1" aria-hidden="true">--}}
+{{--                            <option></option>--}}
+{{--                            @foreach($departments as $department)--}}
+{{--                                <option value="{{$department}}"--}}
+{{--                                        --}}{{-- Becouse there is multiple select it should be like this--}}
+{{--                                         to get old selectd options--}}
+{{--                                        @if(old('department')[0] != null)--}}
+{{--                                        @foreach(old('department') as $oldDepartment)--}}
+{{--                                        @if($oldDepartment == $department ) selected @endif--}}
+{{--                                    @endforeach--}}
+{{--                                    @endif--}}
+{{--                                >{{$department}}--}}
+{{--                                </option>--}}
+{{--                            @endforeach--}}
+{{--                        </select>--}}
+{{--                        <h6></h6>--}}
+{{--                        @error('department')--}}
+{{--                        <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>--}}
+{{--                        @enderror--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 {{-- Check if a group will be graduate in first semester. --}}
                 <div class="form-group">
                     {{--1 for yes 0 for no--}}

@@ -25,8 +25,8 @@ Route::get('logout', 'AuthController@logout')->name('logout');
 
 Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
-    Route::get('/الإعدادات', 'Admincontroller@settings')->name('admin.settings');
-    Route::post('/settings', 'Admincontroller@updateSettings')->name('admin.settings.update');
+    Route::get('/الإعدادات', 'AdminController@settings')->name('admin.settings');
+    Route::post('/settings', 'AdminController@updateSettings')->name('admin.settings.update');
 //    Route::get('home', 'DashboardController@index')->name('home');
     Route::post('uploadStudentFile', 'AdminController@exportStudentsExcel')->name('exportStudents');
     Route::post('uploadTeachersFile', 'AdminController@exportTeachersExcel')->name('exportTeachers');
@@ -34,7 +34,7 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
     Route::post('storeGroupMembers', 'StudentController@storeGroupMembers')->name('group.members.store');
     Route::post('storeGroupSupervisor', 'StudentController@storeGroupSupervisor')->name('group.teacher.store');
     Route::post('acceptTeamJoinRequest', 'StudentController@acceptTeamJoinRequest')->name('acceptTeamJoinRequest');
-    Route::post('replyJoinGroupRequest', 'SupervisorController@replayToBeSupervisorRequest')->name('group.teacher.replyRequest');
+    Route::post('replyJoinGroupRequest', 'TeacherController@replayToBeSupervisorRequest')->name('group.teacher.replyRequest');
 });
 
 //Route::view('test', 'test');

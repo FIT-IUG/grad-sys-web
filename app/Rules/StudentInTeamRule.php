@@ -21,11 +21,8 @@ class StudentInTeamRule implements Rule
 //    check if student is in team or not
     public function passes($attribute, $value)
     {
-//        $groups = firebaseCreateData()->getReference('groups')->getValue();
-//        dd($value);
         $groups = firestoreCollection('groups')
-            ->where($attribute, '=',  $value)->documents()->rows();
-//        dd($groups != null);
+            ->where($attribute, '=', $value)->documents()->rows();
         if ($groups != null) {
             return false;
         }

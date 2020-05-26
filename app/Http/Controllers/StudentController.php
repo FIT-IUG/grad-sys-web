@@ -28,17 +28,29 @@ class StudentController extends Controller
     public function storeGroupMembers(StoreGroupMembersRequest $request)
     {
         try {
-            firestoreCollection('groups')->newDocument()->create($request->validated());
+            firebaseGetReference('groups')->push($request->validated());
+            $students = getUserByRole('student');
+            $leader_std = $request->get('leaderStudentStd');
+            $leader_name = '';
+            foreach ($students as $student) {
+                if ($student['user_id'] == $leader_std) {
+                    $leader_name = $student['name'];
+                    break;
+                }
+            }
             //notification for every member to join group by event
             $members_std = $request->validated()['membersStd'];
+
             foreach ($members_std as $member_std) {
-                firestoreCollection('notifications')->newDocument()->create([
+                firebaseGetReference('notifications')->push([
                     'from' => $request->get('leaderStudentStd'),
                     'to' => $member_std,
                     'type' => 'join_team',
+                    'message' => 'طلب منك الطالب ' . $leader_name . ' الانضمام الى فريق التخرج الخاص بيه.',
                     'isAccept' => 0,
                 ]);
             }
+
             return redirect()->back()->with('success', 'تم ارسال الطلبات لاعضاء المجموعة.');
         } catch (ApiException $e) {
         }
@@ -56,16 +68,25 @@ class StudentController extends Controller
 
     public function storeGroupSupervisor(StoreGroupRequest $request)
     {
-        $leader_id = getStudentStd();
-        $group_data = firestoreCollection('groups')->where('leaderStudentStd', '=', $leader_id);
-        $data = Arr::collapse([$group_data->documents()->rows()[0]->data(), $request->validated()]);
-        $id = $group_data->documents()->rows()[0]->id();
-        firestoreCollection('groups')->document($id)->set($data);
-        firestoreCollection('notifications')->newDocument()->create([
+        $leader_data = firebaseGetReference('users/' . session()->get('uid'))->getValue();
+        $leader_id = $leader_data['user_id'];
+        $leader_name = $leader_data['name'];
+        $groups = firebaseGetReference('groups')->getValue();
+
+        foreach ($groups as $key => $group) {
+            if ($group['leaderStudentStd'] == $leader_id) {
+                firebaseGetReference('groups/' . $key)->update($request->validated());
+                break;
+            }
+        }
+        firebaseGetReference('notifications')->push([
             'from' => $leader_id,
+            'from_name' => $leader_name,
             'to' => $request->get('teacher'),
-            'isAccept' => null,
-            'type' => 'to_be_supervisor'
+            'message' => 'طلب منك الطالب ' . $leader_name . 'أن تكون مشرف فريقه.',
+            'project_initial_title' => $request->get('initial_title'),
+            'type' => 'to_be_supervisor',
+            'isAccept' => '0',
         ]);
         return redirect()->back()->with('success', 'تم ارسال الطلب بنجاح');
     }

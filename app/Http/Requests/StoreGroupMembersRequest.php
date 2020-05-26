@@ -27,9 +27,9 @@ class StoreGroupMembersRequest extends FormRequest
     public function rules()
     {
         return [
-            'leaderStudentStd' => ['required', new StudentInTeamRule()],
+            'leaderStudentStd' => ['required'],// , new StudentInTeamRule()
             'membersStd' => ['required', new StudentsDifferentRule()],
-            'department' => ['required'],
+//            'department' => ['required'],
             'graduateInFirstSemester' => ['required'],
         ];
 

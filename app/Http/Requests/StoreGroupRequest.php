@@ -24,9 +24,9 @@ class StoreGroupRequest extends FormRequest
     public function rules()
     {
         return [
-
             'teacher' => ['required'],
             'initialProjectTitle' => ['required'],
+            'tags' => ['required']
         ];
     }
 }

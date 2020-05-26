@@ -1,11 +1,7 @@
 <?php
 
 use Illuminate\Support\Arr;
-use Kreait\Firebase\Factory;
-use Kreait\Firebase\ServiceAccount;
 use Facade\Ignition\Exceptions\ViewException;
-
-//use \Faker\Generator as Faker;
 
 function hasRole($role)
 {
@@ -29,16 +25,6 @@ function firebaseGetReference($collection_name): Kreait\Firebase\Database\Refere
 function getLastIdForDocument($document_name)
 {
     return last(app('firebase.database')->getReference($document_name)->getChildKeys());
-}
-
-//function firestoreCollection($collection_name): Google\Cloud\Firestore\CollectionReference
-//{
-//    return app('firebase.firestore')->database()->collection($collection_name);
-//}
-
-function collectionSize($collection_name)
-{
-//    return app('firebase.firestore')->database()->collection($collection_name)->documents()->size();
 }
 
 function getNotification($notification_key)
@@ -77,43 +63,69 @@ function getStudentsStdInGroups()
 {
     try {
         $groups = firebaseGetReference('groups')->getValue();
-        $leadersStd = Arr::pluck($groups, 'leaderStudentStd');
-        $members_std = Arr::pluck($groups, 'membersStd');
-        $members_std = Arr::flatten($members_std);
-        return Arr::collapse([$leadersStd, $members_std]);
+        if ($groups != null) {
+            $leadersStd = Arr::pluck($groups, 'leaderStudentStd');
+            $members_std = Arr::pluck($groups, 'membersStd');
+            $members_std = Arr::flatten($members_std);
+            return Arr::collapse([$leadersStd, $members_std]);
+        }
+        return null;
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
         return redirect()->back()->with('error', 'حدثت مشكلة.');
+    }
+}
+
+function getStudentsStdWithoutGroup()
+{
+    try {
+        $students_std = [];
+        $index = 0;
+        $studentsStdInGroup = getStudentsStdInGroups();
+        $students = getUserByRole('student');
+        foreach ($students as $student) {
+            Arr::set($students_std, $index++, $student['user_id'] . '');
+        }
+        dd($students_std);
+        dd(array_diff());
+    } catch (\Kreait\Firebase\Exception\ApiException $e) {
+        return redirect()->back()->with('error', 'حصلت مشكلة في جلب الطلبة');
     }
 }
 
 function inGroup()
 {
     try {
-        $registered = firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
-        foreach (getStudentsStdInGroups() as $student_std_in_group) {
-            if ($student_std_in_group == $registered) {
-                return true;
+        $user_id = firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
+        if (getStudentsStdInGroups() != null) {
+            foreach (getStudentsStdInGroups() as $student_std_in_group) {
+                if ($student_std_in_group == $user_id) {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
     }
-
 }
 
-function isTeamLeader()
+function isGroupLeader()
 {
-    $leaders = firestoreCollection('groups')->documents()->rows();
+    $leaders = firebaseGetReference('groups')->getValue();
     $leaders = \Illuminate\Support\Arr::pluck($leaders, 'leaderStudentStd');
+    $user_id = firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
     foreach ($leaders as $leader)
-        if ($leader == getStudentStd())
+        if ($leader == $user_id)
             return true;
     return false;
 }
 
 function getUserId()
 {
-    return firestoreCollection('users')->document(session()->get('uid'))->snapshot()->get('user_id');
+    try {
+        return firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
+    } catch (\Kreait\Firebase\Exception\ApiException $e) {
+    }
+//    return firestoreCollection('users')->document(session()->get('uid'))->snapshot()->get('user_id');
 }
 
 function firebaseAuth(): \Kreait\Firebase\Auth
@@ -123,98 +135,27 @@ function firebaseAuth(): \Kreait\Firebase\Auth
 
 function isTeacherHasNotification()
 {
-    $std = getStudentStd();
-    $notification_for_student = firestoreCollection('notifications')->where('from', '=', $std)->documents()->rows();
-    foreach ($notification_for_student as $snapshot)
-        if ($snapshot['type'] == 'to_be_supervisor')
+    $user_id = firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
+    $notifications = firebaseGetReference('notifications')->getValue();
+    foreach ($notifications as $notification)
+        if ($notification['type'] == 'to_be_supervisor' && $notification['from'] == $user_id)
             return true;
     return false;
 }
 
 function isTeacherAccept()
 {
-    $std = getStudentStd();
-    $notification_for_student = firestoreCollection('notifications')->where('from', '=', $std)->documents()->rows();
-    foreach ($notification_for_student as $snapshot) {
-        if ($snapshot['type'] == 'to_be_supervisor') {
-            if ($snapshot['isAccept'] == 1) {
+    $std = firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
+    $notifications = firebaseGetReference('notifications')->getValue();
+    foreach ($notifications as $notification) {
+        if ($notification['from'] == $std && $notification['type'] == 'to_be_supervisor') {
+            if ($notification['isAccept'] == 1)
                 return true;
-            } elseif ($snapshot['isAccept'] == null)
+            elseif ($notification['isAccept'] == 0)
                 return null;
         }
     }
     return false;
-}
-
-function studentGenerator($number_of_students)
-{
-    $faker = Faker\Factory::create();
-    $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'مالتيميديا', 'موبايل', 'تكنولوجيا المعلومات'];//'','','','',''
-    for ($i = 0; $i < $number_of_students; $i++) {
-        try {
-            $id = firestoreCollection('students')->newDocument()->id();
-            $email = 'student' . random_int(1, 10000) . '@example.com';
-            $uid = firebaseAuth()->createUserWithEmailAndPassword($email, 'student123')->uid;
-
-            firestoreCollection('students')
-                ->document($id)
-                ->create([
-                    'name' => $faker->name,
-                    'department' => Arr::random($departments, 1)[0],
-                    'email' => $email,
-                    'std' => '12016' . $faker->randomNumber(4),
-                    'mobile_number' => $faker->phoneNumber,
-                ]);
-
-            firestoreCollection('users')
-                ->document($uid)->create([
-                    'email' => $email,
-                    'role' => 'student',
-                    'remember_token' => '',
-                    'document_id' => $id
-                ]);
-        } catch (Exception $exception) {
-            return 'مشكلة في صانع الطلبة';
-        } catch (\Kreait\Firebase\Exception\AuthException $e) {
-        } catch (\Kreait\Firebase\Exception\FirebaseException $e) {
-        }
-
-    }
-}
-
-function teacherGenerator($number_of_teachers)
-{
-    $faker = Faker\Factory::create();
-    for ($i = 0; $i < $number_of_teachers; $i++) {
-        try {
-            $id = firestoreCollection('teachers')->newDocument()->id();
-            $email = 'teacher' . random_int(1, 10000) . '@example.com';
-            $uid = firebaseAuth()->createUserWithEmailAndPassword($email, 'teacher123')->uid;
-
-            firestoreCollection('teachers')
-                ->document($id)
-                ->create([
-                    'name' => $faker->name,
-//                    'department' => Arr::random($departments, 1)[0],
-                    'email' => $email,
-//                    'std' => '12016' . $faker->randomNumber(4),
-                    'mobile_number' => $faker->phoneNumber,
-                ]);
-
-            firestoreCollection('users')
-                ->document($uid)->create([
-                    'email' => $email,
-                    'role' => 'teacher',
-                    'remember_token' => '',
-                    'document_id' => $id
-                ]);
-        } catch (Exception $exception) {
-            return 'مشكلة في صانع المدرسين';
-        } catch (\Kreait\Firebase\Exception\AuthException $e) {
-        } catch (\Kreait\Firebase\Exception\FirebaseException $e) {
-        }
-
-    }
 }
 
 function numberOfTeamedStudents()
@@ -264,5 +205,21 @@ function createUsers()
     } catch (\Kreait\Firebase\Exception\FirebaseException $e) {
     }
 
+}
 
+
+function getUserByRole($user_role)
+{
+    try {
+        $index = 0;
+        $selected_users = [];
+        $users = firebaseGetReference('users')->getValue();
+        foreach ($users as $user) {
+            if ($user['role'] == $user_role) {
+                Arr::set($selected_users, $index++, $user);
+            }
+        }
+        return $selected_users;
+    } catch (\Kreait\Firebase\Exception\ApiException $e) {
+    }
 }
