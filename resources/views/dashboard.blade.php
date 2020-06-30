@@ -63,11 +63,14 @@
         @includeIf('admin.dashboardForm')
     @endif
     @if(hasRole('student'))
-        @if(!inGroup())
+        @if(!inGroup() )<!--&& isMemberHasNotification() == '-1'-->
             @includeIf('student.group.members_form')
-        @elseif(isGroupLeader() && !
-isTeacherHasNotification())<!--  -->
-        @includeIf('student.group.supervisor_initial_title_form')
+        @elseif(isGroupLeader())
+            <h1>انتظر موافقة اعضاء الفريق</h1>
+        @elseif(isMemberHasNotification() == '0')
+            <h1>انتظر اكتمال اعضاء الفريق</h1>
+        @elseif(isGroupLeader() && !isTeacherHasNotification())
+            @includeIf('student.group.supervisor_initial_title_form')
         @elseif(isTeacherAccept() == null)
             <h1>انتظر رد المشرف على رسالتك.</h1>
         @elseif(isTeacherAccept())
@@ -79,4 +82,5 @@ isTeacherHasNotification())<!--  -->
     @if(hasRole('teacher'))
         @includeIf('teacher.index')
     @endif
+{{--    hello--}}
 @endsection

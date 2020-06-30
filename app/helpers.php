@@ -2,6 +2,17 @@
 
 use Illuminate\Support\Arr;
 use Facade\Ignition\Exceptions\ViewException;
+use Illuminate\Support\Str;
+
+function firebaseAuth(): \Kreait\Firebase\Auth
+{
+    return app('firebase.auth');
+}
+
+function firebaseGetReference($collection_name): Kreait\Firebase\Database\Reference
+{
+    return app('firebase.database')->getReference($collection_name);
+}
 
 function hasRole($role)
 {
@@ -17,26 +28,12 @@ function hasRole($role)
 
 }
 
-function firebaseGetReference($collection_name): Kreait\Firebase\Database\Reference
-{
-    return app('firebase.database')->getReference($collection_name);
-}
-
-function getLastIdForDocument($document_name)
-{
-    return last(app('firebase.database')->getReference($document_name)->getChildKeys());
-}
-
-function getNotification($notification_key)
+function getNotification()
 {
     try {
-        $user = firebaseGetReference('users/' . session()->get('uid'))->getValue();
+//        $user = firebaseGetReference('users/' . session()->get('uid'))->getValue();
 
-//            ->document(session()->get('uid'))->snapshot()->get('email');
-//        $email = firestoreCollection('users')->document(session()->get('uid'))->snapshot()->get('email');
-        $user_id = $user['user_id'];
-//        $std = firestoreCollection('users')->where('role', '=', 'student')
-//            ->where('email', '=', $email)->documents()->rows()[0]->data()['std'];
+        $user_id = getUserId();
 
         $notifications = firebaseGetReference('notifications')->getValue();
         $user_notifications = [];
@@ -46,9 +43,9 @@ function getNotification($notification_key)
                 Arr::set($user_notifications, $index++, $notification);
             }
         }
-//        return firestoreCollection('notifications')
-//            ->where('to', '=', $std)
-//            ->documents()->rows()[0]->data()[$notification_key];
+
+        return $user_notifications;
+
     } catch (Exception $exception) {
         return null;
     }
@@ -56,7 +53,10 @@ function getNotification($notification_key)
 
 function getRole()
 {
-    return firestoreCollection('users')->document(session()->get('uid'))->snapshot()->get('role');
+    try {
+        return firebaseGetReference('users/' . session()->get('uid'))->getValue()['role'];
+    } catch (\Kreait\Firebase\Exception\ApiException $e) {
+    }
 }
 
 function getStudentsStdInGroups()
@@ -82,11 +82,22 @@ function getStudentsStdWithoutGroup()
         $index = 0;
         $studentsStdInGroup = getStudentsStdInGroups();
         $students = getUserByRole('student');
+        $student_gender = Str::substr(getUserId(), 0, 1);
+        $logged_student_std = getUserId();
+
         foreach ($students as $student) {
-            Arr::set($students_std, $index++, $student['user_id'] . '');
+            if (Str::startsWith($student['user_id'], $student_gender)) {
+                if ($student['user_id'] == $logged_student_std)
+                    continue;
+                else
+                    Arr::set($students_std, $index++, $student['user_id'] . '');
+            }
         }
-        dd($students_std);
-        dd(array_diff());
+
+        if ($studentsStdInGroup == null)
+            return $students_std;
+
+        return array_diff($students_std, $studentsStdInGroup);
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
         return redirect()->back()->with('error', 'حصلت مشكلة في جلب الطلبة');
     }
@@ -96,27 +107,36 @@ function inGroup()
 {
     try {
         $user_id = firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
-        if (getStudentsStdInGroups() != null) {
-            foreach (getStudentsStdInGroups() as $student_std_in_group) {
-                if ($student_std_in_group == $user_id) {
-                    return true;
-                }
-            }
+        $student_in_group = getStudentsStdInGroups();
+
+        if ($student_in_group == null)
             return false;
+
+        foreach ($student_in_group as $student_std_in_group) {
+            if ($student_std_in_group == $user_id) {
+                return true;
+            }
         }
+        return false;
+
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
     }
 }
 
 function isGroupLeader()
 {
-    $leaders = firebaseGetReference('groups')->getValue();
-    $leaders = \Illuminate\Support\Arr::pluck($leaders, 'leaderStudentStd');
-    $user_id = firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
-    foreach ($leaders as $leader)
-        if ($leader == $user_id)
-            return true;
-    return false;
+
+    try {
+        $leaders = firebaseGetReference('groups')->getValue();
+        $leaders = \Illuminate\Support\Arr::pluck($leaders, 'leaderStudentStd');
+        $user_id = firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
+        foreach ($leaders as $leader)
+            if ($leader == $user_id)
+                return true;
+        return false;
+    } catch (\Kreait\Firebase\Exception\ApiException $e) {
+    }
+
 }
 
 function getUserId()
@@ -128,34 +148,46 @@ function getUserId()
 //    return firestoreCollection('users')->document(session()->get('uid'))->snapshot()->get('user_id');
 }
 
-function firebaseAuth(): \Kreait\Firebase\Auth
-{
-    return app('firebase.auth');
-}
-
 function isTeacherHasNotification()
 {
-    $user_id = firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
-    $notifications = firebaseGetReference('notifications')->getValue();
-    foreach ($notifications as $notification)
-        if ($notification['type'] == 'to_be_supervisor' && $notification['from'] == $user_id)
-            return true;
-    return false;
+    try {
+        $user_id = firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
+        $notifications = firebaseGetReference('notifications')->getValue();
+        foreach ($notifications as $notification)
+            if ($notification['type'] == 'to_be_supervisor' && $notification['from'] == $user_id)
+                return true;
+        return false;
+    } catch (\Kreait\Firebase\Exception\ApiException $e) {
+        return redirect()->back()->with('error', 'حصلت مشكلة');
+    }catch (ErrorException $exception){
+        return route('logout');
+//        return redirect()->back()->with('error','هنالك مشكلة في النظام.');
+    }
+
 }
 
-function isTeacherAccept()
+function getSupervisorNotificationStatus()
 {
-    $std = firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
-    $notifications = firebaseGetReference('notifications')->getValue();
-    foreach ($notifications as $notification) {
-        if ($notification['from'] == $std && $notification['type'] == 'to_be_supervisor') {
-            if ($notification['isAccept'] == 1)
-                return true;
-            elseif ($notification['isAccept'] == 0)
-                return null;
+
+    try {
+        $std = getUserId();
+        $notifications =  firebaseGetReference('notifications')->getValue();
+        foreach ($notifications as $notification) {
+            if ($notification['from'] == $std && $notification['type'] == 'to_be_supervisor') {
+               return $notification['status'];
+//                if ($notification['status'] == 1)
+//                    return true;
+//                elseif ($notification['status'] == 0)
+//                    return false;
+            }
         }
+        return false;
+    } catch (\Kreait\Firebase\Exception\ApiException $e) {
+        return redirect()->back()->with('error', 'حصلت مشكلة');
+    }catch (ErrorException $exception){
+        return redirect()->back()->with('error','هنالك مشكلة في النظام.');
     }
-    return false;
+
 }
 
 function numberOfTeamedStudents()
@@ -207,6 +239,23 @@ function createUsers()
 
 }
 
+function createUser($email, $password, $user_id)
+{
+    try {
+        $uid = firebaseAuth()->createUserWithEmailAndPassword($email, $password)->uid;
+        $uid = firebaseAuth()->verifyPassword($email, $password)->uid;
+
+        firebaseGetReference('users/' . $uid)->set([
+            'email' => $email,
+            'name' => 'student',
+            'role' => 'student',
+            'user_id' => $user_id
+        ]);
+    } catch (\Kreait\Firebase\Exception\AuthException $e) {
+    } catch (\Kreait\Firebase\Exception\FirebaseException $e) {
+    }
+
+}
 
 function getUserByRole($user_role)
 {
@@ -222,4 +271,41 @@ function getUserByRole($user_role)
         return $selected_users;
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
     }
+}
+
+//This function check if group members is accept a min number of join requests by leader id
+function isMinMembersAccept()
+{
+
+    try {
+        $notifications = firebaseGetReference('notifications')->getValue();
+        $min_group_members = firebaseGetReference('settings/min_group_members')->getValue();
+        $accept_count = 0;
+        $std = getUserId();
+        foreach ($notifications as $notification) {
+            if ($notification['from'] == $std && $notification['type'] == 'join_group') {
+                if ($notification['status'] == 1)
+                    $accept_count++;
+            }
+        }
+        if ($accept_count >= $min_group_members)
+            return true;
+        return false;
+    } catch (\Kreait\Firebase\Exception\ApiException $e) {
+    }
+
+}
+
+function isMemberHasNotification()
+{
+    $notifications = firebaseGetReference('notifications')->getValue();
+    $std = getUserId();
+    if ($notifications != null) {
+        foreach ($notifications as $notification) {
+            if ($notification['to'] == $std) {
+                return $notification['status'];
+            }
+        }
+    }
+
 }

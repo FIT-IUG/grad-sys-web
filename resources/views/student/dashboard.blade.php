@@ -1,0 +1,50 @@
+@extends('layout')
+@section('title','الصفحة الرئيسية')
+@section('content')
+
+    <div class="row">
+        <h1>{{$message}}</h1>
+    </div>
+    @if($notifications != null)
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">الاشعارات</h3>
+                    </div>
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>الرسالة</th>
+                                <th>الرد</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($notifications as $notification)
+                                <tr>
+                                    <td>{{$loop->iteration}}</td>
+                                    <td>{{$notification['message']}}</td>
+                                    <td>
+                                        <form
+                                            action="{{route('student.group.response',['from'=>$notification['from'],'to'=>$notification['to']])}}"
+                                            method="post">
+                                            @csrf
+                                            <button class="btn btn-success" name="reply" value="accept">قبول</button>
+                                            <button class="btn btn-danger" name="reply" value="reject">رفض</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+
+
+@endsection

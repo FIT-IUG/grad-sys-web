@@ -19,8 +19,6 @@ class UniqueStudentDataRule implements Rule
     public function passes($attribute, $value)
     {
 //        if row has value there is a similar value.
-//        $row = firestoreCollection('users')->where('role', '=', 'student')
-//            ->where($attribute, '=', $value)->documents()->rows();
         try {
             $users = firebaseGetReference('users')->getValue();
             foreach ($users as $user) {

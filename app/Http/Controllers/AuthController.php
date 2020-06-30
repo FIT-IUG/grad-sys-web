@@ -11,6 +11,7 @@ use Kreait\Firebase\Exception\ApiException;
 use Kreait\Firebase\Exception\AuthException;
 use Kreait\Firebase\Exception\FirebaseException;
 use Google\Cloud\Core\Exception\NotFoundException;
+use Faker\Generator as Faker;
 
 class AuthController extends Controller
 {
@@ -21,10 +22,11 @@ class AuthController extends Controller
 
     public function check(LoginRequest $request)
     {
-//        createUsers();
 
         $email = $request->get('email');
         $password = $request->get('password');
+
+//        createUsers($email, $password, 'student', '120169998', 'CS');
 
         try {
             //verify user if exist
@@ -39,7 +41,11 @@ class AuthController extends Controller
 
             Session::put('uid', $uid);
             Session::put('token', $token);
-            return redirect()->route('dashboard');
+
+            $role = getRole();
+
+            return redirect()->route($role . '.index');
+//            return redirect()->route('dashboard');
         } catch (AuthException $e) {
             return redirect()->back()->with('error', 'الايميل او كلمة السر خاطئة.')->with('email', $email);
         } catch (FirebaseException $e) {
@@ -49,10 +55,19 @@ class AuthController extends Controller
         }
     }
 
-    public function createUsers()
+    public function createUsers($email, $password, $role, $user_id, $department)
     {
-        $this->createUsers();
-        return 'create users';
+        $uid = app('firebase.auth')->signInWithEmailAndPassword($email, $password)->uid;
+        $factory = new Faker();
+        firebaseGetReference('users/' . $uid)->set([
+            'email' => $email,
+            'name' => $factory->name,
+            'role' => $role,
+            'mobile_number' => $factory->phoneNumber,
+            'user_id' => $user_id,
+            'department' => $department
+        ]);
+        return 'user created successfully';
     }
 
     public function logout()
@@ -60,7 +75,8 @@ class AuthController extends Controller
         try {
             //      remove remember token value and clear sessions
             $uid = session()->get('uid');
-            firebaseGetReference('users/' . $uid)->update(['remember_token' => '']);
+            if ($uid != null)
+                firebaseGetReference('users/' . $uid)->update(['remember_token' => '']);
 
             //      clear session
             Session::remove('uid');

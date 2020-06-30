@@ -17,7 +17,7 @@
     <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
             <i class="fa fa-bell-o"></i>
-            @if(getNotification('isAccept') != 1 && $notifications != null)
+            @if($notifications != null)
                 <span
                     class="badge badge-warning navbar-badge">{{sizeof($notifications)}}</span>
             @endif

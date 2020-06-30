@@ -11,6 +11,7 @@
 |
 */
 
+use Faker\Generator as Faker;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,12 +23,24 @@ Route::get('login', 'AuthController@login')->name('login');
 Route::post('login', 'AuthController@check')->name('login.check');
 Route::get('logout', 'AuthController@logout')->name('logout');
 
-
+//->middleware('')
 Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
-    Route::get('/', 'DashboardController@index')->name('dashboard');
+//    Route::get('/student', 'StudentController@index')->name('student.index');
+
+    Route::namespace('Student')->group(function () {
+//        Route::resource('student', 'DashboardController');
+        Route::get('/student','DashboardController@index')->name('student.index');
+        Route::get('/student/wait', 'DashboardController@wait')->name('student.wait');
+        Route::get('/student/createGroup', 'GroupController@create')->name('student.group.create');
+        Route::post('/student/createGroup/store', 'GroupController@store')->name('student.group.store');
+        Route::post('/student/group/response', 'GroupController@memberResponse')->name('student.group.response');
+        Route::post('/student/group/addSupervisor', 'GroupController@storeGroupSupervisor')->name('student.group.storeSupervisor');
+    });
+
+    Route::get('/admin', 'AdminController@index')->name('admin.index');
+//    Route::get('/', 'DashboardController@student')->name('dashboard.student');
     Route::get('/الإعدادات', 'AdminController@settings')->name('admin.settings');
     Route::post('/settings', 'AdminController@updateSettings')->name('admin.settings.update');
-//    Route::get('home', 'DashboardController@index')->name('home');
     Route::post('uploadStudentFile', 'AdminController@exportStudentsExcel')->name('exportStudents');
     Route::post('uploadTeachersFile', 'AdminController@exportTeachersExcel')->name('exportTeachers');
     Route::post('storeStudent', 'AdminController@storeStudent')->name('student.store');
@@ -37,9 +50,10 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
     Route::post('replyJoinGroupRequest', 'TeacherController@replayToBeSupervisorRequest')->name('group.teacher.replyRequest');
 });
 
+
 //Route::view('test', 'test');
 //Route::get('test', function () {
 //    teacherGenerator(10);
 //    return 'done';
 //})->name('test');
- Route::get('test','AdminController@test');
+Route::get('test', 'AdminController@test');

@@ -1,4 +1,4 @@
 @extends('layout')
 @section('content')
-    @includeIf('group.form')
+    @includeIf('student.group.members_form')
 @endsection

@@ -3,17 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ExportExcelRequestStudents;
-use App\Http\Requests\ExportExcelRequestTeachers;
 use App\Http\Requests\RegisterStudentRequest;
 use App\Http\Requests\SettingsRequest;
 use App\Imports\StudentsImport;
-use App\Imports\TeachersImport;
 use Illuminate\Support\Arr;
 use Kreait\Firebase\Exception\ApiException;
 use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
+
+    public function __construct()
+    {
+        $role = getRole();
+        dump($role);
+    }
+
+    public function index()
+    {
+        return 'this is index from admin controller';
+    }
+
     public function settings()
     {
         $notifications = [];

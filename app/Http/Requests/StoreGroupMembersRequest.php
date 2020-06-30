@@ -2,10 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\StudentInTeamRule;
-use App\Rules\StudentsDifferentRule;
+use App\Rules\MinimumGroupMembersRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Arr;
 
 class StoreGroupMembersRequest extends FormRequest
 {
@@ -27,9 +25,9 @@ class StoreGroupMembersRequest extends FormRequest
     public function rules()
     {
         return [
-            'leaderStudentStd' => ['required'],// , new StudentInTeamRule()
-            'membersStd' => ['required', new StudentsDifferentRule()],
-//            'department' => ['required'],
+//            'leaderStudentStd' => ['required', new StudentInTeamRule()],
+//        new StudentsDifferentRule(),
+            'membersStd' => [new MinimumGroupMembersRule()],
             'graduateInFirstSemester' => ['required'],
         ];
 

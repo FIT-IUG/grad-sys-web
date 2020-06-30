@@ -5,38 +5,34 @@ namespace App\Rules;
 use Illuminate\Contracts\Validation\Rule;
 use Kreait\Firebase\Exception\ApiException;
 
-class StudentInTeamRule implements Rule
+class MinimumGroupMembersRule implements Rule
 {
-
 
     /**
      * Determine if the validation rule passes.
-     *
      *
      * @param string $attribute
      * @param mixed $value
      * @return bool
      * @throws ApiException
      */
-
-//    check if student is in team or not
     public function passes($attribute, $value)
     {
-
-        $groups = firebaseGetReference('groups')->getValue();
-        foreach ($groups as $group)
-            if ($value == $group['leaderStudentStd'])
-                return false;
-        return true;
+        $min_group_members = firebaseGetReference('settings/min_group_members')->getValue();
+        if (sizeof($value) >= $min_group_members)
+            return true;
+        return false;
     }
 
     /**
      * Get the validation error message.
      *
      * @return string
+     * @throws ApiException
      */
     public function message()
     {
-        return 'الطالب مسجل في مجموعة اخرى.';
+        $min_group_members = firebaseGetReference('settings/min_group_members')->getValue();
+        return 'الحد الادنى لعدد أعضاء الفريق هو' . $min_group_members;
     }
 }
