@@ -26,11 +26,13 @@ class DashboardController extends Controller
                     'max_members_number' => $max_members_number,
                     'students' => $students,
                     'notifications' => $notifications,
+                    'message' => null
                 ]);
             } elseif ($student_status == 0) {
 
                 return view('student.dashboard', [
                     'notifications' => $notifications,
+                    'message' => null
                 ]);
             }
         } elseif (isGroupLeader()) {
