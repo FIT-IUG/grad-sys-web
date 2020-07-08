@@ -16,12 +16,15 @@ class StudentsDifferentRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        foreach ($value as $key => $std) {
-            if ($std == null){
-                return false;
-            }
+        if (sizeof($value) != 0) {
+            return true;
         }
-        return true;
+        return false;
+//        foreach ($value as $key => $std)
+//            if ($std == null) {
+//                return false;
+//            }
+//        return true;
     }
 
     /**
@@ -31,6 +34,6 @@ class StudentsDifferentRule implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'الرجاء إضافة الحد الأدنى من عدد الأعضاء.';
     }
 }

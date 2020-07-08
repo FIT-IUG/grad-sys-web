@@ -17,45 +17,37 @@
     <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
             <i class="fa fa-bell-o"></i>
-            @if($notifications != null)
+            @if(isset($notifications) and $notifications != null)
                 <span
                     class="badge badge-warning navbar-badge">{{sizeof($notifications)}}</span>
             @endif
         </a>
 
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left">
-            @if($notifications != null)
-                @foreach($notifications as $notification)
-                    <form
-                        action="{{route('acceptTeamJoinRequest', ['from' => $notification['from'] , 'to' => $notification['to']])}}"
-                        method="post">
-                        @csrf
-                        <button type="submit" class="dropdown-item">
-                            <div class="media">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        {{$notification['from_name']}}
-                                    </h3>
-                                    <p class="text-sm text-muted">{{$notification['message']}}</p>
-                                </div>
+            @if(isset($notifications) and $notifications != null)
+                @foreach($notifications as $key=>$notification)
+                    <button class="dropdown-item">
+                        <div class="media">
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    {{isset($notification['from_name']) ? $notification['from_name'] : '-'}}
+                                </h3>
+                                <p class="text-sm text-muted">{{isset($notification['message']) ? $notification['message'] : '-'}}</p>
                             </div>
-                        </button>
-                    </form>
+                        </div>
+                    </button>
                 @endforeach
             @else
-                <a href="#" class="dropdown-item">
-                    <div class="media">
-                        <div class="media-body">
-                            <h3 class="dropdown-item-title">
-                                لا يوجد اي اشعار
-                                {{--                                {{$notification['from_name']}}--}}
-                            </h3>
-                            {{--                            <p class="text-sm text-muted">{{$notification['message']}}</p>--}}
-                        </div>
+                {{--                <a href="#" class="dropdown-item">--}}
+                <div class="media">
+                    <div class="media-body">
+                        <h3 class="dropdown-item-title">
+                            لا يوجد اي اشعار
+                        </h3>
                     </div>
-                </a>
+                </div>
+                {{--                </a>--}}
             @endif
-
         </div>
     </li>
     <li class="nav-item dropdown">

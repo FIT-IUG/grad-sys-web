@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreExtraGroupMembersRequest;
 use App\Http\Requests\StoreGroupMembersRequest;
 use App\Http\Requests\StoreGroupRequest;
 use Illuminate\Http\Request;
@@ -36,6 +37,45 @@ class GroupController extends Controller
             //notification for every member to join group by event
             $members_std = array_filter($request->validated()['membersStd']);
 
+            foreach ($members_std as $member_std) {
+                firebaseGetReference('notifications')->push([
+                    'from' => $leader_std,
+                    'from_name' => $leader_name,
+                    'to' => $member_std,
+                    'type' => 'join_group',
+                    'message' => 'طلب منك الطالب ' . $leader_name . ' الانضمام الى فريق التخرج الخاص بيه.',
+                    'status' => 'wait',
+                ]);
+            }
+
+//            return redirect()->back()->with('success', 'تم ارسال الطلبات لاعضاء المجموعة.');
+            return redirect()->route('student.index')->with('success', 'تم ارسال الطلبات لاعضاء المجموعة.');
+        } catch (ApiException $e) {
+        }
+    }
+
+    public function storeExtra(StoreExtraGroupMembersRequest $request)
+    {
+
+        $leader_std = getUserId();
+        $new_student_std = $request->get('membersStd');
+
+        try {
+            $groups = firebaseGetReference('groups')->getValue();
+
+            foreach ($groups as $key => $group) {
+                if ($group['leaderStudentStd'] == $leader_std) {
+                    $members_std = Arr::collapse([$group['membersStd'], $new_student_std]);
+                    firebaseGetReference('groups/' . $key)->update(['membersStd' => $members_std]);
+                    break;
+                }
+            }
+
+            $leader_name = getLeaderName();
+
+            //notification for every member to join group by event
+            $members_std = array_filter($request->validated()['membersStd']);
+
 //            dd($members_std);
             foreach ($members_std as $member_std) {
                 firebaseGetReference('notifications')->push([
@@ -44,65 +84,73 @@ class GroupController extends Controller
                     'to' => $member_std,
                     'type' => 'join_group',
                     'message' => 'طلب منك الطالب ' . $leader_name . ' الانضمام الى فريق التخرج الخاص بيه.',
-                    'status' => 0,
+                    'status' => 'wait',
                 ]);
             }
 
-            return redirect()->back()->with('success', 'تم ارسال الطلبات لاعضاء المجموعة.');
+//            return redirect()->back()->with('success', 'تم ارسال الطلبات لاعضاء المجموعة.');
+            return redirect()->route('student.index')->with('success', 'تم ارسال الطلبات لاعضاء المجموعة.');
         } catch (ApiException $e) {
         }
     }
 
-    public function memberResponse()
+    public function memberResponse(Request $request)
     {
-        $reply = request()->get('reply');
-        $leader_id = request()->get('from');
-        $member_std = request()->get('to');
-        $index = 0;
-//        dd($member_std);
-
-        $notifications = firebaseGetReference('notifications')->getValue();
-
+        $notification_key = $request->get('notification_key');
+        $reply = $request->get('reply');
+        $leader_id = $request->get('from');
+        $member_std = $request->get('to');
+        $students = getUserByRole('student');
 
         if ($reply == 'accept') {
             $groups = firebaseGetReference('groups')->getValue();
             foreach ($groups as $key => $group) {
                 if ($group['leaderStudentStd'] == $leader_id) {
                     $members_std = firebaseGetReference('groups/' . $key)->getValue()['membersStd'];
-                    if ($members_std == null)
+                    if ($members_std == null) {
                         firebaseGetReference('groups/' . $key)->update(['membersStd' => [$member_std]]);
-                    else {
-                        foreach ($members_std as $std)
-                            Arr::set($stds, $index++, $std);
-                        firebaseGetReference('groups/' . $key)->update(['membersStd' => $stds]);
-                        foreach ($notifications as $key => $notification) {
-                            if ($notification['to'] == $member_std && $notification['from'] == $leader_id) {
-                                firebaseGetReference('notifications/' . $key)->update(['status' => 1]);
-                            }
-                        }
-                        firebaseGetReference('notifications')->push([
-                            'from' => $member_std,
-                            'from_name' => 'student name',
-                            'to' => $leader_id,
-                            'type' => 'accept_join_team',
-                            'message' => 'وافق السيد بتنجانة على طلب الانضمام للفريق',
-                            'status' => 0,
-                        ]);
+                    } else {
+                        $members_std = Arr::add($members_std, sizeof($members_std), $member_std);
+                        firebaseGetReference('groups/' . $key)->update(['membersStd' => $members_std]);
                     }
+                    firebaseGetReference('notifications/' . $notification_key)->update(['status' => 'accept']);
+                    $member_name = '';
+                    foreach ($students as $student)
+                        if ($student['user_id'] == $member_std) {
+                            $member_name = $student['name'];
+                            break;
+                        }
+
+                    firebaseGetReference('notifications')->push([
+                        'from' => $member_std,
+                        'from_name' => 'student name',
+                        'to' => $leader_id,
+                        'type' => 'accept_join_team',
+                        'message' => 'وافق ' . $member_name . ' على طلب الانضمام للفريق.',
+                        'status' => 'readOnce',
+                    ]);
                 }
             }
-            return view('student.dashboard', [
-                'notifications' => null, 'message' => 'انتظر قائد الفريق ليكمل الاعدادات'])->with('success', 'تم قبول طلب الانضمام بالفريق بنجاح.');
+
+            return redirect()->route('student.index')->with('success', 'تم قبول الطلب بنجاح.');
         } else {
+            $member_name = '';
+            foreach ($students as $student)
+                if ($student['user_id'] == $member_std) {
+                    $member_name = $student['name'];
+                    break;
+                }
+
+            firebaseGetReference('notifications/' . $notification_key)->update(['status' => 'reject']);
             firebaseGetReference('notifications')->push([
                 'from' => $member_std,
                 'from_name' => 'student name',
                 'to' => $leader_id,
-                'type' => 'accept_join_team',
-                'message' => 'رفض الطالب سيد بتنجانه الانضمام الى فريق التخرج.',
-                'status' => -1,
+                'type' => 'reject_join_team',
+                'message' => 'رفض ' . $member_name . ' الانضمام الى فريق التخرج.',
+                'status' => 'readOnce',
             ]);
-            return view('student.dashboard')->with('success', 'تم رفض طلب الانضمام بنجاح.');
+            return redirect()->route('student.index')->with('success', 'تم رفض طلب الانضمام بنجاح.');
         }
     }
 
@@ -112,10 +160,16 @@ class GroupController extends Controller
         $leader_id = $leader_data['user_id'];
         $leader_name = $leader_data['name'];
         $groups = firebaseGetReference('groups')->getValue();
+        $project_data = Arr::except($request->validated(), 'teacher');
+        $notifications_keys = $request->get('notification_key');
+
+        foreach ($notifications_keys as $key) {
+            firebaseGetReference('notifications/' . $key)->update(['status' => 'read']);
+        }
 
         foreach ($groups as $key => $group) {
             if ($group['leaderStudentStd'] == $leader_id) {
-                firebaseGetReference('groups/' . $key)->update($request->validated());
+                firebaseGetReference('groups/' . $key)->update($project_data);
                 break;
             }
         }
@@ -126,9 +180,9 @@ class GroupController extends Controller
             'message' => 'طلب منك الطالب ' . $leader_name . 'أن تكون مشرف فريقه.',
             'project_initial_title' => $request->get('initial_title'),
             'type' => 'to_be_supervisor',
-            'status' => '0',
+            'status' => 'wait',
         ]);
-        return view('student.dashboard')->with('success', 'تم ارسال الطلب بنجاح');
+        return redirect()->route('student.index')->with('success', 'تم ارسال الطلب بنجاح');
     }
 
 }

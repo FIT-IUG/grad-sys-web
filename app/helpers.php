@@ -31,7 +31,6 @@ function hasRole($role)
 function getNotification()
 {
     try {
-//        $user = firebaseGetReference('users/' . session()->get('uid'))->getValue();
 
         $user_id = getUserId();
 
@@ -69,7 +68,7 @@ function getStudentsStdInGroups()
             $members_std = Arr::flatten($members_std);
             return Arr::collapse([$leadersStd, $members_std]);
         }
-        return null;
+        return [];
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
         return redirect()->back()->with('error', 'حدثت مشكلة.');
     }
@@ -107,13 +106,13 @@ function inGroup()
 {
     try {
         $user_id = firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
-        $student_in_group = getStudentsStdInGroups();
+        $students_std_in_group = array_filter(getStudentsStdInGroups());
 
-        if ($student_in_group == null)
+        if ($students_std_in_group == null)
             return false;
 
-        foreach ($student_in_group as $student_std_in_group) {
-            if ($student_std_in_group == $user_id) {
+        foreach ($students_std_in_group as $std) {
+            if ($std == $user_id) {
                 return true;
             }
         }
@@ -159,7 +158,7 @@ function isTeacherHasNotification()
         return false;
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
         return redirect()->back()->with('error', 'حصلت مشكلة');
-    }catch (ErrorException $exception){
+    } catch (ErrorException $exception) {
         return route('logout');
 //        return redirect()->back()->with('error','هنالك مشكلة في النظام.');
     }
@@ -171,10 +170,10 @@ function getSupervisorNotificationStatus()
 
     try {
         $std = getUserId();
-        $notifications =  firebaseGetReference('notifications')->getValue();
+        $notifications = firebaseGetReference('notifications')->getValue();
         foreach ($notifications as $notification) {
             if ($notification['from'] == $std && $notification['type'] == 'to_be_supervisor') {
-               return $notification['status'];
+                return $notification['status'];
 //                if ($notification['status'] == 1)
 //                    return true;
 //                elseif ($notification['status'] == 0)
@@ -184,21 +183,10 @@ function getSupervisorNotificationStatus()
         return false;
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
         return redirect()->back()->with('error', 'حصلت مشكلة');
-    }catch (ErrorException $exception){
-        return redirect()->back()->with('error','هنالك مشكلة في النظام.');
+    } catch (ErrorException $exception) {
+        return redirect()->back()->with('error', 'هنالك مشكلة في النظام.');
     }
 
-}
-
-function numberOfTeamedStudents()
-{
-    $groups = firestoreCollection('groups')->documents()->rows();
-    $leadersStd = Arr::pluck($groups, 'leaderStudentStd');
-    $members_std = Arr::pluck($groups, 'membersStd');
-    $members_std = Arr::flatten($members_std);
-
-    $registered_groups_std = Arr::collapse([$leadersStd, $members_std]);
-    return sizeof($registered_groups_std);
 }
 
 function createUsers()
@@ -270,6 +258,7 @@ function getUserByRole($user_role)
         }
         return $selected_users;
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
+        return redirect()->route('logout')->with('error', 'حصلت مشكلة في النظام.');
     }
 }
 
@@ -283,9 +272,10 @@ function isMinMembersAccept()
         $accept_count = 0;
         $std = getUserId();
         foreach ($notifications as $notification) {
-            if ($notification['from'] == $std && $notification['type'] == 'join_group') {
-                if ($notification['status'] == 1)
-                    $accept_count++;
+            if ($notification['from'] == $std
+                && $notification['type'] == 'join_group'
+                && $notification['status'] == 'accept') {
+                $accept_count++;
             }
         }
         if ($accept_count >= $min_group_members)
@@ -300,12 +290,9 @@ function isMemberHasNotification()
 {
     $notifications = firebaseGetReference('notifications')->getValue();
     $std = getUserId();
-    if ($notifications != null) {
-        foreach ($notifications as $notification) {
-            if ($notification['to'] == $std) {
+    if ($notifications != null)
+        foreach ($notifications as $notification)
+            if ($notification['to'] == $std)
                 return $notification['status'];
-            }
-        }
-    }
-
+    return null;
 }

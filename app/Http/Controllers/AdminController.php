@@ -15,13 +15,37 @@ class AdminController extends Controller
 
     public function __construct()
     {
-        $role = getRole();
-        dump($role);
+        $this->middleware('checkRole',['admin']);
     }
 
     public function index()
     {
-        return 'this is index from admin controller';
+
+        $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'مالتيميديا', 'موبايل', 'تكنولوجيا المعلومات'];
+
+        $number_of_students = sizeof(getUserByRole('student'));
+
+        //Check if registered student is male(1) or female(2) by first number of there std
+        $students = getStudentsStdWithoutGroup();
+
+        $groups = firebaseGetReference('groups')->getValue();
+        $number_of_groups = $groups != null ? sizeof($groups) : 0;
+
+        $number_of_teamed_students = 20;
+        $statistics = [
+            'number_of_students' => $number_of_students,
+            'number_of_groups' => $number_of_groups,
+            'number_of_teamed_students' => $number_of_teamed_students
+        ];
+
+        // get user id, every user have unique id
+
+        return view('admin.index', [
+            'departments' => $departments,
+            'statistics' => $statistics,
+            'students' => $students,
+            'notifications' => $this->getUserNotifications(),
+        ]);
     }
 
     public function settings()
@@ -76,4 +100,36 @@ class AdminController extends Controller
         firebaseGetReference('settings')->set($settingsRequest->validated());
         return redirect()->back()->with('success', 'تم تحديث إعدادات النظام بنجاح.');
     }
+
+    private function getUserNotifications(){
+
+        $user_notifications = firebaseGetReference('notifications')->getValue();
+        $notifications = [];
+        $index = 0;
+        $user_id = getUserId();
+        foreach ($user_notifications as $notification) {
+            if ($notification['to'] == $user_id && $notification['status'] == 'wait') {
+                if ($notification['type'] == 'to_be_supervisor') {
+                    $students_data = getUserByRole('student');
+                    $from_id = $notification['from'];
+                    $from_name = $notification['from_name'];
+                    $project_initial_title = $notification['project_initial_title'];
+//                    foreach ($students_data as $student) {
+//                        if ($student['user_id'] == $from_id) {
+//                            $from_name = $student['name'];
+//                            break;
+//                        }
+//                    }
+                    $teacher_notification = Arr::collapse([
+                        $notification,
+                        ['from_name' => $from_name, 'initial_title' => $project_initial_title]
+                    ]);
+                    Arr::set($notifications, $index++, $teacher_notification);
+                } else
+                    Arr::set($notifications, $index++, $notification);
+            }
+        }
+        return $notifications;
+    }
+
 }

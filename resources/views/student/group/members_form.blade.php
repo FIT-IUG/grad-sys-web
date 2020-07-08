@@ -1,40 +1,19 @@
 <div class="col-md-12">
     <div class="card card-info">
         <div class="card-header">
-            <h3 class="card-title">إنشاء مجموعة</h3>
+            <h3 class="card-title">إنشاء فريق مشروع التخرج</h3>
         </div>
         <div class="card-body">
-{{--            <i class="fa fa-warning" style="padding-bottom: 20px;">--}}
-{{--                <span style="padding-right: 4px;">الاسم يجب انت يكون رباعي.</span>--}}
-{{--            </i>--}}
+            @if(Str::substr(getUserId(), 0, 1) == 1)
+                <span style="padding-right: 4px;">الطالب المسجل يعتبر مشرف الفريق في حال أتم التسجيل.</span>
+            @else
+                <span style="padding-right: 4px;">الطالبة المسجلة تعتبر مشرفة الفريق في حال أتمت التسجيل.</span>
+            @endif
             @error('membersStd')
-                {{$message}}
+            {{$message}}
             @enderror
-            {{--            <form action="{{route('group.members.store')}}" method="POST">--}}
             <form action="{{route('student.group.store')}}" method="POST">
                 @csrf
-                {{--team leader data--}}
-                {{--                <div class="row">--}}
-                {{--                    <div class="form-group col-md-6">--}}
-                {{--                        <label>الرقم الجامعي لمنسق المجموعة</label>--}}
-                {{--                        <select class="students-std form-control select2 select2-hidden-accessible"--}}
-                {{--                                --}}{{--                                    name="leaderStudentStd"--}}
-                {{--                                name="leaderStudentStd"--}}
-                {{--                                style="width: 100%;text-align: right" tabindex="-1" aria-hidden="true">--}}
-                {{--                            <option></option>--}}
-                {{--                            @foreach($students as $student)--}}
-                {{--                                <option value="{{$student}}" id="option"--}}
-                {{--                                        @if(old('leaderStudentStd') == $student ) selected @endif>--}}
-                {{--                                    {{$student}}--}}
-                {{--                                </option>--}}
-                {{--                            @endforeach--}}
-                {{--                        </select>--}}
-                {{--                        @error('leaderStudentStd')--}}
-                {{--                        <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>--}}
-                {{--                        @enderror--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
-                {{--team member 1 data--}}
                 @for($i = 0; $i < $max_members_number; $i++)
                     <div class="row">
                         <div class="form-group col-md-6">
@@ -52,11 +31,11 @@
                                     </option>
                                 @endforeach
                             </select>
-{{--                            @error('membersStd')--}}
-{{--                            @if(old('membersStd')[$i] == null)--}}
-{{--                                <div class="alert alert-danger" style="margin-top: 10px">الرقم الجامعي مطلوب</div>--}}
-{{--                            @endif--}}
-{{--                            @enderror--}}
+                            {{--                            @error('membersStd')--}}
+                            {{--                            @if(old('membersStd')[$i] == null)--}}
+                            {{--                                <div class="alert alert-danger" style="margin-top: 10px">الرقم الجامعي مطلوب</div>--}}
+                            {{--                            @endif--}}
+                            {{--                            @enderror--}}
                         </div>
                     </div>
                 @endfor

@@ -23,9 +23,7 @@ Route::get('login', 'AuthController@login')->name('login');
 Route::post('login', 'AuthController@check')->name('login.check');
 Route::get('logout', 'AuthController@logout')->name('logout');
 
-//->middleware('')
 Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
-//    Route::get('/student', 'StudentController@index')->name('student.index');
 
     Route::namespace('Student')->group(function () {
 //        Route::resource('student', 'DashboardController');
@@ -33,9 +31,12 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
         Route::get('/student/wait', 'DashboardController@wait')->name('student.wait');
         Route::get('/student/createGroup', 'GroupController@create')->name('student.group.create');
         Route::post('/student/createGroup/store', 'GroupController@store')->name('student.group.store');
+        Route::post('/student/createGroup/storeExtra', 'GroupController@storeExtra')->name('student.group.storeExtra');
         Route::post('/student/group/response', 'GroupController@memberResponse')->name('student.group.response');
         Route::post('/student/group/addSupervisor', 'GroupController@storeGroupSupervisor')->name('student.group.storeSupervisor');
     });
+
+    Route::get('teacher','TeacherController@index')->name('teacher.index');
 
     Route::get('/admin', 'AdminController@index')->name('admin.index');
 //    Route::get('/', 'DashboardController@student')->name('dashboard.student');

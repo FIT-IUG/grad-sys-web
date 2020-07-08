@@ -2,10 +2,13 @@
 
 namespace App\Exceptions;
 
+use ErrorException;
 use Exception;
 use Google\Cloud\Core\Exception\ServiceException;
 use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class Handler extends ExceptionHandler
 {
@@ -31,32 +34,35 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  \Exception  $exception
+     * @param Exception $exception
      * @return void
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function report(Exception $exception)
     {
-        if ($exception instanceof ConnectException){}
+        if ($exception instanceof ConnectException) {
+        }
         parent::report($exception);
     }
 
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param Request $request
+     * @param Exception $exception
+     * @return Response
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof ConnectException){
-            return redirect()->back()->with('error','حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
-        }elseif ($exception instanceof  ServiceException){
-            return redirect()->back()->with('error','حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
+        if ($exception instanceof ConnectException) {
+            return redirect()->back()->with('error', 'حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
+        } elseif ($exception instanceof ServiceException) {
+            return redirect()->back()->with('error', 'حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
+//        } elseif ($exception instanceof ErrorException) {
+//            return redirect()->back()->with('error', 'حدثت مشكلة في النظام الرجاء المحاولة بوقت اخر');
         }
 
         return parent::render($request, $exception);

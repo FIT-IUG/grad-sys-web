@@ -6,7 +6,7 @@ use App\Rules\MinimumGroupMembersRule;
 use App\Rules\StudentsDifferentRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreGroupMembersRequest extends FormRequest
+class StoreExtraGroupMembersRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,10 +26,7 @@ class StoreGroupMembersRequest extends FormRequest
     public function rules()
     {
         return [
-//            'leaderStudentStd' => ['required', new StudentInTeamRule()],
-            'membersStd' => [new MinimumGroupMembersRule(), new StudentsDifferentRule()],
-            'graduateInFirstSemester' => ['required'],
+            'membersStd' => [new StudentsDifferentRule()],
         ];
-
     }
 }

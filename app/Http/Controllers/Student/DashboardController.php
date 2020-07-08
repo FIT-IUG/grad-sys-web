@@ -17,175 +17,187 @@ class DashboardController extends Controller
         $student_status = isMemberHasNotification();
         $notifications = $this->getUserNotifications();
 
-        if (!inGroup()) {
-            if ($student_status == -1 || $student_status === null) {
-                $students = getStudentsStdWithoutGroup();
-                $max_members_number = firebaseGetReference('settings/max_group_members')->getValue();
+        if (inGroup()) {
+            if (isGroupLeader()) {
+                if (isMinMembersAccept()) {
+                    if (isTeacherHasNotification()) {
+                        $teacher_status = getSupervisorNotificationStatus();
 
-                return view('student.group.create', [
-                    'max_members_number' => $max_members_number,
-                    'students' => $students,
-                    'notifications' => $notifications,
-                    'message' => null
-                ]);
-            } elseif ($student_status == 0) {
+//                    this case when teacher has notification from the group leader but it's in wait status
+                        if ($teacher_status == 'wait') {
 
-                return view('student.dashboard', [
-                    'notifications' => $notifications,
-                    'message' => null
-                ]);
-            }
-        } elseif (isGroupLeader()) {
-            if (isMinMembersAccept()) {
-                if (!isTeacherHasNotification()) {
-                    try {
-                        $teacher = getUserByRole('teacher');
-                        $tags = firebaseGetReference('tags')->getValue();
+                            return view('student.dashboard', [
+                                'notifications' => $notifications,
+                                'message' => 'انتظر رد المشرف.'
+                            ]);
+//                        if teacher accept to be supervisor for group
+                        } elseif ($teacher_status == 'accept') {
+//                       return group information project information teacher information
+                            $group_data = [];
+                            $groups = firebaseGetReference('groups')->getValue();
+                            $students = getUserByRole('student');
+                            $teachers = getUserByRole('teacher');
+                            $std = getUserId();
+                            $index = 0;
+                            $teacher_data = [];
+                            $project_data = [];
+                            $max_members_number = firebaseGetReference('settings/max_group_members')->getValue();
+                            $group_students_complete = '';
 
-                        return view('student.group.supervisor_initial_title_form', [
-                            'teachers' => $teacher,
-                            'notifications' => $notifications,
-                            'tags' => $tags
-                        ]);
-                    } catch (ApiException $e) {
+                            foreach ($groups as $group) {
+                                if ($group['leaderStudentStd'] == $std) {
+//                                    $group_std = Arr::flatten([$group['leaderStudentStd'], $group['membersStd']]);
+                                    $members_std = $group['membersStd'];
+                                    $group_students_complete = $max_members_number - sizeof($members_std);
+//                                    $project_title = $group['initialProjectTitle'];
+                                    foreach ($students as $student) {
+                                        foreach ($members_std as $std)
+                                            if ($student['user_id'] == $std) {
+                                                $student = Arr::except($student, ['remember_token', 'role', 'department']);
+                                                Arr::set($group_data, $index++, $student);
+                                                break;
+                                            }
+                                        if (sizeof($members_std) == $index)
+                                            break;
+                                    }
+                                    $teacher_id = $group['teacher'];
+                                    foreach ($teachers as $teacher)
+                                        if ($teacher['user_id'] == $teacher_id) {
+                                            $teacher_data = Arr::except($teacher, ['role', 'user_id', 'remember_token']);
+                                            break;
+                                        }
+                                    $index = 0;
+                                    Arr::set($project_data, $index, [
+                                        'initialProjectTitle' => $group['initialProjectTitle'],
+                                        'graduateInFirstSemester' => $group['graduateInFirstSemester'],
+                                        'tags' => $group['tags']
+                                    ]);
+                                    break;
+                                }
+                            }
+
+                            $students = getStudentsStdWithoutGroup();
+
+                            return view('student.dashboard', [
+                                'notifications' => $notifications,
+                                'group_data' => $group_data,
+                                'teacher_data' => $teacher_data,
+                                'project_data' => $project_data[0],
+                                'group_students_complete' => $group_students_complete,
+                                'students' => $students
+                            ]);
+//                       if teacher refuse or reject to be supervisor for group
+                        } else {
+//                       return to choose supervisor form
+                            return view('student.dashboard', [
+                                'notifications' => $notifications,
+                                'message' => 'رفض المشرف أن يكون مشرف مجموعتك.'
+                            ]);
+                        }
+                    } else {
+//                        send notification form
+                        try {
+                            $teachers = getUserByRole('teacher');
+                            $tags = firebaseGetReference('tags')->getValue();
+
+                            return view('student.group.supervisor_initial_title_form', [
+                                'teachers' => $teachers,
+                                'notifications' => $notifications,
+                                'tags' => $tags
+                            ]);
+                        } catch (ApiException $e) {
+                        }
                     }
                 } else {
-                    $teacher_status = getSupervisorNotificationStatus();
-                    if ($teacher_status == 0) {
-//                        foreach ($notifications as $notification){
-//                            dd(Arr::get($notification, 'type'));
-//                        }
-                        return view('student.dashboard', [
-                            'notifications' => $notifications,
-                            'message' => 'انتظر رد المشرف.'
-                        ]);
-                    } elseif ($teacher_status == 1) {
-
-                        return view('student.dashboard', [
-                            'notifications' => $notifications,
-                            'message' => 'وافق المشرف على أن يكون مشرف مجموعتك.'
-                        ]);
-                    } else {
-
-                        return view('student.dashboard', [
-                            'notifications' => $notifications,
-                            'message' => 'رفض المشرف أن يكون مشرف مجموعتك.'
-                        ]);
-                    }
+//                    wait to accept min
+                    return view('student.dashboard', [
+                        'message' => 'انتظر حتى يوافق الحد الادنى من اعضاء الفريق',
+                        'notifications' => $notifications
+                    ]);
                 }
             } else {
-                $message = 'انتظر حتى يوافق الحد الادنى من اعضاء الفريق';
+//                member things
+                if ($student_status == 'reject' || $student_status === null) {
+                    $students = getStudentsStdWithoutGroup();
+                    $max_members_number = firebaseGetReference('settings/max_group_members')->getValue();
 
-                return view('student.dashboard', [
-                    'message' => $message,
-                    'notifications' => $notifications]);
+                    return view('student.group.create', [
+                        'max_members_number' => $max_members_number,
+                        'students' => $students,
+                        'notifications' => $notifications,
+                    ]);
+//                if student have notification put not accept or reject it (wait status)
+                } elseif ($student_status == 'wait') {
+
+                    return view('student.dashboard', [
+                        'notifications' => $notifications,
+                        'message' => null
+                    ]);
+                } else {
+
+                    try {
+                        $groups = firebaseGetReference('groups')->getValue();
+                        $student_id = getUserId();
+                        foreach ($groups as $group) {
+                            foreach ($group['membersStd'] as $std) {
+                                if ($std == $student_id) {
+                                    if (isset($group['teacher'])) {
+                                        return view('student.dashboard',
+                                            [
+                                                '' => '',
+                                            ]);
+                                    }
+                                }
+                            }
+                        }
+                    } catch (ApiException $e) {
+                    }
+
+                    return view('student.dashboard', [
+                        'notifications' => $notifications,
+                        'message' => 'انتظر حتى ينتهي قائد الفريق من اعدادات المشروع'
+                    ]);
+                }
             }
-        } else {
-//            firebaseGetReference('tags')->push('علم الحاسوب');
-            $teacher = getUserByRole('teacher');
-            $tags = firebaseGetReference('tags')->getValue();
-
-            return view('student.dashboard', [
-                'teachers' => $teacher,
-                'notifications' => $notifications,
-                'tags' => $tags
-            ]);
         }
+//            create group form
+        $students = getStudentsStdWithoutGroup();
+        $max_members_number = firebaseGetReference('settings/max_group_members')->getValue();
+
+        return view('student.group.create', [
+            'max_members_number' => $max_members_number,
+            'students' => $students,
+            'notifications' => $notifications,
+        ]);
     }
 
-
-    public function storeGroupMembers(StoreGroupMembersRequest $request)
+    public function acceptTeamJoinRequest(Request $request)
     {
-//        $group_data = Arr::except($request->validated(), 'membersStd');
-//        try {
-//            firebaseGetReference('groups')->push($group_data);
-//            $students = getUserByRole('student');
-//            $leader_std = $request->get('leaderStudentStd');
-//            $leader_name = '';
-//            foreach ($students as $student) {
-//                if ($student['user_id'] == $leader_std) {
-//                    $leader_name = $student['name'];
-//                    break;
-//                }
-//            }
-//
-//            //notification for every member to join group by event
-//            $members_std = $request->validated()['membersStd'];
-//
-//            foreach ($members_std as $member_std) {
-//                firebaseGetReference('notifications')->push([
-//                    'from' => $request->get('leaderStudentStd'),
-//                    'from_name' => $leader_name,
-//                    'to' => $member_std,
-//                    'type' => 'join_team',
-//                    'message' => 'طلب منك الطالب ' . $leader_name . ' الانضمام الى فريق التخرج الخاص بيه.',
-//                    'status' => 0,
-//                ]);
-//            }
-//
-//            return redirect()->back()->with('success', 'تم ارسال الطلبات لاعضاء المجموعة.');
-//        } catch (ApiException $e) {
-//        }
-    }
 
-    public function acceptTeamJoinRequest()
-    {
-        $from = request()->get('from');
-        $to = request()->get('to');
+        $from = $request->get('from');
+        $to = $request->get('to');
 
         $notifications = firebaseGetReference('notifications')->getValue();
         foreach ($notifications as $index => $notification) {
             if ($notification['from'] == $from && $notification['to'] == $to) {
-                firebaseGetReference('notifications/' . $index)->update(['isAccept' => '1']);
+                firebaseGetReference('notifications/' . $index)->update(['status' => 'accept']);
             }
         }
-//        dd('hello there');
-//        $hh = firestoreCollection('notifications')
-//            ->where('from', '=', request()->get('from'))
-//            ->where('to', '=', request()->get('to'));
-//        $id = $hh->documents()->rows()[0]->id();
-//        firestoreCollection('notifications')->document($id)->update([['path' => 'isAccept', 'value' => 1]]);
-        return redirect()->back()->with('success', 'تم الموافقة على طلب الإنضمام بنجاح.');
-    }
-
-    public function storeGroupSupervisor(StoreGroupRequest $request)
-    {
-        $leader_data = firebaseGetReference('users/' . session()->get('uid'))->getValue();
-        $leader_id = $leader_data['user_id'];
-        $leader_name = $leader_data['name'];
-        $groups = firebaseGetReference('groups')->getValue();
-
-        foreach ($groups as $key => $group) {
-            if ($group['leaderStudentStd'] == $leader_id) {
-                firebaseGetReference('groups/' . $key)->update($request->validated());
-                break;
-            }
-        }
-        firebaseGetReference('notifications')->push([
-            'from' => $leader_id,
-            'from_name' => $leader_name,
-            'to' => $request->get('teacher'),
-            'message' => 'طلب منك الطالب ' . $leader_name . 'أن تكون مشرف فريقه.',
-            'project_initial_title' => $request->get('initial_title'),
-            'type' => 'to_be_supervisor',
-            'isAccept' => '0',
-        ]);
-        return redirect()->back()->with('success', 'تم ارسال الطلب بنجاح');
+        return redirect()->route('student.index')->with('success', 'تم الموافقة على طلب الإنضمام بنجاح.');
     }
 
     private function getUserNotifications()
     {
-//        dd(getUserId());
 
         $user_notifications = firebaseGetReference('notifications')->getValue();
         $notifications = [];
-        $index = 0;
         $user_id = getUserId();
         $groups = firebaseGetReference('groups')->getValue();
         $project_initial_title = '';
+
         if ($user_notifications != null) {
-            foreach ($user_notifications as $notification) {
-                if ($notification['to'] == $user_id && $notification['status'] == '0') {
+            foreach ($user_notifications as $key => $notification) {
+                if ($notification['to'] == $user_id && ($notification['status'] == 'wait' || $notification['status'] == 'readOnce')) {
 //               this type of notification to teacher and need with normal data in notification a project initial title
                     if ($notification['type'] == 'to_be_supervisor') {
 //                    get project initial title
@@ -197,9 +209,9 @@ class DashboardController extends Controller
                             $notification,
                             ['initial_title' => $project_initial_title]
                         ]);
-                        Arr::set($notifications, $index++, $teacher_notification);
+                        Arr::set($notifications, $key, $teacher_notification);
                     } else
-                        Arr::set($notifications, $index++, $notification);
+                        Arr::set($notifications, $key, $notification);
                 }
             }
         }
@@ -207,135 +219,4 @@ class DashboardController extends Controller
         return $notifications;
     }
 
-
-//    public function index()
-//    {
-//
-////        $this->studentStatus();
-//        if (!inGroup()) {
-//
-//            $students = getStudentsStdWithoutGroup();
-//
-//            return view('student.group.create', [
-////                'departments' => $departments,
-////                'teachers' => $teacher,
-////                'statistics' => $statistics,
-//                'students' => $students,
-//                'notifications' => $this->getUserNotifications(),
-////                'tags' => $tags
-//            ]);
-//
-//        }
-//
-//        $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'مالتيميديا', 'موبايل', 'تكنولوجيا المعلومات'];
-//        $teacher = [];
-//        $index = 0;
-//        $number_of_students = 0;
-//        $user_id = getUserId();
-////        $student_gender = Str::substr($user_id, 0, 1);
-////        $students = [];
-//        $tags = ['تطبيق أندرويد', 'تطبيق IOS', 'موقع ويب', 'فلم قصير', 'فلم أنيميشن', 'لعبة حاسوب',];
-//        $users = firebaseGetReference('users')->getValue();
-//
-//        foreach ($users as $user) {
-//            if ($user['role'] == 'teacher')
-////                add teachers to array with there names and ids to use in register in group for students
-//                Arr::set($teacher, $index++, ['name' => $user['name'], 'id' => $user['user_id']]);
-//            elseif ($user['role'] == 'student')
-//                $number_of_students++;
-//        }
-//
-//        //Check if registered student is male(1) or female(2) by first number of there std
-//        $students = getStudentsStdWithoutGroup();
-//
-//        $groups = firebaseGetReference('groups')->getValue();
-//        $number_of_groups = $groups != null ? sizeof($groups) : 0;
-//
-//        $number_of_teamed_students = 20;
-//        $statistics = [
-//            'number_of_students' => $number_of_students,
-//            'number_of_groups' => $number_of_groups,
-//            'number_of_teamed_students' => $number_of_teamed_students
-//        ];
-//
-//        // get user id, every user have unique id
-//
-//        return 'hello in student dashboard controller';
-//
-////        return view('dashboard', [
-////            'departments' => $departments,
-////            'teachers' => $teacher,
-////            'statistics' => $statistics,
-////            'students' => $students,
-////            'notifications' => $this->getUserNotifications(),
-////            'tags' => $tags
-////        ]);
-//    }
-//
-//    private function studentStatus()
-//    {
-//        $std = getUserId();
-//
-//        $notifications = firebaseGetReference('notifications')->getValue();
-////        $user_notifications = [];
-////        $index = 0;
-//        foreach ($notifications as $notification) {
-//            if ($notification['to'] == $std) {
-//                if ($notification['status'] == 0) {
-//                    return redirect()->route('student.wait');
-////                    dd('wait status notification');
-//                } elseif ($notification['status'] == 1) {
-//                    return redirect()->route('student.accept');
-////                    dd('accept status notification');
-//                } elseif ($notification['status'] == -1) {
-//                    return redirect()->route('student.reject');
-////                    dd('reject status notification');
-//                }
-////                Arr::set($user_notifications, $index++, $notification);
-//            }
-//        }
-//
-//        dd($notifications);
-//    }
-//
-//    public function wait()
-//    {
-//
-//        return;
-//    }
-//
-//    private function getUserNotifications()
-//    {
-//
-//        $user_notifications = firebaseGetReference('notifications')->getValue();
-//        $notifications = [];
-//        $index = 0;
-//        $user_id = getUserId();
-//        $groups = firebaseGetReference('groups')->getValue();
-//        $project_initial_title = '';
-//        foreach ($user_notifications as $notification) {
-//            if ($notification['to'] == $user_id && $notification['status'] == '0') {
-////               this type of notification to teacher and need with normal data in notification a project initial title
-//                if ($notification['type'] == 'to_be_supervisor') {
-////                    get project initial title
-//                    foreach ($groups as $group)
-//                        if ($group['leaderStudentStd'] == $notification['from'])
-//                            $project_initial_title = $group['project_initial_title'];
-//
-//                    $teacher_notification = Arr::collapse([
-//                        $notification,
-//                        ['initial_title' => $project_initial_title]
-//                    ]);
-//                    Arr::set($notifications, $index++, $teacher_notification);
-//                } else
-//                    Arr::set($notifications, $index++, $notification);
-//            }
-//        }
-//        return $notifications;
-//    }
-//
-//    public function createGroup()
-//    {
-//
-//    }
 }

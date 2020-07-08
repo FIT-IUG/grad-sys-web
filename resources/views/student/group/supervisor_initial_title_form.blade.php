@@ -8,16 +8,25 @@
             <div class="card-body">
                 <form action="{{route('student.group.storeSupervisor')}}" method="POST">
                     @csrf
+                    @if(isset($notifications) and $notifications != null)
+                        @foreach($notifications as $key=>$notification)
+                            <input type="hidden" name="notification_key[{{$loop->index}}]" value="{{$key}}">
+                        @endforeach
+                    @endif
                     <div class="form-group">
                         <label>مشرف المجموعة</label>
                         <select class="form-control select2 select2-hidden-accessible" style="width: 100%;"
                                 tabindex="-1" aria-hidden="true" dir="rtl" name="teacher">
                             <option value=""></option>
-                            @foreach($teachers as $teacher)
-                                <option value="{{$teacher['user_id']}}"
-                                        @if(old('teacher') == $teacher['user_id']) selected @endif>{{$teacher['name']}}
-                                </option>
-                            @endforeach
+                            @if(isset($teachers) && $teachers != null)
+                                @foreach($teachers as $teacher)
+                                    <option value="{{$teacher['user_id']}}"
+                                            @if(old('teacher') == $teacher['user_id']) selected @endif>{{$teacher['name']}}
+                                    </option>
+                                @endforeach
+                            @else
+                                <option value="" disabled>لا يوجد مشرفين متوفرين</option>
+                            @endif
                         </select>
                         @error('teacher')
                         <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
@@ -45,19 +54,22 @@
                                     style="width: 100%;text-align: right;direction: rtl" tabindex="-1"
                                     aria-hidden="true">
                                 <option></option>
-                                @foreach($tags as $tag)
-                                    <option value="{{$tag}}"
-                                            {{--                                        Becouse there is multiple select it should be like this--}}
-                                            {{--                                        to get old selectd options--}}
-                                            @if(old('tags')[0] != null)
-                                            @foreach(old('tags') as $oldDepartment)
-                                            @if($oldDepartment == $tag ) selected @endif
-                                        @endforeach
-                                        @endif> {{$tag}}
-                                    </option>
-                                @endforeach
+                                @if(isset($tags) && $tags != null)
+                                    @foreach($tags as $tag)
+                                        <option value="{{$tag}}"
+                                                {{--                                        Becouse there is multiple select it should be like this--}}
+                                                {{--                                        to get old selectd options--}}
+                                                @if(old('tags')[0] != null)
+                                                @foreach(old('tags') as $oldDepartment)
+                                                @if($oldDepartment == $tag ) selected @endif
+                                            @endforeach
+                                            @endif> {{$tag}}
+                                        </option>
+                                    @endforeach
+                                @else
+                                    <option value="" disabled>لا يوجد خيارات متاحة</option>
+                                @endif
                             </select>
-                            {{--                        <h6></h6>--}}
                             @error('tags')
                             <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                             @enderror
