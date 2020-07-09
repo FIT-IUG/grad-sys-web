@@ -31,17 +31,10 @@
                                     </option>
                                 @endforeach
                             </select>
-                            {{--                            @error('membersStd')--}}
-                            {{--                            @if(old('membersStd')[$i] == null)--}}
-                            {{--                                <div class="alert alert-danger" style="margin-top: 10px">الرقم الجامعي مطلوب</div>--}}
-                            {{--                            @endif--}}
-                            {{--                            @enderror--}}
                         </div>
                     </div>
                 @endfor
-                {{-- Check if a group will be graduate in first semester. --}}
                 <div class="form-group">
-                    {{--1 for yes 0 for no--}}
                     <label for="">المجموعة خريجة الفصل الاول؟</label>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" value="1" name="graduateInFirstSemester"

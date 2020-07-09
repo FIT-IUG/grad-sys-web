@@ -56,14 +56,14 @@
                                 <option></option>
                                 @if(isset($tags) && $tags != null)
                                     @foreach($tags as $tag)
+                                        <!--Because there is multiple select it should be like this-->
+                                            <!--to get old selected options-->
                                         <option value="{{$tag}}"
-                                                {{--                                        Becouse there is multiple select it should be like this--}}
-                                                {{--                                        to get old selectd options--}}
-                                                @if(old('tags')[0] != null)
-                                                @foreach(old('tags') as $oldDepartment)
+                                        @if(old('tags')[0] != null)
+                                            @foreach(old('tags') as $oldDepartment)
                                                 @if($oldDepartment == $tag ) selected @endif
                                             @endforeach
-                                            @endif> {{$tag}}
+                                        @endif> {{$tag}}
                                         </option>
                                     @endforeach
                                 @else
