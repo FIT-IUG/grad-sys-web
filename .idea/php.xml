@@ -114,7 +114,6 @@
       <path value="$PROJECT_DIR$/vendor/markbaker/matrix" />
       <path value="$PROJECT_DIR$/vendor/markbaker/complex" />
       <path value="$PROJECT_DIR$/vendor/maatwebsite/excel" />
-      <path value="$PROJECT_DIR$/vendor/morrislaptop/firestore-php" />
       <path value="$PROJECT_DIR$/vendor/google/protobuf" />
       <path value="$PROJECT_DIR$/vendor/ahsankhatri/firestore-php" />
       <path value="$PROJECT_DIR$/vendor/google/gax" />
@@ -122,6 +121,9 @@
       <path value="$PROJECT_DIR$/vendor/google/cloud" />
       <path value="$PROJECT_DIR$/vendor/google/common-protos" />
       <path value="$PROJECT_DIR$/vendor/grpc/grpc" />
+      <path value="$PROJECT_DIR$/vendor/maennchen/zipstream-php" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php80" />
+      <path value="$PROJECT_DIR$/vendor/myclabs/php-enum" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />
