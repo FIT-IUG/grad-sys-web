@@ -145,7 +145,6 @@ class DashboardController extends Controller
 //                if student have notification put not accept or reject it (wait status)
                 } elseif ($student_status == 'wait') {
 
-                    dd('hh');
                     return view('student.dashboard', [
                         'notifications' => $notifications,
                         'message' => null
