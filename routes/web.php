@@ -13,6 +13,11 @@
 
 use Faker\Generator as Faker;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
+
+if (env('APP_ENV') === 'production') {
+    URL::forceScheme('https');
+}
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,7 +32,7 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
 
     Route::namespace('Student')->group(function () {
 //        Route::resource('student', 'DashboardController');
-        Route::get('/student','DashboardController@index')->name('student.index');
+        Route::get('/student', 'DashboardController@index')->name('student.index');
         Route::get('/student/wait', 'DashboardController@wait')->name('student.wait');
         Route::get('/student/createGroup', 'GroupController@create')->name('student.group.create');
         Route::post('/student/createGroup/store', 'GroupController@store')->name('student.group.store');
@@ -36,7 +41,7 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
         Route::post('/student/group/addSupervisor', 'GroupController@storeGroupSupervisor')->name('student.group.storeSupervisor');
     });
 
-    Route::get('teacher','TeacherController@index')->name('teacher.index');
+    Route::get('teacher', 'TeacherController@index')->name('teacher.index');
 
     Route::get('/admin', 'AdminController@index')->name('admin.index');
 //    Route::get('/', 'DashboardController@student')->name('dashboard.student');
