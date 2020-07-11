@@ -26,27 +26,27 @@ class TeacherController extends Controller
 
     public function replayToBeSupervisorRequest(Request $request)
     {
+
+
         $reply = $request->get('reply');
         $student_std = $request->get('from');
         $teacher_id = $request->get('to');
+        $key = $request->get('notification_key');
         $groups = firebaseGetReference('groups')->getValue();
-        $notifications = firebaseGetReference('notifications')->getValue();
-        foreach ($notifications as $key => $notification) {
-            if ($notification['from'] == $student_std && $notification['to'] == $teacher_id) {
-                if ($reply == 'accept') {
-                    firebaseGetReference('notifications/' . $key)->update(['status' => 'accept']);
-                    foreach ($groups as $index => $group)
-                        if ($group['leaderStudentStd'] == $student_std) {
-                            firebaseGetReference('groups/' . $index)->update(['teacher' => $teacher_id]);
-                            break;
-                        }
-                    return redirect()->route('teacher.index')->with('success', 'تم قبول الطلب بنجاح.');
+
+        if ($reply == 'accept') {
+            firebaseGetReference('notifications/' . $key)->update(['status' => 'accept']);
+            foreach ($groups as $index => $group)
+                if ($group['leaderStudentStd'] == $student_std) {
+                    firebaseGetReference('groups/' . $index)->update(['teacher' => $teacher_id]);
+                    break;
                 }
-                firebaseGetReference('notifications/' . $key)->update(['status' => 'reject']);
-                return redirect()->back()->with('success', 'تم رفض الطلب بنجاح.');
-            }
-        }
-        return redirect()->back()->with('error', 'حصلت مشكلة في الطلب.');
+            return redirect()->route('teacher.index')->with('success', 'تم قبول الطلب بنجاح.');
+        } elseif ($reply == 'reject') {
+            firebaseGetReference('notifications/' . $key)->update(['status' => 'reject']);
+            return redirect()->back()->with('success', 'تم رفض الطلب بنجاح.');
+        } else
+            return redirect()->back()->with('error', 'حصلت مشكلة في الطلب.');
     }
 
     public function teacherNotification()
@@ -56,20 +56,19 @@ class TeacherController extends Controller
             $user_id = getUserId();
             $notifications = firebaseGetReference('notifications')->getValue();
             $user_notifications = [];
-            $index = 0;
 
 //          use teacher id to get leader student std
 //          use leader student std to get members std
 //          use group std to get there data like name and phone number
 //          every group has there own data
 
-            foreach ($notifications as $notification) {
+            foreach ($notifications as $key => $notification) {
                 if ($notification['to'] == $user_id && $notification['status'] == 'wait') {
                     foreach ($groups as $group) {
                         if ($group['leaderStudentStd'] == $notification['from']) {
                             $initialProjectTitle = $group['initialProjectTitle'];
                             $notification = Arr::collapse([$notification, ['initialProjectTitle' => $initialProjectTitle]]);
-                            Arr::set($user_notifications, $index, $notification);
+                            Arr::set($user_notifications, $key, $notification);
                         }
                     }
                 }

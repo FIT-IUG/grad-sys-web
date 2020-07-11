@@ -5,7 +5,7 @@
     <div class="row">
         <h1>{{isset($message) ? $message : ''}}</h1>
     </div>
-    @if(isset($notifications) and $notifications != null)
+    @if(isset($notifications) and $notifications != null && $notifications[array_key_first($notifications)]['status'] != 'readOnce')
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -51,7 +51,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">بيانات المجموعة</h3>
+                        <h3 class="card-title">بيانات أعضاء الفريق</h3>
                     </div>
                     <div class="card-body table-responsive p-0">
                         <table class="table table-hover">
@@ -160,14 +160,15 @@
                         @for($i = 0; $i < $group_students_complete; $i++)
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label for="exampleInputEmail1">الرقم الجامعي للعضو {{$i+2 }}</label>
+                                    <label for="exampleInputEmail1">الرقم الجامعي
+                                        للعضو {{sizeof($group_data) + 2}}</label>
                                     <select class="students-std form-control select2 select2-hidden-accessible"
                                             name="membersStd[]"
                                             style="width: 100%;text-align: right" tabindex="-1" aria-hidden="true">
                                         <option value=""></option>
                                         @foreach($students as $student)
-                                            <option @if(old('membersStd')[$i] != null)
-                                                    @if(old('membersStd')[$i] == $student) selected value="{{$student}}"
+                                            <option @if(old('membersStd.'.$i) != null)
+                                                    @if(old('membersStd.'.$i) == $student) selected value="{{$student}}"
                                                     id="option"@endif
                                                 @endif>
                                                 {{$student}}
@@ -183,4 +184,5 @@
             </div>
         </div>
     @endif
+
 @endsection

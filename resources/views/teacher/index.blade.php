@@ -19,7 +19,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($notifications as $notification)
+                            @foreach($notifications as $key => $notification)
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{isset($notification['message']) ? $notification['message'] : '-'}}</td>
@@ -29,6 +29,7 @@
                                             action="{{route('group.teacher.replyRequest',['from'=>$notification['from'],'to'=>$notification['to']])}}"
                                             method="post">
                                             @csrf
+                                            <input type="text" hidden value="{{$key}}" name="notification_key">
                                             <button class="btn btn-success" name="reply" value="accept">قبول</button>
                                             <button class="btn btn-danger" name="reply" value="reject">رفض</button>
                                         </form>

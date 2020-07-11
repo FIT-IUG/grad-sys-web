@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.2",
+        "php": "^7.4.0",
         "ahsankhatri/firestore-php": "^2.0",
         "fideloper/proxy": "^4.0",
         "google/cloud-firestore": "^1.11",

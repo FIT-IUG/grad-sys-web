@@ -19,16 +19,11 @@ class CheckEmailRule implements Rule
     public function passes($attribute, $value)
     {
 //        check if email is exist
-//        $isEmpty = firestoreCollection('users')->where('email', '=', $value)->documents()->isEmpty();
         $users = firebaseGetReference('users')->getValue();
         foreach ($users as $user)
             if ($user['email'] == $value)
                 return true;
         return false;
-//            ->where('email', '=', $value)->documents()->isEmpty();
-//        if ($isEmpty)
-//            return false;
-//        return true;
     }
 
     /**

@@ -99,7 +99,23 @@ class DashboardController extends Controller
                         try {
                             $teachers = getUserByRole('teacher');
                             $tags = firebaseGetReference('tags')->getValue();
-
+//                            $groups = firebaseGetReference('groups')->getValue();
+//                            $available_teachers = [];
+//                            $teacher_counter = 0;
+//                            $teacher_key = '';
+//                            $teacher_data = [];
+//                            foreach ($groups as $group) {
+//                                foreach ($teachers as $key => $teacher) {
+//                                    if (isset($group['teacher']) && $teacher['user_id'] == $group['teacher']) {
+//                                        $teacher_counter++;
+//                                    }
+//
+//                                }
+//                                if ($teacher_counter < 3) {
+//                                    Arr::set($available_teachers, $key, $teacher);
+//                                }
+//                            }
+//                            dd($available_teachers);
                             return view('student.group.supervisor_initial_title_form', [
                                 'teachers' => $teachers,
                                 'notifications' => $notifications,
@@ -112,7 +128,7 @@ class DashboardController extends Controller
 //                    wait to accept min
                     return view('student.dashboard', [
                         'message' => 'انتظر حتى يوافق الحد الادنى من اعضاء الفريق',
-                        'notifications' => $notifications
+//                        'notifications' => $notifications
                     ]);
                 }
             } else {
@@ -129,6 +145,7 @@ class DashboardController extends Controller
 //                if student have notification put not accept or reject it (wait status)
                 } elseif ($student_status == 'wait') {
 
+                    dd('hh');
                     return view('student.dashboard', [
                         'notifications' => $notifications,
                         'message' => null

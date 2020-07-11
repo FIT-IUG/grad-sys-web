@@ -16,15 +16,15 @@ class StudentsDifferentRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        if (sizeof($value) != 0) {
+        $min_students = firebaseGetReference('settings/min_group_members')->getValue();
+        $counter = 0;
+        foreach ($value as $std)
+            if ($std != null)
+                $counter++;
+
+        if ($counter >= $min_students)
             return true;
-        }
         return false;
-//        foreach ($value as $key => $std)
-//            if ($std == null) {
-//                return false;
-//            }
-//        return true;
     }
 
     /**
@@ -34,6 +34,8 @@ class StudentsDifferentRule implements Rule
      */
     public function message()
     {
-        return 'الرجاء إضافة الحد الأدنى من عدد الأعضاء.';
+        $min_students = firebaseGetReference('settings/min_group_members')->getValue();
+
+        return 'الرجاء إضافة الحد الأدنى من عدد الأعضاء والذي هو: ' . $min_students .' .';
     }
 }

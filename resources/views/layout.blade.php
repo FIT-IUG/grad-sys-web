@@ -24,8 +24,11 @@
         </div>
         <section class="content">
             <div class="container-fluid">
+
                 @yield('small_box')
+                {{--                <div class="row">--}}
                 @yield('content')
+                {{--                </div>--}}
             </div>
         </section>
     </div>

@@ -1,4 +1,4 @@
-<!-- user manually registration -->
+{{-- user manually registration --}}
 <div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title">تسجيل طالب يدوياا</h3>

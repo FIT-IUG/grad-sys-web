@@ -156,6 +156,7 @@ class GroupController extends Controller
 
     public function storeGroupSupervisor(StoreGroupRequest $request)
     {
+
         $leader_data = firebaseGetReference('users/' . session()->get('uid'))->getValue();
         $leader_id = $leader_data['user_id'];
         $leader_name = $leader_data['name'];
