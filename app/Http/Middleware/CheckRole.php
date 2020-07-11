@@ -21,6 +21,6 @@ class CheckRole
         if ($changed_role != $role) {
             return redirect()->route($role.'.index')->with('error', 'ليس لديك الصلاحية لفعل ذلك.');
         }
-        return $next;
+        return $next($request);
     }
 }

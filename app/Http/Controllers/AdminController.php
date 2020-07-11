@@ -15,7 +15,7 @@ class AdminController extends Controller
 
     public function __construct()
     {
-        $this->middleware('checkRole',['admin']);
+        $this->middleware('checkRole');
     }
 
     public function index()
@@ -101,7 +101,8 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'تم تحديث إعدادات النظام بنجاح.');
     }
 
-    private function getUserNotifications(){
+    private function getUserNotifications()
+    {
 
         $user_notifications = firebaseGetReference('notifications')->getValue();
         $notifications = [];
