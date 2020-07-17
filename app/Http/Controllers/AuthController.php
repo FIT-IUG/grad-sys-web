@@ -11,7 +11,6 @@ use Kreait\Firebase\Exception\ApiException;
 use Kreait\Firebase\Exception\AuthException;
 use Kreait\Firebase\Exception\FirebaseException;
 use Google\Cloud\Core\Exception\NotFoundException;
-use Faker\Generator as Faker;
 
 class AuthController extends Controller
 {
@@ -45,7 +44,6 @@ class AuthController extends Controller
             $role = getRole();
 
             return redirect()->route($role . '.index');
-//            return redirect()->route('dashboard');
         } catch (AuthException $e) {
             return redirect()->back()->with('error', 'الايميل او كلمة السر خاطئة.')->with('email', $email);
         } catch (FirebaseException $e) {
@@ -57,17 +55,17 @@ class AuthController extends Controller
 
     public function createUsers($email, $password, $role, $user_id, $department)
     {
-        $uid = app('firebase.auth')->signInWithEmailAndPassword($email, $password)->uid;
-        $factory = new Faker();
-        firebaseGetReference('users/' . $uid)->set([
-            'email' => $email,
-            'name' => $factory->name,
-            'role' => $role,
-            'mobile_number' => $factory->phoneNumber,
-            'user_id' => $user_id,
-            'department' => $department
-        ]);
-        return 'user created successfully';
+//        $uid = app('firebase.auth')->signInWithEmailAndPassword($email, $password)->uid;
+//        $factory = new Faker();
+//        firebaseGetReference('users/' . $uid)->set([
+//            'email' => $email,
+//            'name' => $factory->name,
+//            'role' => $role,
+//            'mobile_number' => $factory->phoneNumber,
+//            'user_id' => $user_id,
+//            'department' => $department
+//        ]);
+//        return 'user created successfully';
     }
 
     public function logout()

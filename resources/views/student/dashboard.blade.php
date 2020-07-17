@@ -46,7 +46,7 @@
         </div>
     @endif
 
-    @if(isset($group_data))
+    @if(isset($group_members_data))
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -64,7 +64,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($group_data as $member)
+                            @foreach($group_members_data as $member)
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{isset($member['name']) ? $member['name'] : '-' }}</td>
@@ -161,7 +161,7 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="exampleInputEmail1">الرقم الجامعي
-                                        للعضو {{sizeof($group_data) + 2}}</label>
+                                        للعضو {{sizeof($group_members_data) + 2}}</label>
                                     <select class="students-std form-control select2 select2-hidden-accessible"
                                             name="membersStd[]"
                                             style="width: 100%;text-align: right" tabindex="-1" aria-hidden="true">

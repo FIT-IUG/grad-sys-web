@@ -16,7 +16,6 @@ class GroupController extends Controller
     public function store(StoreGroupMembersRequest $request)
     {
 
-//        $group_data = Arr::except($request->validated(), 'membersStd');
         $leader_std = getUserId();
 
         try {
@@ -164,9 +163,10 @@ class GroupController extends Controller
         $project_data = Arr::except($request->validated(), 'teacher');
         $notifications_keys = $request->get('notification_key');
 
-        foreach ($notifications_keys as $key) {
-            firebaseGetReference('notifications/' . $key)->update(['status' => 'read']);
-        }
+        if ($notifications_keys)
+            foreach ($notifications_keys as $key) {
+                firebaseGetReference('notifications/' . $key)->update(['status' => 'read']);
+            }
 
         foreach ($groups as $key => $group) {
             if ($group['leaderStudentStd'] == $leader_id) {

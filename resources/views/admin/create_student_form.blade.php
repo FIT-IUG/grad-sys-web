@@ -1,7 +1,7 @@
 {{-- user manually registration --}}
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">تسجيل طالب يدوياا</h3>
+        <h3 class="card-title">تسجيل طالب يدوياً</h3>
     </div>
     <div class="card-body">
         <form action="{{route('student.store')}}" method="POST">

@@ -78,5 +78,7 @@
         </div>
     </div>
 </div>
+@includeIf('layouts.footer-meta')
+@include('layouts.notify')
 </body>
 </html>

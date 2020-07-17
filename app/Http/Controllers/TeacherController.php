@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Kreait\Firebase\Exception\ApiException;
 
-class TeacherController extends Controller
+class TeacherController extends MainController
 {
 
     public function index()
     {
-        $notifications = $this->teacherNotification();
+//        $notifications = $this->teacherNotification();
+        $notifications = $this->getNotifications();
         $groups_data = $this->groupsData();
 
         if ($groups_data == null)
@@ -49,36 +50,37 @@ class TeacherController extends Controller
             return redirect()->back()->with('error', 'حصلت مشكلة في الطلب.');
     }
 
-    public function teacherNotification()
-    {
-        try {
-            $groups = firebaseGetReference('groups')->getValue();
-            $user_id = getUserId();
-            $notifications = firebaseGetReference('notifications')->getValue();
-            $user_notifications = [];
-
-//          use teacher id to get leader student std
-//          use leader student std to get members std
-//          use group std to get there data like name and phone number
-//          every group has there own data
-
-            foreach ($notifications as $key => $notification) {
-                if ($notification['to'] == $user_id && $notification['status'] == 'wait') {
-                    foreach ($groups as $group) {
-                        if ($group['leaderStudentStd'] == $notification['from']) {
-                            $initialProjectTitle = $group['initialProjectTitle'];
-                            $notification = Arr::collapse([$notification, ['initialProjectTitle' => $initialProjectTitle]]);
-                            Arr::set($user_notifications, $key, $notification);
-                        }
-                    }
-                }
-            }
-            return $user_notifications;
-
-        } catch (ApiException $e) {
-            return null;
-        }
-    }
+//    public function teacherNotification()
+//    {
+//        try {
+//            $groups = firebaseGetReference('groups')->getValue();
+//            $user_id = getUserId();
+//            $notifications = firebaseGetReference('notifications')->getValue();
+//            $user_notifications = [];
+//
+////          use teacher id to get leader student std
+////          use leader student std to get members std
+////          use group std to get there data like name and phone number
+////          every group has there own data
+//
+//            foreach ($notifications as $key => $notification) {
+//                if ($notification['to'] == $user_id && $notification['status'] == 'wait') {
+//                    foreach ($groups as $group) {
+//                        if ($group['leaderStudentStd'] == $notification['from']) {
+//                            $initialProjectTitle = $group['initialProjectTitle'];
+//                            $notification = Arr::collapse([$notification, ['initialProjectTitle' => $initialProjectTitle]]);
+//                            Arr::set($user_notifications, $key, $notification);
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//            return $user_notifications;
+//
+//        } catch (ApiException $e) {
+//            return null;
+//        }
+//    }
 
     public function groupsData()
     {

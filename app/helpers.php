@@ -28,26 +28,44 @@ function hasRole($role)
 
 }
 
-function getNotification()
+function getNotifications()
 {
-    try {
-
-        $user_id = getUserId();
-
-        $notifications = firebaseGetReference('notifications')->getValue();
-        $user_notifications = [];
-        $index = 0;
-        foreach ($notifications as $notification) {
-            if ($notification['to'] == $user_id) {
-                Arr::set($user_notifications, $index++, $notification);
-            }
-        }
-
-        return $user_notifications;
-
-    } catch (Exception $exception) {
-        return null;
-    }
+//    try {
+//
+//        $notifications = firebaseGetReference('notifications')->getValue();
+//        $user_notifications = [];
+//        $user_id = getUserId();
+//        $teacher_notification = [];
+//
+//        if ($notifications != null) {
+//            foreach ($notifications as $key => $notification) {
+//                if ($notification['to'] == $user_id && ($notification['status'] == 'wait' xor $notification['status'] == 'readOnce')) {
+////               this type of notification to teacher and need with normal data in notification a project initial title
+//                    if ($notification['type'] == 'to_be_supervisor') {
+//                        $groups = firebaseGetReference('groups')->getValue();
+////                      get project initial title
+//                        foreach ($groups as $group)
+//                            if ($group['leaderStudentStd'] == $notification['from']) {
+//                                $teacher_notification = Arr::collapse([
+//                                    $notification, ['initial_title' => $group['project_initial_title']]
+//                                ]);
+//                                break;
+//                            }
+//                        Arr::set($user_notifications, $key, $teacher_notification);
+//                    } else
+//                        Arr::set($user_notifications, $key, $notification);
+//                    if ($notification['status'] == 'readOnce')
+//                        firebaseGetReference('notifications/' . $key)->update(['status' => 'read']);
+//                }
+//            }
+//        }
+//
+//        return $user_notifications;
+//
+//    } catch (Exception $exception) {
+//        return null;
+//    } catch (\Kreait\Firebase\Exception\ApiException $e) {
+//    }
 }
 
 function getRole()
@@ -55,6 +73,8 @@ function getRole()
     try {
         return firebaseGetReference('users/' . session()->get('uid'))->getValue()['role'];
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
+    } catch (ErrorException $exception) {
+        return redirect()->back()->with('error', 'حلصت مشكلة بالنظام.');
     }
 }
 
@@ -127,13 +147,14 @@ function isGroupLeader()
 
     try {
         $leaders = firebaseGetReference('groups')->getValue();
-        $leaders = \Illuminate\Support\Arr::pluck($leaders, 'leaderStudentStd');
+        $leaders = Arr::pluck($leaders, 'leaderStudentStd');
         $user_id = firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
         foreach ($leaders as $leader)
             if ($leader == $user_id)
                 return true;
         return false;
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
+        return redirect()->back()->with('error', 'حصلت مشكلة في النظام.');
     }
 
 }
@@ -165,21 +186,16 @@ function isTeacherHasNotification()
 
 }
 
-function getSupervisorNotificationStatus()
+function getSupervisorStatus()
 {
 
     try {
         $std = getUserId();
         $notifications = firebaseGetReference('notifications')->getValue();
-        foreach ($notifications as $notification) {
-            if ($notification['from'] == $std && $notification['type'] == 'to_be_supervisor') {
+        foreach ($notifications as $notification)
+            if ($notification['from'] == $std && $notification['type'] == 'to_be_supervisor')
                 return $notification['status'];
-//                if ($notification['status'] == 1)
-//                    return true;
-//                elseif ($notification['status'] == 0)
-//                    return false;
-            }
-        }
+
         return false;
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
         return redirect()->back()->with('error', 'حصلت مشكلة');
@@ -248,14 +264,11 @@ function createUser($email, $password, $user_id)
 function getUserByRole($user_role)
 {
     try {
-        $index = 0;
         $selected_users = [];
         $users = firebaseGetReference('users')->getValue();
-        foreach ($users as $user) {
-            if ($user['role'] == $user_role) {
-                Arr::set($selected_users, $index++, $user);
-            }
-        }
+        foreach ($users as $key => $user)
+            if ($user['role'] == $user_role)
+                Arr::set($selected_users, $key, $user);
         return $selected_users;
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
         return redirect()->route('logout')->with('error', 'حصلت مشكلة في النظام.');
@@ -288,11 +301,22 @@ function isMinMembersAccept()
 
 function isMemberHasNotification()
 {
-    $notifications = firebaseGetReference('notifications')->getValue();
-    $std = getUserId();
-    if ($notifications != null)
-        foreach ($notifications as $notification)
-            if ($notification['to'] == $std)
-                return $notification['status'];
-    return null;
+    try {
+        $notifications = firebaseGetReference('notifications')->getValue();
+        $std = getUserId();
+
+        if ($notifications != null)
+            foreach ($notifications as $notification)
+                if ($notification['to'] == $std) {
+                    if ($notification['status'] == 'accept')
+                        return $notification['status'];
+                    elseif ($notification['status'] == 'reject')
+                        continue;
+                }
+
+        return null;
+    } catch (\Kreait\Firebase\Exception\ApiException $e) {
+        return redirect()->route('home')->with('error', 'حصلت مشكلة في النظام.');
+    }
+
 }

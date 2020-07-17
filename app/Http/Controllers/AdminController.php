@@ -6,11 +6,14 @@ use App\Http\Requests\ExportExcelRequestStudents;
 use App\Http\Requests\RegisterStudentRequest;
 use App\Http\Requests\SettingsRequest;
 use App\Imports\StudentsImport;
+use App\Mail\SendCreatePassword;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Kreait\Firebase\Exception\ApiException;
 use Maatwebsite\Excel\Facades\Excel;
 
-class AdminController extends Controller
+class AdminController extends MainController
 {
 
     public function __construct()
@@ -22,7 +25,7 @@ class AdminController extends Controller
     {
 
         $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'مالتيميديا', 'موبايل', 'تكنولوجيا المعلومات'];
-
+        $notifications = $this->getNotifications();
         $number_of_students = sizeof(getUserByRole('student'));
 
         //Check if registered student is male(1) or female(2) by first number of there std
@@ -44,7 +47,7 @@ class AdminController extends Controller
             'departments' => $departments,
             'statistics' => $statistics,
             'students' => $students,
-            'notifications' => $this->getUserNotifications(),
+            'notifications' => $notifications,
         ]);
     }
 
@@ -53,6 +56,7 @@ class AdminController extends Controller
         $notifications = [];
         $statistics = '';
         $settings = firebaseGetReference('settings')->getValue();
+
         return view('admin.settings')->with([
             'notifications' => $notifications,
             'statistics' => $statistics,
@@ -64,8 +68,15 @@ class AdminController extends Controller
     {
         $student = Arr::collapse([$request->validated(), ['role' => 'student']]);
         try {
-            firebaseGetReference('users')->push($student);
+            // store in users table at first
+            $key = firebaseGetReference('users')->push($student)->getKey();
             //Send Email
+            $token = Str::random(60);
+            firebaseGetReference('emailed_users')->push([
+                'user_id' => $key,
+                'token' => $token
+            ]);
+            Mail::to($student['email'])->send(new SendCreatePassword($token));
             return redirect()->back()->with('success', 'تم تسجيل الطالب بنجاح.');
         } catch (ApiException $e) {
             return redirect()->back()->with('error', 'حصلت مشكلة في تسجيل الطالب.');
@@ -103,31 +114,22 @@ class AdminController extends Controller
 
     private function getUserNotifications()
     {
-
+        $groups = firebaseGetReference('groups')->getValue();
         $user_notifications = firebaseGetReference('notifications')->getValue();
         $notifications = [];
-        $index = 0;
         $user_id = getUserId();
-        foreach ($user_notifications as $notification) {
+
+        foreach ($user_notifications as $key => $notification) {
             if ($notification['to'] == $user_id && $notification['status'] == 'wait') {
                 if ($notification['type'] == 'to_be_supervisor') {
-                    $students_data = getUserByRole('student');
-                    $from_id = $notification['from'];
-                    $from_name = $notification['from_name'];
-                    $project_initial_title = $notification['project_initial_title'];
-//                    foreach ($students_data as $student) {
-//                        if ($student['user_id'] == $from_id) {
-//                            $from_name = $student['name'];
-//                            break;
-//                        }
-//                    }
-                    $teacher_notification = Arr::collapse([
-                        $notification,
-                        ['from_name' => $from_name, 'initial_title' => $project_initial_title]
-                    ]);
-                    Arr::set($notifications, $index++, $teacher_notification);
-                } else
-                    Arr::set($notifications, $index++, $notification);
+                    foreach ($groups as $group) {
+                        if ($group['leaderStudentStd'] == $notification['from']) {
+                            $notification = Arr::collapse([$notification, ['initialProjectTitle' => $group['initialProjectTitle']]]);
+                            Arr::set($notifications, $key, $notification);
+                            break;
+                        }
+                    }
+                }
             }
         }
         return $notifications;
