@@ -46,7 +46,7 @@ class TeacherController extends MainController
             return redirect()->route('admin.teacher.index')->with('success', 'تم تحديث بيانات المشرف بنجاح.');
 
         } catch (ApiException $e) {
-            return redirect()->route('admin.teachers.index')->with('error', 'حصلت مشكلة في تعديل بيانات المشرف.');
+            return redirect()->route('admin.teacher.index')->with('error', 'حصلت مشكلة في تعديل بيانات المشرف.');
 
         }
 

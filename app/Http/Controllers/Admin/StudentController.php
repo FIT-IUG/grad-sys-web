@@ -42,10 +42,10 @@ class StudentController extends Controller
         try {
             $key = $student->segment(5);
             firebaseGetReference('users/' . $key)->update($student->validated());
-            return redirect()->route('admin.students.index')->with('success', 'تم تحديث بيانات الطالب بنجاح.');
+            return redirect()->route('admin.student.index')->with('success', 'تم تحديث بيانات الطالب بنجاح.');
 
         } catch (ApiException $e) {
-            return redirect()->route('admin.students.index')->with('error', 'حصلت مشكلة في تعديل بيانات الطالب.');
+            return redirect()->route('admin.student.index')->with('error', 'حصلت مشكلة في تعديل بيانات الطالب.');
 
         }
 

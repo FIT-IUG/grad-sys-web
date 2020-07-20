@@ -49,26 +49,36 @@
                             @endforeach
                             </tbody>
                         </table>
-                        <div class="row invoice-info">
-                            <div class="invoice-col">
-                                <h4 class="mt-5 ">بيانات المشروع</h4>
-                                <address>
-                                    <strong>العنوان المبدئي: </strong>
-                                    {{isset($group['initialProjectTitle']) ? $group['initialProjectTitle'] : '-'}}
-                                    <br>
-                                    <strong>هل المجموعة ستتخرج بالفصل الأول: </strong>
-                                    {{(isset($group['graduateInFirstSemester']) ? $group['graduateInFirstSemester'] : '-') == 0 ? 'لا' : 'نعم'}}
-                                    <br>
-                                    <strong>شكل المشروع: </strong>
-                                    @if(isset($group['tags']))
-                                        @foreach($group['tags'] as $tag)
-                                            @if($loop->last) {{$tag}}.
-                                            @else {{$tag}},
+                        <div class="col-6">
+                            <p class="lead">بيانات المشروع</p>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <th>العنوان المبدئي:</th>
+                                        <td>
+                                            {{isset($group['initialProjectTitle']) ? $group['initialProjectTitle'] : '-'}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>هل المجموعة خريجة فصل أول:</th>
+                                        <td>
+                                            {{(isset($group['graduateInFirstSemester']) ? $group['graduateInFirstSemester'] : '-') == 0 ? 'لا' : 'نعم'}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>شكل المشروع:</th>
+                                        <td>@if(isset($group['tags']))
+                                                @foreach($group['tags'] as $tag)
+                                                    @if($loop->last) {{$tag}}.
+                                                    @else {{$tag}},
+                                                    @endif
+                                                @endforeach
                                             @endif
-                                        @endforeach
-                                    @endif
-                                    <br>
-                                </address>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
