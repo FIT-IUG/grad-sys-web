@@ -328,7 +328,7 @@ ColVis.prototype = {
 			this.s.restore = this.s.sRestore;
 		}
 
-		// CamelCase to Hungarian for the column groups 
+		// CamelCase to Hungarian for the column groups
 		var groups = this.s.groups;
 		var hungarianGroups = this.s.aoGroups;
 		if ( groups ) {
@@ -550,7 +550,7 @@ ColVis.prototype = {
 	/**
 	 * Create the DOM for a show / hide group button
 	 *  @method  _fnDomGroupButton
-	 *  @param {int} i Group in question, order based on that provided in settings
+	 *  @param {int} i group in question, order based on that provided in settings
 	 *  @returns {Node} Created button
 	 *  @private
 	 */
@@ -1007,7 +1007,7 @@ ColVis.defaults = {
 	bCssPosition: false,
 
 	/**
-	 * Group buttons
+	 * group buttons
 	 *  @property aoGroups
 	 *  @type     array
 	 *  @default  []

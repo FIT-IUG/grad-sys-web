@@ -45,14 +45,14 @@ Allows for using regular expressions as a mask
                                             currentToken.matches.push(m);
                                         }
                                         break;
-                                    case "(": // Group opening
+                                    case "(": // group opening
                                         if (!currentToken.isGroup && currentToken.matches.length > 0)
                                             opts.regexTokens.push(currentToken);
                                         currentToken = new regexToken();
                                         currentToken.isGroup = true;
                                         opengroups.push(currentToken);
                                         break;
-                                    case ")": // Group closing
+                                    case ")": // group closing
                                         var groupToken = opengroups.pop();
                                         if (opengroups.length > 0) {
                                             opengroups[opengroups.length - 1]["matches"].push(groupToken);
@@ -72,7 +72,7 @@ Allows for using regular expressions as a mask
                                         }
                                         break;
                                     default:
-                                        // Vertical bar (alternator) 
+                                        // Vertical bar (alternator)
                                         // ^ or $ anchor
                                         // Dot (.)
                                         // Literal character sequence

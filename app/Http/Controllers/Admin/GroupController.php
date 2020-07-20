@@ -22,7 +22,7 @@ class GroupController extends MainController
 
             }
 
-            return view('admin.Group.index')->with([
+            return view('admin.group.index')->with([
                 'groups' => $all_groups
             ]);
 
@@ -35,7 +35,7 @@ class GroupController extends MainController
     public function edit($group_key)
     {
 
-        return view('admin.Group.edit', $this->getAllGroupInfo($group_key));
+        return view('admin.group.edit', $this->getAllGroupInfo($group_key));
     }
 
     public function update(Request $request, $group_key)
