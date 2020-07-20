@@ -8,6 +8,7 @@ use App\Http\Requests\StoreGroupMembersRequest;
 use App\Http\Requests\StoreGroupRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Kreait\Firebase\Exception\ApiException;
 
 class GroupController extends Controller
@@ -87,7 +88,6 @@ class GroupController extends Controller
                 ]);
             }
 
-//            return redirect()->back()->with('success', 'تم ارسال الطلبات لاعضاء المجموعة.');
             return redirect()->route('student.index')->with('success', 'تم ارسال الطلبات لاعضاء المجموعة.');
         } catch (ApiException $e) {
         }
@@ -95,61 +95,75 @@ class GroupController extends Controller
 
     public function memberResponse(Request $request)
     {
-        $notification_key = $request->get('notification_key');
-        $reply = $request->get('reply');
-        $leader_id = $request->get('from');
-        $member_std = $request->get('to');
-        $students = getUserByRole('student');
 
-        if ($reply == 'accept') {
-            $groups = firebaseGetReference('groups')->getValue();
-            foreach ($groups as $key => $group) {
-                if ($group['leaderStudentStd'] == $leader_id) {
-                    $members_std = firebaseGetReference('groups/' . $key)->getValue()['membersStd'];
-                    if ($members_std == null) {
-                        firebaseGetReference('groups/' . $key)->update(['membersStd' => [$member_std]]);
-                    } else {
-                        $members_std = Arr::add($members_std, sizeof($members_std), $member_std);
-                        firebaseGetReference('groups/' . $key)->update(['membersStd' => $members_std]);
-                    }
-                    firebaseGetReference('notifications/' . $notification_key)->update(['status' => 'accept']);
-                    $member_name = '';
-                    foreach ($students as $student)
-                        if ($student['user_id'] == $member_std) {
-                            $member_name = $student['name'];
-                            break;
+        try {
+            $notification_key = $request->get('notification_key');
+            $reply = $request->get('reply');
+            $leader_id = $request->get('from');
+            $member_std = $request->get('to');
+            $students = getUserByRole('student');
+            $max_members = firebaseGetReference('settings/max_members_std')->getValue();
+            if ($reply == 'accept') {
+
+                $groups = firebaseGetReference('groups');
+                foreach ($groups->getValue() as $group_key => $group) {
+                    if ($group['leaderStudentStd'] == $leader_id) {
+                        $hasMemberStd = array_search($member_std, $group['membersStd']);
+                        if (count($group['membersStd']) != $max_members) {
+                            if ($hasMemberStd != null) {
+                                foreach ($students as $student_key => $student) {
+                                    if ($student['user_id'] == $member_std) {
+                                        $groups->getChild($group_key)->getChild('membersStd/' . $student_key)->set($member_std);
+                                        firebaseGetReference('notifications/' . $notification_key)->update(['status' => 'accept']);
+                                        firebaseGetReference('notifications')->push([
+                                            'from' => $member_std,
+                                            'from_name' => 'student name',
+                                            'to' => $leader_id,
+                                            'type' => 'accept_join_team',
+                                            'message' => 'وافق ' . $student['name'] . ' على طلب الانضمام للفريق.',
+                                            'status' => 'readOnce',
+                                        ]);
+                                    }
+                                }
+                            } else {
+                                return redirect()->back()->with('error', 'أنت متواجد في فريق, لا يمكنك الدخول في فريق آخر.');
+                            }
+                        } else {
+                            if (Str::substr(getUserId(), 0, 1) == 1) {
+
+                                return redirect()->back()->with('error', 'وصل الفريق الذي تحاول التسجيل به إلى الحد الاقصى.');
+                            } else {
+
+                                return redirect()->back()->with('error', 'وصل الفريق الذي تحاولين التسجيل به إلى الحد الاقصى.');
+                            }
+
                         }
 
-                    firebaseGetReference('notifications')->push([
-                        'from' => $member_std,
-                        'from_name' => 'student name',
-                        'to' => $leader_id,
-                        'type' => 'accept_join_team',
-                        'message' => 'وافق ' . $member_name . ' على طلب الانضمام للفريق.',
-                        'status' => 'readOnce',
-                    ]);
+                    }
                 }
+
+                return redirect()->route('student.index')->with('success', 'تم قبول الطلب بنجاح.');
+            } else {
+                $member_name = '';
+                foreach ($students as $student)
+                    if ($student['user_id'] == $member_std) {
+                        $member_name = $student['name'];
+                        break;
+                    }
+
+                firebaseGetReference('notifications/' . $notification_key)->update(['status' => 'reject']);
+                firebaseGetReference('notifications')->push([
+                    'from' => $member_std,
+                    'from_name' => 'student name',
+                    'to' => $leader_id,
+                    'type' => 'reject_join_team',
+                    'message' => 'رفض ' . $member_name . ' الانضمام الى فريق التخرج.',
+                    'status' => 'readOnce',
+                ]);
+                return redirect()->route('student.index')->with('success', 'تم رفض طلب الانضمام بنجاح.');
             }
-
-            return redirect()->route('student.index')->with('success', 'تم قبول الطلب بنجاح.');
-        } else {
-            $member_name = '';
-            foreach ($students as $student)
-                if ($student['user_id'] == $member_std) {
-                    $member_name = $student['name'];
-                    break;
-                }
-
-            firebaseGetReference('notifications/' . $notification_key)->update(['status' => 'reject']);
-            firebaseGetReference('notifications')->push([
-                'from' => $member_std,
-                'from_name' => 'student name',
-                'to' => $leader_id,
-                'type' => 'reject_join_team',
-                'message' => 'رفض ' . $member_name . ' الانضمام الى فريق التخرج.',
-                'status' => 'readOnce',
-            ]);
-            return redirect()->route('student.index')->with('success', 'تم رفض طلب الانضمام بنجاح.');
+        } catch (ApiException $e) {
+            return '';
         }
     }
 

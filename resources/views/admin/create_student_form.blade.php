@@ -16,16 +16,6 @@
                     @enderror
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="exampleInputEmail1">الرقم الجامعي</label>
-                    <input type="text" class="form-control @error('user_id') is-invalid  @enderror"
-                           id="exampleInputEmail1" name="user_id" value="{{old('user_id')}}">
-                    @error('user_id')
-                    <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">الإيميل</label>
                     <input type="email" class="form-control @error('email') is-invalid  @enderror"
                            id="exampleInputEmail1" name="email" value="{{old('email')}}">
@@ -33,7 +23,26 @@
                     <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="form-group col-md-6">
+
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label for="exampleInputEmail1">الرقم الجامعي</label>
+                    <input type="text" class="form-control @error('user_id') is-invalid  @enderror"
+                           id="exampleInputEmail1" name="user_id" value="{{old('user_id')}}">
+                    @error('user_id')
+                    <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="exampleInputEmail1">رقم الجوال</label>
+                    <input type="text" class="form-control @error('mobile_number') is-invalid  @enderror"
+                           id="exampleInputEmail1" name="mobile_number" value="{{old('mobile_number')}}">
+                    @error('mobile_number')
+                    <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group col-md-4">
                     <label>التخصص</label>
                     <select class="form-control @error('department') is-invalid  @enderror" name="department">
                         <option value=""></option>
@@ -43,16 +52,6 @@
                         @endforeach
                     </select>
                     @error('department')
-                    <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label for="exampleInputEmail1">رقم الجوال</label>
-                    <input type="text" class="form-control @error('mobile_number') is-invalid  @enderror"
-                           id="exampleInputEmail1" name="mobile_number" value="{{old('mobile_number')}}">
-                    @error('mobile_number')
                     <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                     @enderror
                 </div>

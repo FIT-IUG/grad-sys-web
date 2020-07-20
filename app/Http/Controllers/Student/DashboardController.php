@@ -13,7 +13,6 @@ class DashboardController extends MainController
     public function index()
     {
 
-
 //      Check what is the status for student
         if (inGroup()) {
             if (isGroupLeader()) {
@@ -46,7 +45,7 @@ class DashboardController extends MainController
                                 'teacher_data' => $group_data['teacher_data'],
                                 'project_data' => $group_data['project_data'],
                                 'group_students_complete' => $group_data['group_students_complete'],
-                                'students' => $students
+                                'students' => $students,
                             ]);
 //                       if teacher refuse or reject to be supervisor for group
                         } else {
@@ -60,9 +59,23 @@ class DashboardController extends MainController
 //                        send notification form
                         try {
                             $teachers = getUserByRole('teacher');
-//                            extra need check
+//                          extra need check
                             $admins = getUserByRole('admin');
                             $teachers = Arr::collapse([$teachers, $admins]);
+                            $groups = firebaseGetReference('groups')->getValue();
+                            $teacher_counter = 0;
+
+                            foreach ($teachers as $key => $teacher) {
+                                foreach ($groups as $group) {
+                                    if (isset($group['teacher']) && $teacher['user_id'] == $group['teacher']) {
+                                        $teacher_counter++;
+                                    }
+                                    if ($teacher_counter == 3){
+                                        Arr::forget($teachers, $key);
+                                    }
+                                }
+                            }
+
                             $tags = firebaseGetReference('tags')->getValue();
 
                             return view('student.group.supervisor_initial_title_form', [
@@ -206,37 +219,37 @@ class DashboardController extends MainController
 
     }
 
-    private function getGroupMembersData($members_std)
-    {
-        $group_members_data = [];
-        $students = getUserByRole('student');
-        $index = 0;
-
-        foreach ($students as $student) {
-            foreach ($members_std as $std)
-                if ($student['user_id'] == $std) {
-                    $student = Arr::except($student, ['remember_token', 'role', 'department']);
-                    Arr::set($group_members_data, $index++, $student);
-                    break;
-                }
-            if (sizeof($members_std) == $index)
-                break;
-        }
-        return $group_members_data;
-    }
-
-    private function getTeacherData($teacher_id)
-    {
-        $teachers = getUserByRole('teacher');
-        $teacher_data = [];
-
-        foreach ($teachers as $teacher)
-            if ($teacher['user_id'] == $teacher_id) {
-                $teacher_data = Arr::except($teacher, ['role', 'user_id', 'remember_token']);
-                break;
-            }
-        return $teacher_data;
-    }
+//    private function getGroupMembersData($members_std)
+//    {
+//        $group_members_data = [];
+//        $students = getUserByRole('student');
+//        $index = 0;
+//
+//        foreach ($students as $student) {
+//            foreach ($members_std as $std)
+//                if ($student['user_id'] == $std) {
+//                    $student = Arr::except($student, ['remember_token', 'role']);
+//                    Arr::set($group_members_data, $index++, $student);
+//                    break;
+//                }
+//            if (sizeof($members_std) == $index)
+//                break;
+//        }
+//        return $group_members_data;
+//    }
+//
+//    private function getTeacherData($teacher_id)
+//    {
+//        $teachers = getUserByRole('teacher');
+//        $teacher_data = [];
+//
+//        foreach ($teachers as $teacher)
+//            if ($teacher['user_id'] == $teacher_id) {
+//                $teacher_data = Arr::except($teacher, ['role', 'user_id', 'remember_token']);
+//                break;
+//            }
+//        return $teacher_data;
+//    }
 
 
 }

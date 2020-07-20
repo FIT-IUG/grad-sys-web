@@ -15,7 +15,7 @@
                      with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
                     <a href="{{route(getRole().'.index')}}" class="nav-link active">
-                        <i class="nav-icon fa fa-dashboard"></i>
+                        <i class="nav-icon fa fa-home"></i>
                         <p>
                             الصفحة الرئيسية
                         </p>
@@ -25,9 +25,33 @@
                 @if(hasRole('admin'))
                     <li class="nav-item menu-open">
                         <a href="{{route('admin.settings')}}" class="nav-link active">
-                            <i class="nav-icon fa fa-dashboard"></i>
+                            <i class="nav-icon fa fa-cogs"></i>
                             <p>
                                 اعدادات النظام
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item menu-open">
+                        <a href="{{route('admin.student.index')}}" class="nav-link active">
+                            <i class="nav-icon fa fa-user"></i>
+                            <p>
+                                بيانات الطلبة
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item menu-open">
+                        <a href="{{route('admin.teacher.index')}}" class="nav-link active">
+                            <i class="nav-icon fa fa-user-circle"></i>
+                            <p>
+                                بيانات المشرفين
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item menu-open">
+                        <a href="{{route('admin.group.index')}}" class="nav-link active">
+                            <i class="nav-icon fa fa-users"></i>
+                            <p>
+                                بيانات المجموعات
                             </p>
                         </a>
                     </li>

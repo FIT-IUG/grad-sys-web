@@ -59,8 +59,10 @@
                             <tr>
                                 <th>#</th>
                                 <th>الاسم</th>
+                                <th>الرقم الجامعي</th>
                                 <th>رقم الجوال</th>
                                 <th>الايميل</th>
+                                <th>التخصص</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -68,8 +70,10 @@
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{isset($member['name']) ? $member['name'] : '-' }}</td>
+                                    <td>{{isset($member['user_id']) ? $member['user_id'] : '-' }}</td>
                                     <td>{{isset($member['mobile_number']) ? $member['mobile_number'] : '-' }}</td>
                                     <td>{{isset($member['email']) ? $member['email'] : '-' }}</td>
+                                    <td>{{isset($member['department']) ? $member['department'] : '-' }}</td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -81,7 +85,6 @@
     @endif
     <div class="row">
         @if(isset($teacher_data))
-
             <div class="col-md-6">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
@@ -144,45 +147,47 @@
     </div>
 
     @if(isset($group_students_complete) && $group_students_complete != 0)
-        <div class="col-md-6">
-            <div class="card card-info">
-                <div class="card-header">
-                    <h3 class="card-title">إضافة باقي أعضاء الفريق</h3>
-                </div>
-                <div class="card-body">
-                    @error('membersStd')
-                    <div class="alert alert-danger">
-                        {{$message}}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">إضافة باقي أعضاء الفريق</h3>
                     </div>
-                    @enderror
-                    <form action="{{route('student.group.storeExtra')}}" method="POST">
-                        @csrf
-                        @for($i = 0; $i < $group_students_complete; $i++)
+                    <div class="card-body">
+                        @error('membersStd')
+                        <div class="alert alert-danger">
+                            {{$message}}
+                        </div>
+                        @enderror
+                        <form action="{{route('student.group.storeExtra')}}" method="POST">
+                            @csrf
+                            <spam style="display: none">{{$next_student = $group_students_complete}}</spam>
                             <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label for="exampleInputEmail1">الرقم الجامعي
-                                        للعضو {{sizeof($group_members_data) + 2}}</label>
-                                    <select class="students-std form-control select2 select2-hidden-accessible"
-                                            name="membersStd[]"
-                                            style="width: 100%;text-align: right" tabindex="-1" aria-hidden="true">
-                                        <option value=""></option>
-                                        @foreach($students as $student)
-                                            <option @if(old('membersStd.'.$i) != null)
-                                                    @if(old('membersStd.'.$i) == $student) selected value="{{$student}}"
-                                                    id="option"@endif
-                                                @endif>
-                                                {{$student}}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                @for($i = 0; $i < $group_students_complete; $i++)
+                                    <div class="form-group col-md-6">
+                                        <label for="exampleInputEmail1">الرقم الجامعي للعضو {{$next_student++}} </label>
+                                        <select class="students-std form-control select2 select2-hidden-accessible"
+                                                name="membersStd[]"
+                                                style="width: 100%;text-align: right" tabindex="-1" aria-hidden="true">
+                                            <option value=""></option>
+                                            @foreach($students as $student)
+                                                <option @if(old('membersStd.'.$i) != null)
+                                                        @if(old('membersStd.'.$i) == $student) selected
+                                                        value="{{$student}}"
+                                                        id="option"@endif
+                                                    @endif>
+                                                    {{$student}}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endfor
                             </div>
-                        @endfor
-                        <button type="submit" class="btn btn-primary">تسجيل</button>
-                    </form>
+                            <button type="submit" class="btn btn-primary">تسجيل</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     @endif
-
 @endsection

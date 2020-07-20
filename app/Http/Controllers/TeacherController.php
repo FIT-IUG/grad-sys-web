@@ -3,24 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Kreait\Firebase\Exception\ApiException;
 
 class TeacherController extends MainController
 {
 
     public function index()
     {
-//        $notifications = $this->teacherNotification();
         $notifications = $this->getNotifications();
-        $groups_data = $this->groupsData();
+        $groups_data = $this->groupsDataForTeacher(null);
 
         if ($groups_data == null)
             $groups_data = [];
 
         return view('teacher.index', [
             'notifications' => $notifications,
-            'groups_data' => $groups_data,
+            'teacher_groups' => $groups_data,
             'message' => ''
         ]);
     }
@@ -82,35 +79,35 @@ class TeacherController extends MainController
 //        }
 //    }
 
-    public function groupsData()
-    {
-        $teacher_id = getUserId();
-        $groups = firebaseGetReference('groups')->getValue();
-        $students = getUserByRole('student');
-        $groups_data = [];
-        $students_data = [];
-        $index = 0;
-        $group_counter = 0;
-
-        foreach ($groups as $group) {
-            if (isset($group['teacher']) && $group['teacher'] == $teacher_id) {
-                $group_students_std = Arr::flatten([$group['leaderStudentStd'], $group['membersStd']]);
-                foreach ($students as $student)
-                    foreach ($group_students_std as $std)
-                        if ($student['user_id'] == $std) {
-                            $student = Arr::except($student, ['remember_token', 'role']);
-                            if ($group['leaderStudentStd'] == $student['user_id']) {
-                                $student = Arr::collapse([$student, ['isLeader' => true]]);
-                            } else
-                                $student = Arr::collapse([$student, ['isLeader' => false]]);
-                            Arr::set($students_data, $index++, $student);
-                        }
-                $group_data = Arr::collapse([$group, ['students_data' => $students_data]]);
-                $students_data = [];
-                $index = 0;
-                Arr::set($groups_data, $group_counter++, $group_data);
-            }
-        }
-        return $groups_data;
-    }
+//    public function groupsData()
+//    {
+//        $teacher_id = getUserId();
+//        $groups = firebaseGetReference('groups')->getValue();
+//        $students = getUserByRole('student');
+//        $groups_data = [];
+//        $students_data = [];
+//        $index = 0;
+//        $group_counter = 0;
+//
+//        foreach ($groups as $group) {
+//            if (isset($group['teacher']) && $group['teacher'] == $teacher_id) {
+//                $group_students_std = Arr::flatten([$group['leaderStudentStd'], $group['membersStd']]);
+//                foreach ($students as $student)
+//                    foreach ($group_students_std as $std)
+//                        if ($student['user_id'] == $std) {
+//                            $student = Arr::except($student, ['remember_token', 'role']);
+//                            if ($group['leaderStudentStd'] == $student['user_id']) {
+//                                $student = Arr::collapse([$student, ['isLeader' => true]]);
+//                            } else
+//                                $student = Arr::collapse([$student, ['isLeader' => false]]);
+//                            Arr::set($students_data, $index++, $student);
+//                        }
+//                $group_data = Arr::collapse([$group, ['students_data' => $students_data]]);
+//                $students_data = [];
+//                $index = 0;
+//                Arr::set($groups_data, $group_counter++, $group_data);
+//            }
+//        }
+//        return $groups_data;
+//    }
 }

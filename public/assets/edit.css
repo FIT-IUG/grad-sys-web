@@ -17,3 +17,16 @@
 .select2-container .select2-selection--single {
     height: 42px;
 }
+
+div.dataTables_wrapper div.dataTables_filter{
+    text-align: left;
+}
+
+div.dataTables_wrapper div.dataTables_filter input{
+    margin-right: 5px;
+    margin-left: 0;
+}
+
+div.dataTables_wrapper div.dataTables_length label{
+    padding-right: 3px;
+}

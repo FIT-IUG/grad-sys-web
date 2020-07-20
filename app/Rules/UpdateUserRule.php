@@ -3,10 +3,20 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Arr;
 use Kreait\Firebase\Exception\ApiException;
 
-class CheckEmailRule implements Rule
+class UpdateUserRule implements Rule
 {
+    /**
+     * Create a new rule instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
 
     /**
      * Determine if the validation rule passes.
@@ -18,12 +28,15 @@ class CheckEmailRule implements Rule
      */
     public function passes($attribute, $value)
     {
-//        check if email is exist
+
         $users = firebaseGetReference('users')->getValue();
-        foreach ($users as $user)
-            if (isset($user['email']) && $user['email'] == $value)
-                return true;
-        return false;
+        Arr::forget($users, request()->segment(5));
+
+        foreach ($users as $user) {
+            if (isset($user[$attribute]) && $user[$attribute] == $value)
+                return false;
+        }
+        return true;
     }
 
     /**
@@ -33,6 +46,6 @@ class CheckEmailRule implements Rule
      */
     public function message()
     {
-        return 'الايميل خاطئ.';
+        return ':attribute مسجل مسبقا.';
     }
 }

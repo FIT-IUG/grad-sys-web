@@ -187,6 +187,6 @@ return [
         'graduateInFirstSemester' => 'خريج الفصل الأول',
         'initialProjectTitle' => 'العنوان المبدئي للمشروع',
         'tags' => 'نوع المشروع',
-        '' => '',
+        'user_id' => 'الرقم الجامعي',
     ],
 ];

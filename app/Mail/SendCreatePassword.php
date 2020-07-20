@@ -30,6 +30,7 @@ class SendCreatePassword extends Mailable
     public function build()
     {
         $link = 'https://fit-grad-sys.herokuapp.com/student/create/password/' . $this->token;
+//        $link = 'http://localhost:8000/student/create/password/' . $this->token;
 
         return $this->view('mails.student.createPassword')
             ->subject('إنشاء كلمة مرور للحساب')

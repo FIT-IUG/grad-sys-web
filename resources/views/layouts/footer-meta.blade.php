@@ -31,51 +31,32 @@
 {{--<script src="{{asset('assets/plugins/slimScroll/jquery.slimscroll.min.js')}}"></script>--}}
 <!-- FastClick -->
 {{--<script src="{{asset('assets/plugins/fastclick/fastclick.js')}}"></script>--}}
+<!-- SweetAlert -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- DataTables -->
+<script src="{{asset('assets/plugins/datatables/jquery.dataTables.js')}}"></script>
+<script src="{{asset('assets/plugins/datatables/dataTables.bootstrap4.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('assets/dist/js/adminlte.js')}}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{asset('assets/dist/js/pages/dashboard.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('assets/dist/js/demo.js')}}"></script>
-
 <script src="{{asset('assets/bootstrap-notify/bootstrap-notify-3.1.3/dist/bootstrap-notify.js')}}"></script>
+
 {{-- select 2 things --}}
 <script>
     $(function () {
         //Initialize Select2 Elements
         $('.select2').select2();
 
-{{--        //Datemask dd/mm/yyyy--}}
-{{--        // $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })--}}
-{{--        //Datemask2 mm/dd/yyyy--}}
-{{--        // $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })--}}
-{{--        //Money Euro--}}
-{{--        // $('[data-mask]').inputmask()--}}
-{{----}}
-{{--        //iCheck for checkbox and radio inputs--}}
-{{--        // $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({--}}
-{{--        //     checkboxClass: 'icheckbox_minimal-blue',--}}
-{{--        //     radioClass   : 'iradio_minimal-blue'--}}
-{{--        // })--}}
-{{--        //Red color scheme for iCheck--}}
-{{--        // $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({--}}
-{{--        //     checkboxClass: 'icheckbox_minimal-red',--}}
-{{--        //     radioClass   : 'iradio_minimal-red'--}}
-{{--        // })--}}
-{{--        //Flat red color scheme for iCheck--}}
-{{--        // $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({--}}
-{{--        //     checkboxClass: 'icheckbox_flat-green',--}}
-{{--        //     radioClass   : 'iradio_flat-green'--}}
-{{--        // })--}}
-{{----}}
-{{--        //Colorpicker--}}
-{{--        // $('.my-colorpicker1').colorpicker()--}}
-{{--        //color picker with addon--}}
-{{--        // $('.my-colorpicker2').colorpicker()--}}
-{{----}}
-{{----}}
-{{--        // $('.normal-example').persianDatepicker();--}}
-{{----}}
+        $(function () {
+            $("#data-table").DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Arabic.json",
+                }
+            });
+        });
     })
 </script>
 

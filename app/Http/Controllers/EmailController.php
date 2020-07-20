@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendCreatePassword;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class EmailController extends Controller
 {
@@ -20,8 +21,12 @@ class EmailController extends Controller
         $students = getUserByRole('student');
 
         foreach ($students as $key => $student) {
+            $token = Str::random('60');
+            firebaseGetReference('emailed_users')->push([
+                'user_id' => $key,
+                'token' => $token]);
             if (isset($student['email']))
-                Mail::to($student['email'])->send(new SendCreatePassword($key));
+                Mail::to($student['email'])->send(new SendCreatePassword($token));
             dd('done');
         }
 

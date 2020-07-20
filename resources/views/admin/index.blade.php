@@ -49,6 +49,8 @@
     </div>
 @endsection
 @section('content')
-    @includeIf('admin.dashboardForm')
+    @includeIf('admin.create_student_form')
+    @includeIf('teacher.teacherGroups')
+    @includeIf('admin.exports_form')
 @endsection
 

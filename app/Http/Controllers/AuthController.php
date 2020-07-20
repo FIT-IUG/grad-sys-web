@@ -11,6 +11,7 @@ use Kreait\Firebase\Exception\ApiException;
 use Kreait\Firebase\Exception\AuthException;
 use Kreait\Firebase\Exception\FirebaseException;
 use Google\Cloud\Core\Exception\NotFoundException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class AuthController extends Controller
 {
@@ -25,7 +26,7 @@ class AuthController extends Controller
         $email = $request->get('email');
         $password = $request->get('password');
 
-//        createUsers($email, $password, 'student', '120169998', 'CS');
+        createUsers($email, $password, 'student', '120169998', 'CS','0597722136');
 
         try {
             //verify user if exist
@@ -45,27 +46,29 @@ class AuthController extends Controller
 
             return redirect()->route($role . '.index');
         } catch (AuthException $e) {
-            return redirect()->back()->with('error', 'الايميل او كلمة السر خاطئة.')->with('email', $email);
+            return redirect()->back()->with('error', 'الايميل او كلمة السر خاطئة.');
         } catch (FirebaseException $e) {
             return redirect()->back()->with('error', 'حدثت مشكلة فحص البيانات, يرجى المحاولة مرة اخرى.');
         } catch (NotFoundException $exception) {
-            return redirect()->route('logout')->with('error', 'الايميل غير موجود.');
+            return redirect()->back()->with('error', 'الايميل غير موجود.');
+        } catch (RouteNotFoundException $exception) {
+            return redirect()->back()->with('error', 'لم يتم إيجاد حسابك.');
         }
     }
 
-    public function createUsers($email, $password, $role, $user_id, $department)
+    public function createUsers($email, $password, $role, $user_id, $department, $mobile_number)
     {
-//        $uid = app('firebase.auth')->signInWithEmailAndPassword($email, $password)->uid;
-//        $factory = new Faker();
-//        firebaseGetReference('users/' . $uid)->set([
-//            'email' => $email,
-//            'name' => $factory->name,
-//            'role' => $role,
-//            'mobile_number' => $factory->phoneNumber,
-//            'user_id' => $user_id,
-//            'department' => $department
-//        ]);
-//        return 'user created successfully';
+        $uid = app('firebase.auth')->signInWithEmailAndPassword($email, $password)->uid;
+
+        firebaseGetReference('users/' . $uid)->set([
+            'email' => $email,
+            'name' => 'student' . $user_id,
+            'role' => $role,
+            'mobile_number' => $mobile_number,
+            'user_id' => $user_id,
+            'department' => $department
+        ]);
+        return 'user created successfully';
     }
 
     public function logout()

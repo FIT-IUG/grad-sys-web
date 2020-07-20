@@ -98,18 +98,17 @@ function getStudentsStdWithoutGroup()
 {
     try {
         $students_std = [];
-        $index = 0;
         $studentsStdInGroup = getStudentsStdInGroups();
         $students = getUserByRole('student');
         $student_gender = Str::substr(getUserId(), 0, 1);
         $logged_student_std = getUserId();
 
-        foreach ($students as $student) {
+        foreach ($students as $key => $student) {
             if (Str::startsWith($student['user_id'], $student_gender)) {
                 if ($student['user_id'] == $logged_student_std)
                     continue;
                 else
-                    Arr::set($students_std, $index++, $student['user_id'] . '');
+                    Arr::set($students_std, $key, $student['user_id'] . '');
             }
         }
 

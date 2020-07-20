@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\MainController;
 use App\Http\Requests\ExportExcelRequestStudents;
 use App\Http\Requests\RegisterStudentRequest;
 use App\Http\Requests\SettingsRequest;
@@ -27,6 +28,7 @@ class AdminController extends MainController
         $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'مالتيميديا', 'موبايل', 'تكنولوجيا المعلومات'];
         $notifications = $this->getNotifications();
         $number_of_students = sizeof(getUserByRole('student'));
+        $teacher_groups = $this->groupsDataForTeacher(null);
 
         //Check if registered student is male(1) or female(2) by first number of there std
         $students = getStudentsStdWithoutGroup();
@@ -48,6 +50,7 @@ class AdminController extends MainController
             'statistics' => $statistics,
             'students' => $students,
             'notifications' => $notifications,
+            'teacher_groups' => $teacher_groups
         ]);
     }
 
@@ -108,8 +111,12 @@ class AdminController extends MainController
 
     public function updateSettings(SettingsRequest $settingsRequest)
     {
-        firebaseGetReference('settings')->set($settingsRequest->validated());
-        return redirect()->back()->with('success', 'تم تحديث إعدادات النظام بنجاح.');
+        try {
+            firebaseGetReference('settings')->update($settingsRequest->validated());
+            return redirect()->back()->with('success', 'تم تحديث إعدادات النظام بنجاح.');
+        } catch (ApiException $e) {
+            return redirect()->back()->with('error','حصلت مشكلة في تعديل بيانات النظام.');
+        }
     }
 
     private function getUserNotifications()

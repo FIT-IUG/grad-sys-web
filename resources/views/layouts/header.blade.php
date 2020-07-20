@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 <!-- Theme style -->
 <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}">
+<!-- DataTables -->
+<link rel="stylesheet" href="{{asset('assets/plugins/datatables/dataTables.bootstrap4.css')}}">
 <!-- iCheck -->
 {{--<link rel="stylesheet" href="{{asset('assets/plugins/iCheck/flat/blue.css')}}">--}}
 <!-- Morris chart -->

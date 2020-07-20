@@ -4,7 +4,7 @@
     <div class="col-md-6">
         <div class="card card-primary">
             <div class="card-header">
-                <h3 class="card-title">رفع بيانات الطلبة</h3>
+                <h3 class="card-title">رفع بيانات الطلبةو المشرفين</h3>
             </div>
             <form role="form" method="POST" action="{{route('exportStudents')}}"
                   enctype="multipart/form-data">

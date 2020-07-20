@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\UniqueStudentDataRule;
+use App\Rules\UpdateUserRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterStudentRequest extends FormRequest
+class UpdateTeacherRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +25,10 @@ class RegisterStudentRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required:alpha', new UniqueStudentDataRule()],
-            'email' => ['required', 'email', new UniqueStudentDataRule()],
-            'mobile_number' => ['required', 'numeric', 'digits:10', new UniqueStudentDataRule],
-            'user_id' => ['required', 'numeric', 'digits:9', new UniqueStudentDataRule()],
+            'name' => ['required:alpha', new UpdateUserRule()],
+            'email' => ['required', new UpdateUserRule()],
+            'mobile_number' => ['required', 'numeric', 'digits:10', new UpdateUserRule()],
+            'user_id' => ['required', 'numeric', 'digits:9', new UpdateUserRule()],
             'department' => 'required',
         ];
     }

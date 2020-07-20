@@ -31,11 +31,6 @@
                                     </option>
                                 @endforeach
                             </select>
-                            {{--                            @error('membersStd')--}}
-                            {{--                            @if(old('membersStd')[$i] == null)--}}
-                            {{--                                <div class="alert alert-danger" style="margin-top: 10px">الرقم الجامعي مطلوب</div>--}}
-                            {{--                            @endif--}}
-                            {{--                            @enderror--}}
                         </div>
                     </div>
                 @endfor

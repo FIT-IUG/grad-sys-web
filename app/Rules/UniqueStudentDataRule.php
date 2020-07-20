@@ -15,24 +15,17 @@ class UniqueStudentDataRule implements Rule
      * @param mixed $value
      * @return bool
      * @return RedirectResponse
+     * @throws ApiException
      */
     public function passes($attribute, $value)
     {
 //        if row has value there is a similar value.
-        try {
-            $users = firebaseGetReference('users')->getValue();
-            foreach ($users as $user) {
-                if ($user['role'] == 'student') {
-                    if ($user[$attribute] == $value)
-                        return false;
-                }
-            }
-            return true;
-        } catch (ApiException $e) {
-        }catch (\ErrorException $exception){
-            return redirect()->back()->with('error','حدثت مشكلة في التسجيل.');
-        }
-
+        $users = firebaseGetReference('users')->getValue();
+        foreach ($users as $user)
+            if ($user['role'] == 'student')
+                if ($user[$attribute] == $value)
+                    return false;
+        return true;
     }
 
     /**

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Illuminate\Support\Arr;
+use Kreait\Firebase\Exception\AuthException;
+use Kreait\Firebase\Exception\FirebaseException;
 
 class MainController extends Controller
 {
@@ -48,4 +50,123 @@ class MainController extends Controller
         } catch (\Kreait\Firebase\Exception\ApiException $e) {
         }
     }
+
+    public function create()
+    {
+
+        $email = 'admin2@example.com';
+        $password = 'admin123';
+        $role = 'admin';
+        $user_id = '111111111';
+        $mobile_number = '0597412325';
+        $department = 'FIT';
+
+        try {
+            $uid = firebaseAuth()->createUserWithEmailAndPassword($email, $password)->uid;
+            firebaseGetReference('users/' . $uid)->set([
+                'email' => $email,
+                'name' => 'student' . $user_id,
+                'role' => $role,
+                'mobile_number' => $mobile_number,
+                'user_id' => $user_id,
+                'department' => $department
+            ]);
+            return 'user created successfully';
+        } catch (AuthException $e) {
+        } catch (FirebaseException $e) {
+        }
+
+    }
+
+    protected function groupsDataForTeacher($id)
+    {
+        $teacher_id = $id;
+        if ($id == null)
+            $teacher_id = getUserId();
+        $groups = firebaseGetReference('groups')->getValue();
+        $students = getUserByRole('student');
+        $groups_data = [];
+        $students_data = [];
+        $index = 0;
+        $group_counter = 0;
+
+        foreach ($groups as $group) {
+            if (isset($group['teacher']) && $group['teacher'] == $teacher_id) {
+                $group_students_std = Arr::flatten([$group['leaderStudentStd'], $group['membersStd']]);
+                foreach ($students as $student)
+                    foreach ($group_students_std as $std)
+                        if ($student['user_id'] == $std) {
+                            $student = Arr::except($student, ['remember_token', 'role']);
+                            if ($group['leaderStudentStd'] == $student['user_id']) {
+                                $student = Arr::collapse([$student, ['isLeader' => true]]);
+                            } else
+                                $student = Arr::collapse([$student, ['isLeader' => false]]);
+                            Arr::set($students_data, $index++, $student);
+                        }
+                $group_data = Arr::collapse([$group, ['students_data' => $students_data]]);
+                $students_data = [];
+                $index = 0;
+                Arr::set($groups_data, $group_counter++, $group_data);
+            }
+        }
+        return $groups_data;
+    }
+
+
+    protected function getGroupMembersData($members_std, $leader_id = 0)
+    {
+        $group_members_data = [];
+        $students = getUserByRole('student');
+        $index = 0;
+
+        if ($leader_id == 0) {
+            foreach ($students as $student) {
+                foreach ($members_std as $std)
+                    if ($student['user_id'] == $std) {
+                        $student = Arr::except($student, ['remember_token', 'role']);
+                        Arr::set($group_members_data, $index++, $student);
+                        break;
+                    }
+                if (sizeof($members_std) == $index)
+                    break;
+            }
+            return $group_members_data;
+        } else {
+            $leader_data = [];
+            foreach ($students as $student) {
+                if ($student['user_id'] == $leader_id) {
+                    $leader_data = Arr::except($student, ['remember_token', 'role']);
+                }
+                foreach ($members_std as $std)
+                    if ($student['user_id'] == $std) {
+                        $student = Arr::except($student, ['remember_token', 'role']);
+                        Arr::set($group_members_data, $index++, $student);
+                        break;
+                    }
+                if (sizeof($members_std) == $index && $leader_data != null)
+                    break;
+            }
+
+            return [
+                'leader_data' => $leader_data,
+                'members_data' => $group_members_data
+            ];
+        }
+
+    }
+
+    protected function getTeacherData($teacher_id)
+    {
+        $teachers = getUserByRole('teacher');
+        $teacher_data = [];
+
+        foreach ($teachers as $teacher)
+            if ($teacher['user_id'] == $teacher_id) {
+                $teacher_data = Arr::except($teacher, ['role', 'user_id', 'remember_token']);
+                break;
+            }
+        return $teacher_data;
+    }
+
+
 }

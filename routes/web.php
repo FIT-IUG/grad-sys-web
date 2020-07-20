@@ -21,6 +21,8 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+Route::get('create', 'MainController@create');
+
 Route::get('send', 'EmailController@mail');
 Route::get('viewMail', 'EmailController@show');
 Route::get('student/create/password/{token}', 'Student\PasswordController@create');
@@ -43,13 +45,25 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
         Route::post('group/addSupervisor', 'GroupController@storeGroupSupervisor')->name('student.group.storeSupervisor');
     });
 
-    Route::prefix('admin')->group(function () {
+    Route::namespace('Admin')->prefix('admin')->group(function () {
         Route::get('/', 'AdminController@index')->name('admin.index');
         Route::get('الإعدادات', 'AdminController@settings')->name('admin.settings');
         Route::post('settings', 'AdminController@updateSettings')->name('admin.settings.update');
         Route::post('uploadStudentFile', 'AdminController@exportStudentsExcel')->name('exportStudents');
         Route::post('uploadTeachersFile', 'AdminController@exportTeachersExcel')->name('exportTeachers');
         Route::post('storeStudent', 'AdminController@storeStudent')->name('student.store');
+        Route::get('students', 'StudentController@index')->name('admin.student.index');
+        Route::get('student/edit/{user_id}', 'StudentController@edit')->name('admin.student.edit');
+        Route::post('student/update/{key}', 'StudentController@update')->name('admin.student.update');
+        Route::get('student/destroy/{user_id}', 'StudentController@destroy')->name('admin.student.destroy');
+        Route::get('teachers', 'TeacherController@index')->name('admin.teacher.index');
+        Route::get('teacher/show/{key}', 'TeacherController@show')->name('admin.teacher.show');
+        Route::get('teacher/edit/{key}', 'TeacherController@edit')->name('admin.teacher.edit');
+        Route::post('teacher/update/{key}', 'TeacherController@update')->name('admin.teacher.update');
+        Route::get('teacher/destroy/{key}', 'TeacherController@destroy')->name('admin.teacher.destroy');
+        Route::get('groups', 'GroupController@index')->name('admin.group.index');
+        Route::get('groups/edit/{group_key}', 'GroupController@edit')->name('admin.group.edit');
+        Route::post('groups/update/{group_key}', 'GroupController@update')->name('admin.group.update');
     });
 
     Route::get('teacher', 'TeacherController@index')->name('teacher.index');

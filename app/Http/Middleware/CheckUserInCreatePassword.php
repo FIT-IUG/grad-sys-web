@@ -20,10 +20,13 @@ class CheckUserInCreatePassword
     {
 
         $token = request()->segment(4);
+        if ($token == null)
+            $token = $request->get('token');
         $emailed_users = firebaseGetReference('emailed_users')->getValue();
         foreach ($emailed_users as $user)
             if ($user['token'] == $token)
                 return $next($request);
-        return redirect()->route('home')->with('error','ليس لديك الصلاحية لفعل ذلك.');
+
+        return redirect()->route('home')->with('error', 'ليس لديك الصلاحية لفعل ذلك.');
     }
 }

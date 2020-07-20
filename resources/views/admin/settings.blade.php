@@ -33,9 +33,8 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /.card-body -->
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">ارسال</button>
+                        <button type="submit" class="btn btn-primary">تحديث</button>
                     </div>
                 </form>
             </div>
