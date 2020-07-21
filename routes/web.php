@@ -25,7 +25,7 @@ Route::get('create', 'MainController@create');
 
 Route::get('send', 'EmailController@mail');
 Route::get('viewMail', 'EmailController@show');
-Route::get('student/create/password/{token}', 'student\PasswordController@create');
+Route::get('student/create/password/{token}', 'Student\PasswordController@create');
 Route::post('student/store/password', 'student\PasswordController@store')->name('store.student.password');
 
 Route::get('تسجيل_الدخول', 'AuthController@login')->name('login');
