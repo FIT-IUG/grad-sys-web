@@ -25,8 +25,9 @@ class LoginRequest extends FormRequest
      */
     public function rules()
     {
+//        'regex:/(.*)@iugaza\.edu\.com$/i',
         return [
-            'email' => ['required', 'email', new CheckEmailRule()],
+            'email' => ['required', new CheckEmailRule()],
             'password' => ['required', 'between:8,16', new CheckPasswordRule()]
         ];
     }

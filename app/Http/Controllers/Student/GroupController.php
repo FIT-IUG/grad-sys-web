@@ -76,7 +76,6 @@ class GroupController extends Controller
             //notification for every member to join group by event
             $members_std = array_filter($request->validated()['membersStd']);
 
-//            dd($members_std);
             foreach ($members_std as $member_std) {
                 firebaseGetReference('notifications')->push([
                     'from' => $leader_std,
@@ -113,6 +112,7 @@ class GroupController extends Controller
                             if ($hasMemberStd != null) {
                                 foreach ($students as $student_key => $student) {
                                     if ($student['user_id'] == $member_std) {
+                                        firebaseGetReference('androidStudentsStdInGroups')->push($member_std);
                                         $groups->getChild($group_key)->getChild('membersStd/' . $student_key)->set($member_std);
                                         firebaseGetReference('notifications/' . $notification_key)->update(['status' => 'accept']);
                                         firebaseGetReference('notifications')->push([

@@ -35,7 +35,7 @@ Route::get('logout', 'AuthController@logout')->name('logout');
 
 Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
 
-    Route::namespace('student')->prefix('student')->group(function () {
+    Route::namespace('Student')->prefix('student')->group(function () {
         Route::get('/', 'DashboardController@index')->name('student.index');
         Route::get('wait', 'DashboardController@wait')->name('student.wait');
         Route::get('createGroup', 'GroupController@create')->name('student.group.create');

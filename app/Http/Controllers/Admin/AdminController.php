@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\MainController;
-use App\Http\Requests\ExportExcelRequestStudents;
+use App\Http\Requests\ExportExcelRequest;
 use App\Http\Requests\RegisterStudentRequest;
 use App\Http\Requests\SettingsRequest;
 use App\Imports\StudentsImport;
@@ -29,6 +29,7 @@ class AdminController extends MainController
         $notifications = $this->getNotifications();
         $number_of_students = sizeof(getUserByRole('student'));
         $teacher_groups = $this->groupsDataForTeacher(null);
+        $teachers = getUserByRole('teacher');
 
         //Check if registered student is male(1) or female(2) by first number of there std
         $students = getStudentsStdWithoutGroup();
@@ -36,11 +37,19 @@ class AdminController extends MainController
         $groups = firebaseGetReference('groups')->getValue();
         $number_of_groups = $groups != null ? sizeof($groups) : 0;
 
-        $number_of_teamed_students = 20;
+        $number_of_teamed_students = 0;
+
+        foreach ($groups as $group) {
+            $number_of_teamed_students++;
+            if (isset($group['membersStd']) && $group['membersStd'] != null)
+                $number_of_teamed_students += sizeof($group['membersStd']);
+        }
+
         $statistics = [
             'number_of_students' => $number_of_students,
             'number_of_groups' => $number_of_groups,
-            'number_of_teamed_students' => $number_of_teamed_students
+            'number_of_teamed_students' => $number_of_teamed_students,
+            'number_of_teachers' => sizeof($teachers)
         ];
 
         // get user id, every user have unique id
@@ -86,7 +95,7 @@ class AdminController extends MainController
         }
     }
 
-    public function exportStudentsExcel(ExportExcelRequestStudents $request)
+    public function exportStudentsExcel(ExportExcelRequest $request)
     {
         $array = Excel::toArray(new StudentsImport(), $request->file('excelFile'));
         foreach ($array[0] as $value) {
@@ -115,7 +124,7 @@ class AdminController extends MainController
             firebaseGetReference('settings')->update($settingsRequest->validated());
             return redirect()->back()->with('success', 'تم تحديث إعدادات النظام بنجاح.');
         } catch (ApiException $e) {
-            return redirect()->back()->with('error','حصلت مشكلة في تعديل بيانات النظام.');
+            return redirect()->back()->with('error', 'حصلت مشكلة في تعديل بيانات النظام.');
         }
     }
 

@@ -45,6 +45,7 @@ class GroupController extends MainController
             $student = firebaseGetReference('users/' . $student_id);
             firebaseGetReference('groups/' . $group_key . '/membersStd/' . $student_id)
                 ->set($student->getChild('user_id')->getValue());
+            firebaseGetReference('androidStudentsStdInGroups')->push($student->getChild('user_id'));
 
             return redirect()->route('admin.group.edit', ['group_key' => $group_key])->with('success', 'تم اضافة الطالب ' . $student->getChild('name')->getValue() . ' إلى المجموعة بنجاح.');
         } catch (ApiException $e) {

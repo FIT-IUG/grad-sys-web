@@ -26,7 +26,7 @@ class AuthController extends Controller
         $email = $request->get('email');
         $password = $request->get('password');
 
-        createUsers($email, $password, 'student', '120169998', 'CS','0597722136');
+//        createUsers($email, $password, 'student', '120169998', 'CS','0597722136');
 
         try {
             //verify user if exist
