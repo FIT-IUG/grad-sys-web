@@ -30,7 +30,6 @@ class AdminController extends MainController
         $number_of_students = sizeof(getUserByRole('student'));
         $teacher_groups = $this->groupsDataForTeacher(null);
         $teachers = getUserByRole('teacher');
-
         //Check if registered student is male(1) or female(2) by first number of there std
         $students = getStudentsStdWithoutGroup();
 

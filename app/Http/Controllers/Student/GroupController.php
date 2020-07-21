@@ -21,7 +21,7 @@ class GroupController extends Controller
 
         try {
             firebaseGetReference('groups')->push([
-                'leaderStudentStd' => $leader_std,
+                'leaderStudentStd' => $leader_std.'',
                 'graduateInFirstSemester' => $request->get('graduateInFirstSemester'),
                 'membersStd' => ''
             ]);
@@ -101,15 +101,21 @@ class GroupController extends Controller
             $leader_id = $request->get('from');
             $member_std = $request->get('to');
             $students = getUserByRole('student');
-            $max_members = firebaseGetReference('settings/max_members_std')->getValue();
+            $members_count = 0;
+
+            $max_members = firebaseGetReference('settings/max_group_members')->getValue();
             if ($reply == 'accept') {
 
                 $groups = firebaseGetReference('groups');
                 foreach ($groups->getValue() as $group_key => $group) {
                     if ($group['leaderStudentStd'] == $leader_id) {
-                        $hasMemberStd = array_search($member_std, $group['membersStd']);
-                        if (count($group['membersStd']) != $max_members) {
-                            if ($hasMemberStd != null) {
+                        if (is_array($group['membersStd'])) {
+                            $hasMemberStd = array_search($member_std, $group['membersStd']);
+                            $members_count = count($group['membersStd']);
+                        } else
+                            $hasMemberStd = array_search($member_std, [$group['membersStd']]);
+                        if ($members_count < $max_members) {
+                            if ($hasMemberStd == false) {
                                 foreach ($students as $student_key => $student) {
                                     if ($student['user_id'] == $member_std) {
                                         firebaseGetReference('androidStudentsStdInGroups')->push($member_std);

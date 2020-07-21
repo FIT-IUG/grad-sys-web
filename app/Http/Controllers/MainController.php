@@ -25,15 +25,16 @@ class MainController extends Controller
 //               this type of notification to teacher and need with normal data in notification a project initial title
 //                       to be supervisor notification type send for teacher and admin
                         if ($notification['type'] == 'to_be_supervisor') {
+//                            dd($notification);
                             $groups = firebaseGetReference('groups')->getValue();
 //                      get project initial title
-                            foreach ($groups as $group)
+                            foreach ($groups as $group) {
                                 if ($group['leaderStudentStd'] == $notification['from']) {
-                                    $teacher_notification = Arr::collapse([
-                                        $notification, ['initial_title' => $group['project_initial_title']]
-                                    ]);
+                                    $teacher_notification = Arr::add($notification, 'initial_title', $group['initialProjectTitle']);
                                     break;
                                 }
+                            }
+
                             Arr::set($user_notifications, $key, $teacher_notification);
                         } else
                             Arr::set($user_notifications, $key, $notification);

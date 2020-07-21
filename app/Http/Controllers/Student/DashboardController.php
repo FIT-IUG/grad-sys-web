@@ -70,7 +70,7 @@ class DashboardController extends MainController
                                     if (isset($group['teacher']) && $teacher['user_id'] == $group['teacher']) {
                                         $teacher_counter++;
                                     }
-                                    if ($teacher_counter == 3){
+                                    if ($teacher_counter == 3) {
                                         Arr::forget($teachers, $key);
                                     }
                                 }
@@ -102,12 +102,14 @@ class DashboardController extends MainController
                         $groups = firebaseGetReference('groups')->getValue();
                         $student_id = getUserId();
                         foreach ($groups as $group) {
-                            foreach ($group['membersStd'] as $std) {
-                                if ($std == $student_id)
-                                    return view('student.member.index', [
-                                        'message' => 'انتظر حتى ينتهي قائد الفريق من اعدادات المشروع.',
-                                    ]);
-                            }
+                            if (is_array($group['membersStd']))
+                                foreach ($group['membersStd'] as $std) {
+                                    if ($std == $student_id)
+                                        return view('student.member.index', [
+                                            'message' => 'انتظر حتى ينتهي قائد الفريق من اعدادات المشروع.',
+                                        ]);
+                                }
+
                         }
                     } catch (ApiException $e) {
                         return redirect()->back()->with('error', 'حصلت مشكلة في النظام.');
