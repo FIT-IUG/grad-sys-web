@@ -21,10 +21,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('create', 'MainController@create');
+//Route::get('create', 'MainController@create');
 
-Route::get('send', 'EmailController@mail');
-Route::get('viewMail', 'EmailController@show');
+//Route::get('send', 'EmailController@mail');
+//Route::get('viewMail', 'EmailController@show');
 Route::get('student/create/password/{token}', 'Student\PasswordController@create');
 Route::post('student/store/password', 'Student\PasswordController@store')->name('store.student.password');
 
@@ -49,8 +49,8 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
         Route::get('/', 'AdminController@index')->name('admin.index');
         Route::get('الإعدادات', 'AdminController@settings')->name('admin.settings');
         Route::post('settings', 'AdminController@updateSettings')->name('admin.settings.update');
-        Route::post('uploadStudentFile', 'AdminController@exportStudentsExcel')->name('exportStudents');
-        Route::post('uploadTeachersFile', 'AdminController@exportTeachersExcel')->name('exportTeachers');
+        Route::post('uploadExcelFile', 'AdminController@exportExcelFile')->name('admin.exportExcelFile');
+//        Route::post('uploadTeachersFile', 'AdminController@exportTeachersExcel')->name('exportTeachers');
         Route::post('storeStudent', 'AdminController@storeStudent')->name('student.store');
         Route::get('students', 'StudentController@index')->name('admin.student.index');
         Route::get('student/edit/{user_id}', 'StudentController@edit')->name('admin.student.edit');
@@ -64,13 +64,12 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
         Route::get('groups', 'GroupController@index')->name('admin.group.index');
         Route::get('groups/edit/{group_key}', 'GroupController@edit')->name('admin.group.edit');
         Route::post('groups/update/{group_key}', 'GroupController@update')->name('admin.group.update');
+        Route::post('replyJoinGroupRequest', 'MainController@replayToBeSupervisorRequest')->name('admin.group.replyRequest');
     });
 
     Route::get('teacher', 'TeacherController@index')->name('teacher.index');
-
-
     Route::post('storeGroupMembers', 'StudentController@storeGroupMembers')->name('group.members.store');
     Route::post('storeGroupSupervisor', 'StudentController@storeGroupSupervisor')->name('group.teacher.store');
     Route::post('acceptTeamJoinRequest', 'StudentController@acceptTeamJoinRequest')->name('acceptTeamJoinRequest');
-    Route::post('replyJoinGroupRequest', 'TeacherController@replayToBeSupervisorRequest')->name('group.teacher.replyRequest');
+    Route::post('teacher/replyJoinGroupRequest', 'MainController@replayToBeSupervisorRequest')->name('teacher.group.replyRequest');
 });

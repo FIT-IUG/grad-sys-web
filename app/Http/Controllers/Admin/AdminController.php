@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\NewStudentHasCreateEvent;
+use App\Events\UploadUsersExcelFileEvent;
 use App\Http\Controllers\MainController;
 use App\Http\Requests\ExportExcelRequest;
 use App\Http\Requests\RegisterStudentRequest;
@@ -30,6 +32,7 @@ class AdminController extends MainController
         $number_of_students = sizeof(getUserByRole('student'));
         $teacher_groups = $this->groupsDataForTeacher(null);
         $teachers = getUserByRole('teacher');
+
         //Check if registered student is male(1) or female(2) by first number of there std
         $students = getStudentsStdWithoutGroup();
 
@@ -80,24 +83,34 @@ class AdminController extends MainController
         $student = Arr::collapse([$request->validated(), ['role' => 'student']]);
         try {
             // store in users table at first
-            $key = firebaseGetReference('users')->push($student)->getKey();
+            $student = firebaseGetReference('users')->push($student);
+
+            // send create password email, and store token and user_id in emailed_users table
+//            event(new NewStudentHasCreateEvent($student));
+
+            $key = $student->getKey();
+            $email = $student['email'];
+
             //Send Email
             $token = Str::random(60);
             firebaseGetReference('emailed_users')->push([
                 'user_id' => $key,
                 'token' => $token
             ]);
-            Mail::to($student['email'])->send(new SendCreatePassword($token));
+
+            Mail::to($email)->send(new SendCreatePassword($token));
+
             return redirect()->back()->with('success', 'تم تسجيل الطالب بنجاح.');
         } catch (ApiException $e) {
             return redirect()->back()->with('error', 'حصلت مشكلة في تسجيل الطالب.');
         }
     }
 
-    public function exportStudentsExcel(ExportExcelRequest $request)
+    public function exportExcelFile(ExportExcelRequest $request)
     {
-        $array = Excel::toArray(new StudentsImport(), $request->file('excelFile'));
-        foreach ($array[0] as $value) {
+        $users = Excel::toArray(new StudentsImport(), $request->file('excelFile'));
+//        event(new UploadUsersExcelFileEvent($users));
+        foreach ($users[0] as $value) {
             if ($value[0] == 'id')
                 continue;
             try {
@@ -109,7 +122,10 @@ class AdminController extends MainController
                     'mobile_number' => $value[4],
                     'email' => $value[5],
                 ]);
-//                send email
+
+                $token = Str::random(60);
+                Mail::to($value[5])->send(new SendCreatePassword($token));
+
             } catch (ApiException $e) {
                 return redirect()->back()->with('error', 'حصل مشكلة في رفع الملف.');
             }

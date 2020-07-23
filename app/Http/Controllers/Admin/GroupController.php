@@ -16,11 +16,8 @@ class GroupController extends MainController
             $groups = firebaseGetReference('groups')->getValue();
             $all_groups = [];
 
-            foreach ($groups as $key => $group) {
-
+            foreach ($groups as $key => $group)
                 Arr::set($all_groups, $key, $this->getAllGroupInfo($key));
-
-            }
 
             return view('admin.group.index')->with([
                 'groups' => $all_groups
@@ -57,21 +54,31 @@ class GroupController extends MainController
         try {
             $group = firebaseGetReference('groups/' . $group_key)->getValue();
 
-            $group_members_data = $this->getGroupMembersData($group['membersStd'], $group['leaderStudentStd']);
+            if (is_array($group['membersStd']))
+                $group_members_data = $this->getGroupMembersData($group['membersStd'], $group['leaderStudentStd']);
+            else
+                $group_members_data = $this->getGroupMembersData([$group['membersStd']], $group['leaderStudentStd']);
 
-            $teacher_data = $this->getTeacherData($group['teacher']);
+            if (isset($group['teacher']))
+                $teacher_data = $this->getTeacherData($group['teacher']);
+            else
+                $teacher_data = null;
 
-            Arr::set($project_data, 0, [
-                'initialProjectTitle' => $group['initialProjectTitle'],
-                'graduateInFirstSemester' => $group['graduateInFirstSemester'],
-                'tags' => $group['tags']
-            ]);
+            if (isset($group['initialProjectTitle'])) {
+                Arr::set($project_data, 0, [
+                    'initialProjectTitle' => $group['initialProjectTitle'],
+                    'graduateInFirstSemester' => $group['graduateInFirstSemester'],
+                    'tags' => $group['tags']
+                ]);
+                $project_data = $project_data[0];
+            } else
+                $project_data = null;
 
             return [
                 'group_leader_data' => $group_members_data['leader_data'],
                 'group_members_data' => $group_members_data['members_data'],
                 'teacher_data' => $teacher_data,
-                'project_data' => $project_data[0],
+                'project_data' => $project_data,
                 'students' => getStudentsStdWithoutGroup(),
                 'group_key' => $group_key
             ];

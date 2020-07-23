@@ -6,7 +6,7 @@
             <div class="card-header">
                 <h3 class="card-title">رفع بيانات الطلبةو المشرفين</h3>
             </div>
-            <form role="form" method="POST" action="{{route('exportStudents')}}"
+            <form role="form" method="POST" action="{{route('admin.exportExcelFile')}}"
                   enctype="multipart/form-data">
                 @csrf
                 <div class="card-body">

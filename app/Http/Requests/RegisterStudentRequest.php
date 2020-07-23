@@ -27,7 +27,7 @@ class RegisterStudentRequest extends FormRequest
 //        regex:/(.*)@iugaza\.edu\.ps/i
         return [
             'name' => ['required:alpha', new UniqueStudentDataRule()],
-            'email' => ['required', new UniqueStudentDataRule()],
+            'email' => ['required', 'email', new UniqueStudentDataRule()],
             'mobile_number' => ['required', 'numeric', 'digits:10', new UniqueStudentDataRule],
             'user_id' => ['required', 'numeric', 'digits:9', new UniqueStudentDataRule()],
             'department' => 'required',

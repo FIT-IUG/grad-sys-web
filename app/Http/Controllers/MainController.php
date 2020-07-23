@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Kreait\Firebase\Exception\ApiException;
 use Kreait\Firebase\Exception\AuthException;
 use Kreait\Firebase\Exception\FirebaseException;
 
@@ -30,7 +32,7 @@ class MainController extends Controller
 //                      get project initial title
                             foreach ($groups as $group) {
                                 if ($group['leaderStudentStd'] == $notification['from']) {
-                                    $teacher_notification = Arr::add($notification, 'initial_title', $group['initialProjectTitle']);
+                                    $teacher_notification = Arr::add($notification, 'initialProjectTitle', $group['initialProjectTitle']);
                                     break;
                                 }
                             }
@@ -138,16 +140,17 @@ class MainController extends Controller
                 if ($student['user_id'] == $leader_id) {
                     $leader_data = Arr::except($student, ['remember_token', 'role']);
                 }
-                foreach ($members_std as $std)
-                    if ($student['user_id'] == $std) {
+                foreach ($members_std as $std) {
+                    if (isset($student['user_id']) && $student['user_id'] == $std) {
                         $student = Arr::except($student, ['remember_token', 'role']);
                         Arr::set($group_members_data, $index++, $student);
                         break;
                     }
-                if (sizeof($members_std) == $index && $leader_data != null)
+                }
+                if (sizeof($members_std) == $index && $leader_data != null) {
                     break;
+                }
             }
-
             return [
                 'leader_data' => $leader_data,
                 'members_data' => $group_members_data
@@ -167,6 +170,34 @@ class MainController extends Controller
                 break;
             }
         return $teacher_data;
+    }
+
+    public function replayToBeSupervisorRequest(Request $request)
+    {
+
+        try {
+            $reply = $request->get('reply');
+            $student_std = $request->get('from');
+            $teacher_id = $request->get('to');
+            $key = $request->get('notification_key');
+            $groups = firebaseGetReference('groups')->getValue();
+
+            if ($reply == 'accept') {
+                firebaseGetReference('notifications/' . $key)->update(['status' => 'accept']);
+                foreach ($groups as $index => $group)
+                    if ($group['leaderStudentStd'] == $student_std) {
+                        firebaseGetReference('groups/' . $index)->update(['teacher' => $teacher_id]);
+                        break;
+                    }
+                return redirect()->route(getRole() . '.index')->with('success', 'تم قبول الطلب بنجاح.');
+            } elseif ($reply == 'reject') {
+                firebaseGetReference('notifications/' . $key)->update(['status' => 'reject']);
+                return redirect()->back()->with('success', 'تم رفض الطلب بنجاح.');
+            } else
+                return redirect()->back()->with('error', 'حصلت مشكلة في الطلب.');
+        } catch (ApiException $e) {
+            return redirect()->back()->with('error', 'حصلت مشكلة في الطلب.');
+        }
     }
 
 

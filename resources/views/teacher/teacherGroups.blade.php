@@ -49,6 +49,7 @@
                             @endforeach
                             </tbody>
                         </table>
+                        <hr>
                         <div class="col-6">
                             <p class="lead">بيانات المشروع</p>
                             <div class="table-responsive">

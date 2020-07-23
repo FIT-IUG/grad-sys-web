@@ -2,10 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use App\Events\NewStudentHasCreateEvent;
+use App\Events\UploadUsersExcelFileEvent;
+use App\Listeners\SendCreatePasswordEmailFromExcelListener;
+use App\Listeners\SendCreatePasswordEmailListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -15,9 +16,12 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
-        ],
+        UploadUsersExcelFileEvent::class => [
+//            CreateUserFromExcelListener::class,
+            SendCreatePasswordEmailFromExcelListener::class,
+        ],NewStudentHasCreateEvent::class=>[
+            SendCreatePasswordEmailListener::class
+        ]
     ];
 
     /**
