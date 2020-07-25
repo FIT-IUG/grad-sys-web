@@ -10,7 +10,7 @@
     <div class="card">
         <div class="card-body login-card-body">
 
-            <form action="{{route('store.student.password',['token'=>request()->segment(4)])}}" method="post">
+            <form action="{{route('store.user.password',['token'=>request()->segment(4)])}}" method="post">
                 @csrf
                 <div class="input-group mb-3">
                     <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"

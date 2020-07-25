@@ -49,7 +49,7 @@
     </div>
 @endsection
 @section('content')
-    @includeIf('admin.create_student_form')
+    @includeIf('admin.create_user_form')
     @includeIf('teacher.teacherGroups')
     @includeIf('teacher.teacherNotifications')
     @includeIf('admin.exports_form')

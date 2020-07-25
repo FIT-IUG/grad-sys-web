@@ -23,9 +23,9 @@ class StudentPasswordRequest extends FormRequest
      */
     public function rules()
     {
-//        'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/'
+//'regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x]).*$/'
         return [
-            'password' => ['required', 'confirmed','between:8,16','regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x]).*$/'],
+            'password' => ['required', 'confirmed', 'between:8,16'],
             'password_confirmation' => ['required',],
         ];
     }

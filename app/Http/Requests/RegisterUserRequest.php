@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\UniqueStudentDataRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterStudentRequest extends FormRequest
+class RegisterUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,6 @@ class RegisterStudentRequest extends FormRequest
      */
     public function rules()
     {
-//        regex:/(.*)@iugaza\.edu\.ps/i
         return [
             'name' => ['required:alpha', new UniqueStudentDataRule()],
             'email' => ['required', 'email', new UniqueStudentDataRule()],

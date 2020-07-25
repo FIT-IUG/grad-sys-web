@@ -92,26 +92,26 @@ class MainController extends Controller
         $students_data = [];
         $index = 0;
         $group_counter = 0;
-
-        foreach ($groups as $group) {
-            if (isset($group['teacher']) && $group['teacher'] == $teacher_id) {
-                $group_students_std = Arr::flatten([$group['leaderStudentStd'], $group['membersStd']]);
-                foreach ($students as $student)
-                    foreach ($group_students_std as $std)
-                        if ($student['user_id'] == $std) {
-                            $student = Arr::except($student, ['remember_token', 'role']);
-                            if ($group['leaderStudentStd'] == $student['user_id']) {
-                                $student = Arr::collapse([$student, ['isLeader' => true]]);
-                            } else
-                                $student = Arr::collapse([$student, ['isLeader' => false]]);
-                            Arr::set($students_data, $index++, $student);
-                        }
-                $group_data = Arr::collapse([$group, ['students_data' => $students_data]]);
-                $students_data = [];
-                $index = 0;
-                Arr::set($groups_data, $group_counter++, $group_data);
+        if ($groups != null)
+            foreach ($groups as $group) {
+                if (isset($group['teacher']) && $group['teacher'] == $teacher_id) {
+                    $group_students_std = Arr::flatten([$group['leaderStudentStd'], $group['membersStd']]);
+                    foreach ($students as $student)
+                        foreach ($group_students_std as $std)
+                            if ($student['user_id'] == $std) {
+                                $student = Arr::except($student, ['remember_token', 'role']);
+                                if ($group['leaderStudentStd'] == $student['user_id']) {
+                                    $student = Arr::collapse([$student, ['isLeader' => true]]);
+                                } else
+                                    $student = Arr::collapse([$student, ['isLeader' => false]]);
+                                Arr::set($students_data, $index++, $student);
+                            }
+                    $group_data = Arr::collapse([$group, ['students_data' => $students_data]]);
+                    $students_data = [];
+                    $index = 0;
+                    Arr::set($groups_data, $group_counter++, $group_data);
+                }
             }
-        }
         return $groups_data;
     }
 
@@ -123,34 +123,36 @@ class MainController extends Controller
         $index = 0;
 
         if ($leader_id == 0) {
-            foreach ($students as $student) {
-                foreach ($members_std as $std)
-                    if ($student['user_id'] == $std) {
-                        $student = Arr::except($student, ['remember_token', 'role']);
-                        Arr::set($group_members_data, $index++, $student);
+            if ($students != null)
+                foreach ($students as $student) {
+                    foreach ($members_std as $std)
+                        if ($student['user_id'] == $std) {
+                            $student = Arr::except($student, ['remember_token', 'role']);
+                            Arr::set($group_members_data, $index++, $student);
+                            break;
+                        }
+                    if (sizeof($members_std) == $index)
                         break;
-                    }
-                if (sizeof($members_std) == $index)
-                    break;
-            }
+                }
             return $group_members_data;
         } else {
             $leader_data = [];
-            foreach ($students as $student) {
-                if ($student['user_id'] == $leader_id) {
-                    $leader_data = Arr::except($student, ['remember_token', 'role']);
-                }
-                foreach ($members_std as $std) {
-                    if (isset($student['user_id']) && $student['user_id'] == $std) {
-                        $student = Arr::except($student, ['remember_token', 'role']);
-                        Arr::set($group_members_data, $index++, $student);
+            if ($students != null)
+                foreach ($students as $student) {
+                    if ($student['user_id'] == $leader_id) {
+                        $leader_data = Arr::except($student, ['remember_token', 'role']);
+                    }
+                    foreach ($members_std as $std) {
+                        if (isset($student['user_id']) && $student['user_id'] == $std) {
+                            $student = Arr::except($student, ['remember_token', 'role']);
+                            Arr::set($group_members_data, $index++, $student);
+                            break;
+                        }
+                    }
+                    if (sizeof($members_std) == $index && $leader_data != null) {
                         break;
                     }
                 }
-                if (sizeof($members_std) == $index && $leader_data != null) {
-                    break;
-                }
-            }
             return [
                 'leader_data' => $leader_data,
                 'members_data' => $group_members_data

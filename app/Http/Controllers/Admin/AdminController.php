@@ -6,7 +6,7 @@ use App\Events\NewStudentHasCreateEvent;
 use App\Events\UploadUsersExcelFileEvent;
 use App\Http\Controllers\MainController;
 use App\Http\Requests\ExportExcelRequest;
-use App\Http\Requests\RegisterStudentRequest;
+use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\SettingsRequest;
 use App\Imports\StudentsImport;
 use App\Mail\SendCreatePassword;
@@ -37,15 +37,18 @@ class AdminController extends MainController
         $students = getStudentsStdWithoutGroup();
 
         $groups = firebaseGetReference('groups')->getValue();
-        $number_of_groups = $groups != null ? sizeof($groups) : 0;
+        $number_of_groups = $groups != null ? sizeof($groups) : 'لا يوجد';
 
         $number_of_teamed_students = 0;
 
-        foreach ($groups as $group) {
-            $number_of_teamed_students++;
-            if (isset($group['membersStd']) && $group['membersStd'] != null)
-                $number_of_teamed_students += sizeof($group['membersStd']);
-        }
+        if (isset($groups))
+            foreach ($groups as $group) {
+                $number_of_teamed_students++;
+                if (isset($group['membersStd']) && $group['membersStd'] != null)
+                    $number_of_teamed_students += sizeof($group['membersStd']);
+            }
+        else
+            $number_of_teamed_students = 'لا يوجد';
 
         $statistics = [
             'number_of_students' => $number_of_students,
@@ -78,9 +81,9 @@ class AdminController extends MainController
         ]);
     }
 
-    public function storeStudent(RegisterStudentRequest $request)
+    public function storeUser(RegisterUserRequest $request)
     {
-        $student = Arr::collapse([$request->validated(), ['role' => 'student']]);
+        $student = $request->validated();
         try {
             // store in users table at first
             $student = firebaseGetReference('users')->push($student);
@@ -89,7 +92,7 @@ class AdminController extends MainController
 //            event(new NewStudentHasCreateEvent($student));
 
             $key = $student->getKey();
-            $email = $student['email'];
+            $email = $request->get('email');
 
             //Send Email
             $token = Str::random(60);
@@ -100,9 +103,9 @@ class AdminController extends MainController
 
             Mail::to($email)->send(new SendCreatePassword($token));
 
-            return redirect()->back()->with('success', 'تم تسجيل الطالب بنجاح.');
+            return redirect()->back()->with('success', 'تم تسجيل المستخدم بنجاح.');
         } catch (ApiException $e) {
-            return redirect()->back()->with('error', 'حصلت مشكلة في تسجيل الطالب.');
+            return redirect()->back()->with('error', 'حصلت مشكلة في تسجيل المستخدم.');
         }
     }
 
@@ -114,7 +117,7 @@ class AdminController extends MainController
             if ($value[0] == 'id')
                 continue;
             try {
-                firebaseGetReference('users')->push([
+                firebaseGetReference('usersFromExcel')->push([
                     'user_id' => $value[0],
                     'name' => $value[1],
                     'role' => $value[2],

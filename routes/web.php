@@ -25,8 +25,8 @@ Route::get('/', function () {
 
 //Route::get('send', 'EmailController@mail');
 //Route::get('viewMail', 'EmailController@show');
-Route::get('student/create/password/{token}', 'Student\PasswordController@create');
-Route::post('student/store/password', 'Student\PasswordController@store')->name('store.student.password');
+Route::get('user/create/password/{token}', 'PasswordController@create');
+Route::post('user/store/password', 'PasswordController@store')->name('store.user.password');
 
 Route::get('تسجيل_الدخول', 'AuthController@login')->name('login');
 Route::get('login', 'AuthController@login')->name('login');
@@ -51,7 +51,7 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
         Route::post('settings', 'AdminController@updateSettings')->name('admin.settings.update');
         Route::post('uploadExcelFile', 'AdminController@exportExcelFile')->name('admin.exportExcelFile');
 //        Route::post('uploadTeachersFile', 'AdminController@exportTeachersExcel')->name('exportTeachers');
-        Route::post('storeStudent', 'AdminController@storeStudent')->name('student.store');
+        Route::post('user/store', 'AdminController@storeUser')->name('user.store');
         Route::get('students', 'StudentController@index')->name('admin.student.index');
         Route::get('student/edit/{user_id}', 'StudentController@edit')->name('admin.student.edit');
         Route::post('student/update/{key}', 'StudentController@update')->name('admin.student.update');

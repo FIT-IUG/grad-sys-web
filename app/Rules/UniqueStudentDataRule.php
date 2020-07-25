@@ -22,9 +22,8 @@ class UniqueStudentDataRule implements Rule
 //        if row has value there is a similar value.
         $users = firebaseGetReference('users')->getValue();
         foreach ($users as $user)
-            if ($user['role'] == 'student')
-                if (isset($user[$attribute]) && $user[$attribute] == $value)
-                    return false;
+            if (isset($user[$attribute]) && $user[$attribute] == $value)
+                return false;
         return true;
     }
 

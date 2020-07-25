@@ -1,13 +1,13 @@
 {{-- user manually registration --}}
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">تسجيل طالب يدوياً</h3>
+        <h3 class="card-title">تسجيل مستخدم يدوياً</h3>
     </div>
     <div class="card-body">
-        <form action="{{route('student.store')}}" method="POST">
+        <form action="{{route('user.store')}}" method="POST">
             @csrf
             <div class="row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label for="exampleInputEmail1">الاسم</label>
                     <input type="text" class="form-control @error('name') is-invalid @enderror"
                            id="exampleInputEmail1" name="name" value="{{old('name')}}">
@@ -15,7 +15,7 @@
                     <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label for="exampleInputEmail1">الإيميل</label>
                     <input type="email" class="form-control @error('email') is-invalid  @enderror"
                            id="exampleInputEmail1" name="email" value="{{old('email')}}">
@@ -23,14 +23,24 @@
                     <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                     @enderror
                 </div>
-
-            </div>
-            <div class="row">
                 <div class="form-group col-md-4">
                     <label for="exampleInputEmail1">الرقم الجامعي</label>
                     <input type="text" class="form-control @error('user_id') is-invalid  @enderror"
                            id="exampleInputEmail1" name="user_id" value="{{old('user_id')}}">
                     @error('user_id')
+                    <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label>الدور</label>
+                    <select class="form-control @error('department') is-invalid  @enderror" name="department">
+                        <option value="student">طالب</option>
+                        <option value="teacher">مدرس</option>
+                        <option value="admin">أدمن</option>
+                    </select>
+                    @error('department')
                     <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                     @enderror
                 </div>

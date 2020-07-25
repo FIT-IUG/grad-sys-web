@@ -265,9 +265,10 @@ function getUserByRole($user_role)
     try {
         $selected_users = [];
         $users = firebaseGetReference('users')->getValue();
-        foreach ($users as $key => $user)
-            if ($user['role'] == $user_role)
-                Arr::set($selected_users, $key, $user);
+        if (isset($users))
+            foreach ($users as $key => $user)
+                if ($user['role'] == $user_role)
+                    Arr::set($selected_users, $key, $user);
         return $selected_users;
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
         return redirect()->route('logout')->with('error', 'حصلت مشكلة في النظام.');
