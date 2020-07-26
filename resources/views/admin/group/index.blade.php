@@ -13,6 +13,7 @@
                     <th>اسم قائد الفريق</th>
                     <th>اسم المشرف</th>
                     <th>عنوان المشروع</th>
+                    <th>شكل المشروع</th>
                     <th>الإعدادات</th>
                 </tr>
                 </thead>
@@ -31,6 +32,14 @@
                         <td @if(!isset($group['project_data']['initialProjectTitle']))
                             style="text-align: center" @endif>
                             {{isset($group['project_data']['initialProjectTitle']) ? $group['project_data']['initialProjectTitle'] : '-'}}
+                        </td>
+                        <td @if(isset($group['project_data']['tags']))
+                            style="text-align: center" @endif>
+                            @foreach($group['project_data']['tags'] as $tag)
+                                @if($loop->last) {{$tag}}.
+                                @else {{$tag}},
+                                @endif
+                            @endforeach
                         </td>
                         <td class="project-actions text-right">
                             <a class="btn btn-info btn-sm" href="{{route('admin.group.edit',['group_key'=>$key])}}">
@@ -54,6 +63,7 @@
                     <th>اسم قائد الفريق</th>
                     <th>اسم المشرف</th>
                     <th>عنوان المشروع</th>
+                    <th>شكل المشروع</th>
                     <th>الإعدادات</th>
                 </tr>
                 </tfoot>

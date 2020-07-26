@@ -6,137 +6,137 @@ use App\Http\Controllers\MainController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Kreait\Firebase\Exception\ApiException;
+use PhpParser\Node\Expr\Array_;
 
 class DashboardController extends MainController
 {
 
+    public function __construct()
+    {
+        $this->middleware('checkRole');
+    }
+
     public function index()
     {
-
+        $group_info = $this->getGroupInfo();
 //      Check what is the status for student
-        if (inGroup()) {
-            if (isGroupLeader()) {
-                $notifications = $this->getNotifications();
+        if ($group_info['key'] != null) {
+            $notifications = $this->getNotifications();
+            if ($group_info['is_group_leader']) {
+                switch ($group_info['status']) {
+                    case 'wait_min_members':
 
-                if (isMinMembersAccept()) {
-                    if (isTeacherHasNotification()) {
-                        $teacher_status = getSupervisorStatus();
+                        return view('student.dashboard', [
+                            'message' => 'انتظر حتى يوافق الحد الادنى من اعضاء الفريق',
+                            'notifications' => $notifications
+                        ]);
+                    case 'teacher_reject' :
+                    case 'choose_teacher':
 
-//                   this case when teacher has notification from the group leader but it's in wait status
-                        if ($teacher_status == 'wait') {
-
-                            return view('student.dashboard', [
-                                'notifications' => $notifications,
-                                'message' => 'انتظر رد المشرف.'
-                            ]);
-//                        if teacher accept to be supervisor for group
-                        } elseif ($teacher_status == 'accept') {
-
-//                       return group information project information teacher information
-                            $group_data = $this->getGroupData();
-
-                            $students = '';
-                            if ($group_data['group_students_complete'] != 0)
-                                $students = getStudentsStdWithoutGroup();
-
-                            return view('student.dashboard', [
-                                'notifications' => $notifications,
-                                'group_members_data' => $group_data['group_members_data'],
-                                'teacher_data' => $group_data['teacher_data'],
-                                'project_data' => $group_data['project_data'],
-                                'group_students_complete' => $group_data['group_students_complete'],
-                                'students' => $students,
-                            ]);
-//                       if teacher refuse or reject to be supervisor for group
-                        } else {
-//                       return to choose supervisor form
-                            return view('student.dashboard', [
-                                'notifications' => $notifications,
-                                'message' => 'رفض المشرف أن يكون مشرف مجموعتك.'
-                            ]);
-                        }
-                    } else {
-//                        send notification form
                         try {
-                            $teachers = getUserByRole('teacher');
-//                          extra need check
-                            $admins = getUserByRole('admin');
-                            $teachers = Arr::collapse([$teachers, $admins]);
-                            $groups = firebaseGetReference('groups')->getValue();
-                            $teacher_counter = 0;
-
-                            foreach ($teachers as $key => $teacher) {
-                                foreach ($groups as $group) {
-                                    if (isset($group['teacher']) && $teacher['user_id'] == $group['teacher']) {
-                                        $teacher_counter++;
-                                    }
-                                    if ($teacher_counter == 3) {
-                                        Arr::forget($teachers, $key);
-                                    }
-                                }
-                            }
-
                             $tags = firebaseGetReference('tags')->getValue();
+                            $teachers = $this->getTeachersCanBeSupervisor();
 
                             return view('student.group.supervisor_initial_title_form', [
                                 'teachers' => $teachers,
                                 'notifications' => $notifications,
-                                'tags' => $tags
+                                'tags' => $tags,
                             ]);
                         } catch (ApiException $e) {
+                            return redirect()->back()->with('error', 'حصلت مشكلة بالنظام.');
                         }
-                    }
-                } else {
-//                    wait to accept min
-                    return view('student.dashboard', [
-                        'message' => 'انتظر حتى يوافق الحد الادنى من اعضاء الفريق',
-                        'notifications' => $notifications
-                    ]);
+
+                    case 'wait_teacher':
+
+                        return view('student.dashboard', [
+                            'notifications' => $notifications,
+                            'message' => 'انتظر رد المشرف.'
+                        ]);
+
+                    case 'group_complete':
+
+//                       return group information project information teacher information
+                        $group_data = $this->getGroupData();
+
+                        $students = '';
+                        if ($group_data['group_students_complete'] != 0)
+                            $students = getStudentsStdWithoutGroup();
+
+                        return view('student.dashboard', [
+                            'notifications' => $notifications,
+                            'group_members_data' => $group_data['group_members_data'],
+                            'teacher_data' => $group_data['teacher_data'],
+                            'project_data' => $group_data['project_data'],
+                            'group_students_complete' => $group_data['group_students_complete'],
+                            'students' => $students,
+                        ]);
+
                 }
             } else {
-//                member things
-                $notifications = $this->getMemberNotifications();
+                switch ($group_info['status']) {
+                    case 'wait_min_members':
 
-                if ($notifications == 'accept') {
-                    try {
-                        $groups = firebaseGetReference('groups')->getValue();
-                        $student_id = getUserId();
-                        foreach ($groups as $group) {
-                            if (is_array($group['membersStd']))
-                                foreach ($group['membersStd'] as $std) {
-                                    if ($std == $student_id)
-                                        return view('student.member.index', [
-                                            'message' => 'انتظر حتى ينتهي قائد الفريق من اعدادات المشروع.',
-                                        ]);
+                        $students = getStudentsStdWithoutGroup();
+                        $max_members_number = firebaseGetReference('settings/max_group_members')->getValue();
+
+                        return view('student.group.create', [
+                            'max_members_number' => $max_members_number,
+                            'students' => $students,
+                            'notifications' => $notifications,
+                        ]);
+                    case 'wait_teacher' :
+                    case 'choose_teacher':
+
+                        return view('student.dashboard', [
+                            'message' => 'انتظر انتهاء القائد من اعدادات الفريق.',
+                            'notifications' => $notifications
+                        ]);
+
+                    case 'group_complete':
+
+                        try {
+                            $group = firebaseGetReference('groups/' . $group_info['key'])->getValue();
+                            $students = getUserByRole('student');
+                            $leader_id = $group['leaderStudentStd'];
+                            $leader_data = [];
+                            $members_data = [];
+                            $members_counter = 0;
+                            $teacher_data = '';
+                            $project_data = Arr::except($group, ['leaderStudentStd', 'status', 'membersStd', 'teacher']);
+                            $teachers = getUserByRole('teacher');
+
+                            foreach ($teachers as $teacher) {
+                                if ($teacher['user_id'] == $group['teacher']) {
+                                    $teacher_data = Arr::except($teacher, ['role', 'remember_token',]);
+                                    break;
                                 }
+                            }
 
+                            foreach ($students as $student_key => $student) {
+                                if ($leader_data == null && $student['user_id'] == $leader_id)
+                                    $leader_data = Arr::except($student, ['role', 'remember_token']);
+                                foreach ($group['membersStd'] as $member) {
+                                    if ($student['user_id'] == $member) {
+                                        Arr::set($members_data, $student_key, Arr::except($student, ['role', 'remember_token']));
+                                        $members_counter++;
+                                    }
+                                }
+                                if (sizeof($group['membersStd']) == $members_counter)
+                                    break;
+                            }
+                            return view('student.member.index', [
+                                'notifications' => $notifications,
+                                'group_members_data' => $members_data,
+                                'group_leader_data' => $leader_data,
+                                'teacher_data' => $teacher_data,
+                                'project_data' => $project_data,
+                            ]);
+                        } catch (ApiException $e) {
+                            return redirect()->back()->with('error', 'حصلت مشكلة بالنظام.');
                         }
-                    } catch (ApiException $e) {
-                        return redirect()->back()->with('error', 'حصلت مشكلة في النظام.');
-                    }
-
-                } else {
-                    $students = getStudentsStdWithoutGroup();
-                    $max_members_number = firebaseGetReference('settings/max_group_members')->getValue();
-
-                    return view('student.group.create', [
-                        'max_members_number' => $max_members_number,
-                        'students' => $students,
-                        'notifications' => $notifications,
-                    ]);
                 }
             }
         }
-
-//      create group form for login student
-        $students = getStudentsStdWithoutGroup();
-        $max_members_number = firebaseGetReference('settings/max_group_members')->getValue();
-
-        return view('student.group.create', [
-            'max_members_number' => $max_members_number,
-            'students' => $students,
-            'notifications' => $this->getNotifications(),
-        ]);
     }
 
     public function acceptTeamJoinRequest(Request $request)
@@ -184,22 +184,44 @@ class DashboardController extends MainController
 
     }
 
-    private function getGroupData()
+    private function getGroupData($id = 0)
     {
-        $groups = firebaseGetReference('groups')->getValue();
-        $std = getUserId();
-        $max_members_number = firebaseGetReference('settings/max_group_members')->getValue();
-        $group_students_complete = '';
-        $group_members_data = [];
-        $teacher_data = [];
-        $project_data = [];
+        try {
+            $max_members_number = firebaseGetReference('settings/max_group_members')->getValue();
+            $group_students_complete = '';
+            $group_members_data = [];
+            $teacher_data = [];
+            $project_data = [];
 
-        foreach ($groups as $group) {
-            if ($group['leaderStudentStd'] == $std) {
-                $members_std = $group['membersStd'];
-                $group_students_complete = $max_members_number - sizeof($members_std);
+            if ($id == 0) {
+                $groups = firebaseGetReference('groups')->getValue();
+                if ($groups != null) {
+                    $std = getUserId();
 
-                $group_members_data = $this->getGroupMembersData($members_std);
+                    foreach ($groups as $group) {
+                        if ($group['leaderStudentStd'] == $std) {
+                            $members_std = $group['membersStd'];
+                            $group_students_complete = $max_members_number - sizeof($members_std);
+
+                            $group_members_data = $this->getGroupMembersData($members_std);
+
+                            $teacher_data = $this->getTeacherData($group['teacher']);
+
+                            Arr::set($project_data, 0, [
+                                'initialProjectTitle' => $group['initialProjectTitle'],
+                                'graduateInFirstSemester' => $group['graduateInFirstSemester'],
+                                'tags' => $group['tags']
+                            ]);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                $group = firebaseGetReference('groups/' . $id)->getValue();
+
+                $group_students_complete = $max_members_number - sizeof($group['membersStd']);
+
+                $group_members_data = $this->getGroupMembersData($group['membersStd']);
 
                 $teacher_data = $this->getTeacherData($group['teacher']);
 
@@ -208,50 +230,82 @@ class DashboardController extends MainController
                     'graduateInFirstSemester' => $group['graduateInFirstSemester'],
                     'tags' => $group['tags']
                 ]);
-                break;
             }
-        }
 
-        return [
-            'group_students_complete' => $group_students_complete,
-            'group_members_data' => $group_members_data,
-            'teacher_data' => $teacher_data,
-            'project_data' => $project_data[0]
-        ];
+            return [
+                'group_students_complete' => $group_students_complete,
+                'group_members_data' => $group_members_data,
+                'teacher_data' => $teacher_data,
+                'project_data' => $project_data[0]
+            ];
+        } catch (ApiException $e) {
+            return redirect()->back()->with('error', 'حصلت مشكلة بالنظام.');
+        }
 
     }
 
-//    private function getGroupMembersData($members_std)
-//    {
-//        $group_members_data = [];
-//        $students = getUserByRole('student');
-//        $index = 0;
-//
-//        foreach ($students as $student) {
-//            foreach ($members_std as $std)
-//                if ($student['user_id'] == $std) {
-//                    $student = Arr::except($student, ['remember_token', 'role']);
-//                    Arr::set($group_members_data, $index++, $student);
-//                    break;
-//                }
-//            if (sizeof($members_std) == $index)
-//                break;
-//        }
-//        return $group_members_data;
-//    }
-//
-//    private function getTeacherData($teacher_id)
-//    {
-//        $teachers = getUserByRole('teacher');
-//        $teacher_data = [];
-//
-//        foreach ($teachers as $teacher)
-//            if ($teacher['user_id'] == $teacher_id) {
-//                $teacher_data = Arr::except($teacher, ['role', 'user_id', 'remember_token']);
-//                break;
-//            }
-//        return $teacher_data;
-//    }
+    public function getGroupInfo()
+    {
+        try {
+            $user_id = getUserId();
+            $groups = firebaseGetReference('groups')->getValue();
+            $is_group_leader = false;
+            $group_key = '';
+            $group_status = '';
+            if ($groups != null)
+                foreach ($groups as $key => $group) {
+                    $leadersStd = $group['leaderStudentStd'];
+                    if ($leadersStd != null && $leadersStd == $user_id) {
+                        $is_group_leader = true;
+                        $group_key = $key;
+                        $group_status = $group['status'];
+                        break;
+                    }
+                    $members_std = firebaseGetReference('groups/' . $key)->getChild('membersStd')->getValue();
 
+                    if ($group['membersStd'] != null)
+                        foreach ($members_std as $member) {
+                            if ($member == $user_id) {
+                                $group_key = $key;
+                                $group_status = $group['status'];
+                                break;
+                            }
+                        }
+                    if ($group_key != null)
+                        break;
+                }
+            return [
+                'is_group_leader' => $is_group_leader,
+                'key' => $group_key,
+                'status' => $group_status
+            ];
+        } catch (\Kreait\Firebase\Exception\ApiException $e) {
+        }
+    }
 
+    private function getTeachersCanBeSupervisor()
+    {
+        $teachers = getUserByRole('teacher');
+        $admins = getUserByRole('admin');
+        $teachers = Arr::collapse([$teachers, $admins]);
+        $teacher_counter = 0;
+
+        try {
+            $groups = firebaseGetReference('groups')->getValue();
+            $max_teacher_groups = firebaseGetReference('settings/max_teacher_groups')->getValue();
+            foreach ($teachers as $key => $teacher) {
+                foreach ($groups as $group) {
+                    if (isset($group['teacher']) && $teacher['user_id'] == $group['teacher']) {
+                        $teacher_counter++;
+                    }
+                    if ($teacher_counter == $max_teacher_groups) {
+                        Arr::forget($teachers, $key);
+                    }
+                }
+            }
+            return $teachers;
+        } catch (ApiException $e) {
+            return redirect()->back()->with('error', 'حصلت مشكلة بالنظام.');
+        }
+    }
 }

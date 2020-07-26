@@ -54,65 +54,71 @@ class MainController extends Controller
         }
     }
 
+    function generateRandomNumber($digits = 4)
+    {
+        $i = 0; //counter
+        $pin = ""; //our default pin is blank.
+        while ($i < $digits) {
+            //generate a random number between 0 and 9.
+            $pin .= mt_rand(0, 9);
+            $i++;
+        }
+        return $pin;
+    }
+
     public function create()
     {
+//        for ($i = 0; $i < 22; $i++) {
+//            $uid = firebaseAuth()->listUsers()->current()->uid;
+//            firebaseAuth()->deleteUser($uid);
+//        }
 
-        $email = 'admin2@example.com';
-        $password = 'admin123';
-        $role = 'admin';
-        $user_id = '111111111';
-        $mobile_number = '0597412325';
-        $department = 'FIT';
+//        createUsers();
+//        dd('admin created');
+        $role = 'student';
+        $password = $role . '123';
+        $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'وسائط متعددة', 'برمجة تطبيقات الهاتف', 'تكنولوجيا المعلومات'];
 
         try {
-            $uid = firebaseAuth()->createUserWithEmailAndPassword($email, $password)->uid;
-            firebaseGetReference('users/' . $uid)->set([
-                'email' => $email,
-                'name' => 'student' . $user_id,
-                'role' => $role,
-                'mobile_number' => $mobile_number,
-                'user_id' => $user_id,
-                'department' => $department
-            ]);
-            return 'user created successfully';
+            for ($index = 0; $index > 50; $index++) {
+                $uid = firebaseAuth()->createUserWithEmailAndPassword($role . '' . $index . '@example.com', $password)->uid;
+                firebaseGetReference('users/' . $uid)->set([
+                    'email' => $role . '' . $index . '@example.com',
+                    'name' => 'student' . $index,
+                    'role' => $role,
+                    'mobile_number' => '059' . $this->generateRandomNumber(7),
+                    'user_id' => '12016' . $this->generateRandomNumber(),
+                    'department' => Arr::random($departments, 1)[0]
+                ]);
+            }
+            return 'users created successfully';
         } catch (AuthException $e) {
         } catch (FirebaseException $e) {
+        } catch (Exception $e) {
         }
 
     }
 
     protected function groupsDataForTeacher($id)
     {
-        $teacher_id = $id;
-        if ($id == null)
-            $teacher_id = getUserId();
-        $groups = firebaseGetReference('groups')->getValue();
-        $students = getUserByRole('student');
-        $groups_data = [];
-        $students_data = [];
-        $index = 0;
-        $group_counter = 0;
-        if ($groups != null)
-            foreach ($groups as $group) {
-                if (isset($group['teacher']) && $group['teacher'] == $teacher_id) {
-                    $group_students_std = Arr::flatten([$group['leaderStudentStd'], $group['membersStd']]);
-                    foreach ($students as $student)
-                        foreach ($group_students_std as $std)
-                            if ($student['user_id'] == $std) {
-                                $student = Arr::except($student, ['remember_token', 'role']);
-                                if ($group['leaderStudentStd'] == $student['user_id']) {
-                                    $student = Arr::collapse([$student, ['isLeader' => true]]);
-                                } else
-                                    $student = Arr::collapse([$student, ['isLeader' => false]]);
-                                Arr::set($students_data, $index++, $student);
-                            }
-                    $group_data = Arr::collapse([$group, ['students_data' => $students_data]]);
-                    $students_data = [];
-                    $index = 0;
-                    Arr::set($groups_data, $group_counter++, $group_data);
+
+        try {
+            $teacher_id = $id;
+            if ($id == null)
+                $teacher_id = getUserId();
+            $groups = firebaseGetReference('groups')->getValue();
+            $groups_data = [];
+            if ($groups != null)
+                foreach ($groups as $key => $group) {
+                    if (isset($group['teacher']) && $group['teacher'] == $teacher_id) {
+                        $group_data = $this->getAllGroupInfoForTeacher($key);
+                        Arr::set($groups_data, $key, $group_data);
+                    }
                 }
-            }
-        return $groups_data;
+            return $groups_data;
+        } catch (ApiException $e) {
+        }
+
     }
 
 
@@ -183,17 +189,24 @@ class MainController extends Controller
             $teacher_id = $request->get('to');
             $key = $request->get('notification_key');
             $groups = firebaseGetReference('groups')->getValue();
+            $group_key = '';
+
+            foreach ($groups as $index => $group)
+                if ($group['leaderStudentStd'] == $student_std) {
+                    $group_key = $key;
+                    break;
+                }
 
             if ($reply == 'accept') {
                 firebaseGetReference('notifications/' . $key)->update(['status' => 'accept']);
-                foreach ($groups as $index => $group)
-                    if ($group['leaderStudentStd'] == $student_std) {
-                        firebaseGetReference('groups/' . $index)->update(['teacher' => $teacher_id]);
-                        break;
-                    }
+
+                firebaseGetReference('groups/' . $group_key)->update(['teacher' => $teacher_id, 'status' => 'group_complete']);
+
                 return redirect()->route(getRole() . '.index')->with('success', 'تم قبول الطلب بنجاح.');
             } elseif ($reply == 'reject') {
                 firebaseGetReference('notifications/' . $key)->update(['status' => 'reject']);
+                firebaseGetReference('groups/' . $group_key)->update(['status' => 'teacher_reject']);
+
                 return redirect()->back()->with('success', 'تم رفض الطلب بنجاح.');
             } else
                 return redirect()->back()->with('error', 'حصلت مشكلة في الطلب.');
@@ -202,5 +215,46 @@ class MainController extends Controller
         }
     }
 
+    protected function getAllGroupInfoForTeacher($group_key)
+    {
+        try {
+            $group = firebaseGetReference('groups/' . $group_key)->getValue();
+            if ($group != null) {
+                if (is_array($group['membersStd']))
+                    $group_members_data = $this->getGroupMembersData($group['membersStd'], $group['leaderStudentStd']);
+                else
+                    $group_members_data = $this->getGroupMembersData([$group['membersStd']], $group['leaderStudentStd']);
+
+                if (isset($group['teacher']))
+                    $teacher_data = $this->getTeacherData($group['teacher']);
+                else
+                    $teacher_data = null;
+
+                if (isset($group['initialProjectTitle'])) {
+                    Arr::set($project_data, 0, [
+                        'initialProjectTitle' => $group['initialProjectTitle'],
+                        'graduateInFirstSemester' => $group['graduateInFirstSemester'],
+                        'tags' => $group['tags']
+                    ]);
+                    $project_data = $project_data[0];
+                } else
+                    $project_data = null;
+
+                return [
+                    'group_leader_data' => $group_members_data['leader_data'],
+                    'group_members_data' => $group_members_data['members_data'],
+                    'teacher_data' => $teacher_data,
+                    'project_data' => $project_data,
+                    'students' => getStudentsStdWithoutGroup(),
+                    'group_key' => $group_key
+                ];
+            } else
+                return [];
+
+        } catch (ApiException $e) {
+            return redirect()->back()->with('error', 'حصلت مشكلة في جلب بيانات المجموعات.');
+        }
+
+    }
 
 }

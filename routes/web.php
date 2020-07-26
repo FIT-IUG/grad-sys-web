@@ -21,7 +21,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-//Route::get('create', 'MainController@create');
+Route::get('create', 'MainController@create');
 
 //Route::get('send', 'EmailController@mail');
 //Route::get('viewMail', 'EmailController@show');
@@ -60,6 +60,7 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
         Route::get('teacher/show/{key}', 'TeacherController@show')->name('admin.teacher.show');
         Route::get('teacher/edit/{key}', 'TeacherController@edit')->name('admin.teacher.edit');
         Route::post('teacher/update/{key}', 'TeacherController@update')->name('admin.teacher.update');
+        Route::get('teacher/promotion/{key}', 'TeacherController@promotion')->name('admin.teacher.promotion');
         Route::get('teacher/destroy/{key}', 'TeacherController@destroy')->name('admin.teacher.destroy');
         Route::get('groups', 'GroupController@index')->name('admin.group.index');
         Route::get('groups/edit/{group_key}', 'GroupController@edit')->name('admin.group.edit');
@@ -70,6 +71,6 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
     Route::get('teacher', 'TeacherController@index')->name('teacher.index');
     Route::post('storeGroupMembers', 'StudentController@storeGroupMembers')->name('group.members.store');
     Route::post('storeGroupSupervisor', 'StudentController@storeGroupSupervisor')->name('group.teacher.store');
-    Route::post('acceptTeamJoinRequest', 'StudentController@acceptTeamJoinRequest')->name('acceptTeamJoinRequest');
+//    Route::post('acceptTeamJoinRequest', 'StudentController@acceptTeamJoinRequest')->name('acceptTeamJoinRequest');
     Route::post('teacher/replyJoinGroupRequest', 'MainController@replayToBeSupervisorRequest')->name('teacher.group.replyRequest');
 });

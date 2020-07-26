@@ -8,6 +8,12 @@ use Kreait\Firebase\Exception\ApiException;
 
 class TeacherController extends MainController
 {
+
+    public function __construct()
+    {
+        $this->middleware('checkRole');
+    }
+
     public function index()
     {
         $teachers = getUserByRole('teacher');
@@ -58,7 +64,6 @@ class TeacherController extends MainController
         try {
             $teacher = firebaseGetReference('users/' . $teacher_key)->getValue();
             $teacher_groups = $this->groupsDataForTeacher($teacher['user_id']);
-//            dd($teacher_groups);
 
             return view('admin.teacher.show')->with([
                 'teacher' => $teacher,
@@ -70,6 +75,17 @@ class TeacherController extends MainController
 //
 
 
+    }
+
+    public function promotion($key)
+    {
+        try {
+            $teacher = firebaseGetReference('users/' . $key);
+            $teacher->update(['role' => 'admin']);
+            return redirect()->route('admin.teacher.index')->with('success', 'تم ترقية المدرس ' . $teacher->getChild('name')->getValue() . ' بنجاح');
+        } catch (ApiException $e) {
+            return redirect()->route('admin.teacher.index')->with('error', 'حصلت مشكلة في ترقية المشرف.');
+        }
     }
 
 

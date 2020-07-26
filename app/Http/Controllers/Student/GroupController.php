@@ -13,6 +13,10 @@ use Kreait\Firebase\Exception\ApiException;
 
 class GroupController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('checkRole');
+    }
 
     public function store(StoreGroupMembersRequest $request)
     {
@@ -21,9 +25,10 @@ class GroupController extends Controller
 
         try {
             firebaseGetReference('groups')->push([
-                'leaderStudentStd' => $leader_std.'',
+                'leaderStudentStd' => $leader_std . '',
                 'graduateInFirstSemester' => $request->get('graduateInFirstSemester'),
-                'membersStd' => ''
+                'status' => 'wait_min_members'
+//                'membersStd' => ''
             ]);
             $students = getUserByRole('student');
             $leader_name = '';
@@ -119,6 +124,7 @@ class GroupController extends Controller
                                 foreach ($students as $student_key => $student) {
                                     if ($student['user_id'] == $member_std) {
                                         firebaseGetReference('androidStudentsStdInGroups')->push($member_std);
+                                        firebaseGetReference('groups/' . $group_key)->update(['status' => 'choose_teacher']);
                                         $groups->getChild($group_key)->getChild('membersStd/' . $student_key)->set($member_std);
                                         firebaseGetReference('notifications/' . $notification_key)->update(['status' => 'accept']);
                                         firebaseGetReference('notifications')->push([

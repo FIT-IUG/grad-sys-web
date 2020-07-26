@@ -27,7 +27,7 @@ class AdminController extends MainController
     public function index()
     {
 
-        $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'مالتيميديا', 'موبايل', 'تكنولوجيا المعلومات'];
+        $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'وسائط متعددة', 'برمجة تطبيقات الهاتف', 'تكنولوجيا المعلومات'];
         $notifications = $this->getNotifications();
         $number_of_students = sizeof(getUserByRole('student'));
         $teacher_groups = $this->groupsDataForTeacher(null);
@@ -37,7 +37,7 @@ class AdminController extends MainController
         $students = getStudentsStdWithoutGroup();
 
         $groups = firebaseGetReference('groups')->getValue();
-        $number_of_groups = $groups != null ? sizeof($groups) : 'لا يوجد';
+        $number_of_groups = $groups != null ? sizeof($groups) : '0';
 
         $number_of_teamed_students = 0;
 
@@ -48,7 +48,7 @@ class AdminController extends MainController
                     $number_of_teamed_students += sizeof($group['membersStd']);
             }
         else
-            $number_of_teamed_students = 'لا يوجد';
+            $number_of_teamed_students = '0';
 
         $statistics = [
             'number_of_students' => $number_of_students,
@@ -88,7 +88,7 @@ class AdminController extends MainController
             // store in users table at first
             $student = firebaseGetReference('users')->push($student);
 
-            // send create password email, and store token and user_id in emailed_users table
+            // send create password email, and store token and user_id in emailedUsers table
 //            event(new NewStudentHasCreateEvent($student));
 
             $key = $student->getKey();
@@ -96,7 +96,7 @@ class AdminController extends MainController
 
             //Send Email
             $token = Str::random(60);
-            firebaseGetReference('emailed_users')->push([
+            firebaseGetReference('emailedUsers')->push([
                 'user_id' => $key,
                 'token' => $token
             ]);
@@ -117,17 +117,22 @@ class AdminController extends MainController
             if ($value[0] == 'id')
                 continue;
             try {
-                firebaseGetReference('usersFromExcel')->push([
+                $key = firebaseGetReference('usersFromExcel')->push([
                     'user_id' => $value[0],
                     'name' => $value[1],
                     'role' => $value[2],
                     'department' => $value[3],
                     'mobile_number' => $value[4],
                     'email' => $value[5],
-                ]);
+                ])->getKey();
 
                 $token = Str::random(60);
+                firebaseGetReference('emailedUsers')->push([
+                    'user_id' => $key,
+                    'token' => $token
+                ]);
                 Mail::to($value[5])->send(new SendCreatePassword($token));
+
 
             } catch (ApiException $e) {
                 return redirect()->back()->with('error', 'حصل مشكلة في رفع الملف.');

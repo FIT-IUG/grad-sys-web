@@ -22,7 +22,7 @@ class EmailController extends Controller
 
         foreach ($students as $key => $student) {
             $token = Str::random('60');
-            firebaseGetReference('emailed_users')->push([
+            firebaseGetReference('emailedUsers')->push([
                 'user_id' => $key,
                 'token' => $token]);
             if (isset($student['email']))

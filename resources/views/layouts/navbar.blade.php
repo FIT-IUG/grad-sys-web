@@ -52,7 +52,7 @@
     </li>
     <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
-            <i class="fa fa-gears"></i>
+            <i class="fa fa-sign-out"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-sm-right dropdown-menu-left">
             <a href="{{route('logout')}}" class="dropdown-item">تسجيل الخروج</a>

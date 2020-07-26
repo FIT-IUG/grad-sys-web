@@ -124,7 +124,8 @@ function getStudentsStdWithoutGroup()
 function inGroup()
 {
     try {
-        $user_id = firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
+        $user_id = getUserId();
+//        firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
         $students_std_in_group = array_filter(getStudentsStdInGroups());
 
         if ($students_std_in_group == null)
@@ -145,9 +146,12 @@ function isGroupLeader()
 {
 
     try {
-        $leaders = firebaseGetReference('groups')->getValue();
-        $leaders = Arr::pluck($leaders, 'leaderStudentStd');
-        $user_id = firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
+        $groups = firebaseGetReference('groups')->getValue();
+//        dd($groups);
+        $leaders = Arr::pluck($groups, 'leaderStudentStd', key($groups));
+        dd($leaders);
+        $user_id = getUserId();
+//        firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
         foreach ($leaders as $leader)
             if ($leader == $user_id)
                 return true;
@@ -207,35 +211,37 @@ function getSupervisorStatus()
 function createUsers()
 {
     try {
-//        $uid = firebaseAuth()->createUserWithEmailAndPassword('admin@example.com', 'admin123')->uid;
-        $uid = firebaseAuth()->verifyPassword('admin@example.com', 'admin123')->uid;
+        $uid = firebaseAuth()->createUserWithEmailAndPassword('admin@example.com', 'admin123')->uid;
+//        $uid = firebaseAuth()->verifyPassword('admin@example.com', 'admin123')->uid;
 
         firebaseGetReference('users/' . $uid)->set([
             'email' => 'admin@example.com',
             'name' => 'admin1',
             'role' => 'admin',
-            'user_id' => '1231231231'
+            'user_id' => '1111111111',
+            'mobile_number' => '1111111111',
+            'department' => 'FIT'
         ]);
 
 //        $uid = firebaseAuth()->createUserWithEmailAndPassword('teacher@example.com', 'teacher123')->uid;
-        $uid = firebaseAuth()->verifyPassword('teacher@example.com', 'teacher123')->uid;
+//        $uid = firebaseAuth()->verifyPassword('teacher@example.com', 'teacher123')->uid;
 
-        firebaseGetReference('users/' . $uid)->set([
-            'email' => 'teacher@example.com',
-            'name' => 'teacher1',
-            'role' => 'teacher',
-            'user_id' => '1231231232'
-        ]);
+//        firebaseGetReference('users/' . $uid)->set([
+//            'email' => 'teacher@example.com',
+//            'name' => 'teacher1',
+//            'role' => 'teacher',
+//            'user_id' => '1231231232'
+//        ]);
 
 //        $uid = firebaseAuth()->createUserWithEmailAndPassword('student@example.com', 'student123')->uid;
-        $uid = firebaseAuth()->verifyPassword('student@example.com', 'student123')->uid;
+//        $uid = firebaseAuth()->verifyPassword('student@example.com', 'student123')->uid;
 
-        firebaseGetReference('users/' . $uid)->set([
-            'email' => 'student@example.com',
-            'name' => 'student1',
-            'role' => 'student',
-            'user_id' => '1231231233'
-        ]);
+//        firebaseGetReference('users/' . $uid)->set([
+//            'email' => 'student@example.com',
+//            'name' => 'student1',
+//            'role' => 'student',
+//            'user_id' => '1231231233'
+//        ]);
     } catch (\Kreait\Firebase\Exception\AuthException $e) {
     } catch (\Kreait\Firebase\Exception\FirebaseException $e) {
     }

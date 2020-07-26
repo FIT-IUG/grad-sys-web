@@ -41,17 +41,24 @@
                             {{isset($teacher['department']) ? $teacher['department'] : '-'}}
                         </td>
                         <td class="project-actions text-right">
-                            <a class="btn btn-primary btn-sm" href="{{route('admin.teacher.show',['key'=>$key])}}">
+                            <a class="btn btn-info btn-sm" href="{{route('admin.teacher.show',['key'=>$key])}}">
                                 <i class="fa fa-users">
                                 </i>
-                                  المجموعات
+                                المجموعات
                             </a>
-                            <a class="btn btn-info btn-sm" href="{{route('admin.teacher.edit',['key'=>$key])}}">
+                            <a class="btn btn-primary btn-sm" href="{{route('admin.teacher.edit',['key'=>$key])}}">
                                 <i class="fa fa-pencil">
                                 </i>
                                 تعديل
                             </a>
-                            <a class="btn btn-danger btn-sm delete-confirm" href="{{route('admin.teacher.destroy',['key'=>$key])}}">
+                            <a class="btn btn-warning btn-sm promotion"
+                               href="{{route('admin.teacher.promotion',['key'=>$key])}}">
+                                <i class="fa fa-pencil">
+                                </i>
+                                ترقية
+                            </a>
+                            <a class="btn btn-danger btn-sm delete-confirm"
+                               href="{{route('admin.teacher.destroy',['key'=>$key])}}">
                                 <i class="fa fa-trash">
                                 </i>
                                 حذف
@@ -62,11 +69,11 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                    <th>الرقم الجامعي</th>
+                    <th>الرقم المدرس</th>
                     <th>الاسم</th>
                     <th>الإيميل</th>
                     <th>رقم الجوال</th>
-                    <th>التخصص</th>
+                    <th>القسم</th>
                     <th>الإعدادات</th>
                 </tr>
                 </tfoot>
@@ -84,6 +91,22 @@
             swal({
                 title: 'هل تريد حذف المشرف',
                 text: 'هذا سيقوم بحذف المشرف نهائياً!',
+                icon: 'warning',
+                buttons: ["إلغاء", "نعم"],
+            }).then(function (value) {
+                if (value) {
+                    window.location.href = url;
+                }
+            });
+        });
+        $('.promotion').on('click', function (event) {
+            event.preventDefault();
+            var name = document.getElementsByClassName('delete-name');
+
+            const url = $(this).attr('href');
+            swal({
+                title: 'هل تريد ترقية المشرف',
+                // text: 'هذا سيقوم بحذف المشرف نهائياً!',
                 icon: 'warning',
                 buttons: ["إلغاء", "نعم"],
             }).then(function (value) {

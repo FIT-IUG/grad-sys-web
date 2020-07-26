@@ -69,11 +69,11 @@
                             @foreach($group_members_data as $member)
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
-                                    <td>{{isset($member['name']) ? $member['name'] : '-' }}</td>
-                                    <td>{{isset($member['user_id']) ? $member['user_id'] : '-' }}</td>
-                                    <td>{{isset($member['mobile_number']) ? $member['mobile_number'] : '-' }}</td>
-                                    <td>{{isset($member['email']) ? $member['email'] : '-' }}</td>
-                                    <td>{{isset($member['department']) ? $member['department'] : '-' }}</td>
+                                    <td>{{isset($member['name']) ? $member['name'] : 'لا يوجد' }}</td>
+                                    <td>{{isset($member['user_id']) ? $member['user_id'] : 'لا يوجد' }}</td>
+                                    <td>{{isset($member['mobile_number']) ? $member['mobile_number'] : 'لا يوجد' }}</td>
+                                    <td>{{isset($member['email']) ? $member['email'] : 'لا يوجد' }}</td>
+                                    <td>{{isset($member['department']) ? $member['department'] : 'لا يوجد' }}</td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -94,15 +94,15 @@
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item" style="border-top: none">
                                 <b>اسم المشرف</b> <a
-                                    class="float-left">{{isset($teacher_data['name']) ? $teacher_data['name'] : '-'}}</a>
+                                    class="float-left">{{isset($teacher_data['name']) ? $teacher_data['name'] : 'لا يوجد'}}</a>
                             </li>
                             <li class="list-group-item">
                                 <b>رقم الهاتف</b> <a
-                                    class="float-left">{{isset($teacher_data['mobile_number']) ? $teacher_data['mobile_number'] : '-'}}</a>
+                                    class="float-left">{{isset($teacher_data['mobile_number']) ? $teacher_data['mobile_number'] : 'لا يوجد'}}</a>
                             </li>
                             <li class="list-group-item">
                                 <b>الايميل</b> <a
-                                    class="float-left">{{isset($teacher_data['email']) ? $teacher_data['email'] : '-'}}</a>
+                                    class="float-left">{{isset($teacher_data['email']) ? $teacher_data['email'] : 'لا يوجد'}}</a>
                             </li>
                         </ul>
                     </div>
@@ -120,11 +120,11 @@
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item" style="border-top: none">
                                 <b>عنوان المشروع</b> <a
-                                    class="float-left">{{isset($project_data['initialProjectTitle']) ? $project_data['initialProjectTitle'] : '-'}}</a>
+                                    class="float-left">{{isset($project_data['initialProjectTitle']) ? $project_data['initialProjectTitle'] : 'لا يوجد'}}</a>
                             </li>
                             <li class="list-group-item">
                                 <b>ستتخرجون في الفصل الاول</b> <a class="float-left">{{isset($project_data['graduateInFirstSemester']) ?
-                                                        ($project_data['graduateInFirstSemester'] == 0 ? 'لا': 'نعم') : '-'}}</a>
+                                                        ($project_data['graduateInFirstSemester'] == 0 ? 'لا': 'نعم') : 'لا يوجد'}}</a>
                             </li>
                             <li class="list-group-item">
                                 <b>نوع المشروع</b> <a class="float-left">
@@ -136,6 +136,8 @@
                                                 {{$tag.', '}}
                                             @endif
                                         @endforeach
+                                    @else
+                                        لا يوجد
                                     @endif
                                 </a>
                             </li>

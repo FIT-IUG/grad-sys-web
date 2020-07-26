@@ -19,7 +19,7 @@ class PasswordController extends Controller
     {
         try {
             $token = request()->segment(4);
-            $emailed_users = firebaseGetReference('emailed_users')->getValue();
+            $emailed_users = firebaseGetReference('emailedUsers')->getValue();
             foreach ($emailed_users as $user)
                 if ($user['token'] == $token)
                     return view('createPassword');
@@ -35,7 +35,7 @@ class PasswordController extends Controller
         try {
 
             $token = $request->get('token');
-            $emailed_users = firebaseGetReference('emailed_users')->getValue();
+            $emailed_users = firebaseGetReference('emailedUsers')->getValue();
             foreach ($emailed_users as $emailed_user)
                 if ($emailed_user['token'] == $token) {
                     $user_id = $emailed_user['user_id'];
@@ -60,16 +60,20 @@ class PasswordController extends Controller
 
     public function checkUniqueUser($emailed_user)
     {
-
         $users = firebaseGetReference('users')->getValue();
-
         foreach ($users as $user) {
-            if ($user['user_id'] == $emailed_user['user_id']
-                || $user['email'] == $emailed_user['email']
-                || $user['name'] == $emailed_user['name']
-                || $user['mobile_number'] == $emailed_user['mobile_number']) {
-                return false;
-            }
+            if (isset($user['user_id']))
+                if ($user['user_id'] == $emailed_user['user_id'])
+                    return false;
+            if (isset($user['email']))
+                if ($user['email'] == $emailed_user['email'])
+                    return false;
+            if (isset($user['name']))
+                if ($user['name'] == $emailed_user['name'])
+                    return false;
+            if (isset($user['mobile_number']))
+                if ($user['mobile_number'] == $emailed_user['mobile_number'])
+                    return false;
         }
         return true;
     }

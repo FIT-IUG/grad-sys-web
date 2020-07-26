@@ -8,6 +8,12 @@ use Kreait\Firebase\Exception\ApiException;
 
 class StudentController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('checkRole');
+    }
+
     public function index()
     {
         $students = getUserByRole('student');

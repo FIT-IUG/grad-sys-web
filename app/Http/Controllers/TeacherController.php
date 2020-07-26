@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 class TeacherController extends MainController
 {
 
+    public function __construct()
+    {
+        $this->middleware('checkRole');
+    }
+
     public function index()
     {
         $notifications = $this->getNotifications();
         $groups_data = $this->groupsDataForTeacher(null);
-
-        if ($groups_data == null)
-            $groups_data = [];
 
         return view('teacher.index', [
             'notifications' => $notifications,

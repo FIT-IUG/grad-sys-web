@@ -4,7 +4,7 @@
     <div class="card card-primary card-tabs">
         <div class="card-header">
             <h3 class="card-title">
-                بيانات المجموعات الخاصة بالمدرس {{$teacher_data['name']}}
+                بيانات المجموعات الخاصة بالمدرس {{isset($teacher_data['name']) ? $teacher_data['name'] : '-'}}
             </h3>
         </div>
         <div class="card-body">

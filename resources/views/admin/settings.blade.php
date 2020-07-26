@@ -31,6 +31,16 @@
                                 <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div class="form-group col-md-3">
+                                <label for="exampleInputEmail1">الحد الاقصى لعدد المجموعات للمدرس</label>
+                                <input type="text"
+                                       class="form-control @error('max_teacher_groups') is-invalid  @enderror"
+                                       name="max_teacher_groups"
+                                       value="{{$settings['max_teacher_groups']}}">
+                                @error('max_teacher_groups')
+                                <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">
