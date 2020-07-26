@@ -27,8 +27,8 @@ class GroupController extends Controller
             firebaseGetReference('groups')->push([
                 'leaderStudentStd' => $leader_std . '',
                 'graduateInFirstSemester' => $request->get('graduateInFirstSemester'),
-                'status' => 'wait_min_members'
-//                'membersStd' => ''
+                'status' => 'wait_min_members',
+                'membersStd' => ''
             ]);
             $students = getUserByRole('student');
             $leader_name = '';
