@@ -19,9 +19,10 @@ class DashboardController extends MainController
     public function index()
     {
         $group_info = $this->getGroupInfo();
+        $notifications = $this->getNotifications();
+
 //      Check what is the status for student
         if ($group_info['key'] != null) {
-            $notifications = $this->getNotifications();
             if ($group_info['is_group_leader']) {
                 switch ($group_info['status']) {
                     case 'wait_min_members':
@@ -136,7 +137,19 @@ class DashboardController extends MainController
                         }
                 }
             }
+
+        }else{
+
+            $students = getStudentsStdWithoutGroup();
+            $max_members_number = firebaseGetReference('settings/max_group_members')->getValue();
+
+            return view('student.group.create', [
+                'max_members_number' => $max_members_number,
+                'students' => $students,
+                'notifications' => $notifications,
+            ]);
         }
+
     }
 
     public function acceptTeamJoinRequest(Request $request)

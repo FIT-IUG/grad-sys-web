@@ -75,12 +75,11 @@ class MainController extends Controller
 
 //        createUsers();
 //        dd('admin created');
-        $role = 'student';
+        $role = 'teacher';
         $password = $role . '123';
         $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'وسائط متعددة', 'برمجة تطبيقات الهاتف', 'تكنولوجيا المعلومات'];
-
         try {
-            for ($index = 0; $index > 50; $index++) {
+            for ($index = 0; $index <= 50; $index++) {
                 $uid = firebaseAuth()->createUserWithEmailAndPassword($role . '' . $index . '@example.com', $password)->uid;
                 firebaseGetReference('users/' . $uid)->set([
                     'email' => $role . '' . $index . '@example.com',
