@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use Carbon\Carbon;
 use Google\Cloud\Core\Exception\BadRequestException;
 use Google\Cloud\Core\Exception\ServiceException;
 use Illuminate\Support\Facades\Session;
@@ -29,15 +30,32 @@ class AuthController extends Controller
 //        createUsers();
 
         try {
+            firebaseAuth()->signInWithEmailAndPassword($email, $password);
+            $uid = firebaseAuth()->getUserByEmail($email)->uid;
+//            $time_stamp = firebaseAuth()->getUser($uid)->metadata->lastLoginAt->getTimestamp();
+//            $now = Carbon::now()->timestamp;
+            $user = firebaseGetReference('users/' . $uid);
+//            $can_login = false;
+
+//            if ($time_stamp + 900 < $now)
+//                $can_login = true;
+
+//            if there is remember token and last login for this user less than 15m then if will fire
+//            if ($user->getChild('remember_token')->getValue() != null && !$can_login) {
+//                return redirect()->route('login')->with('error', 'يوجد شخص يستخدم هذا الحساب الآن.');
+//            }
+
             //verify user if exist
-            $uid = app('firebase.auth')->verifyPassword($email, $password)->uid;
+//            firebaseAuth()->signInWithEmailAndPassword($email, $password)->uid;
 
             //create token
             $token = Str::random(60);
 
+//            Check if this account has login
+
             //store remember token
-            $user = firebaseGetReference('users/' . $uid);
             $user->update(['remember_token' => $token]);
+
 
             Session::put('uid', $uid);
             Session::put('token', $token);
@@ -46,13 +64,13 @@ class AuthController extends Controller
 
             return redirect()->route($role . '.index');
         } catch (AuthException $e) {
-            return redirect()->back()->with('error', 'الايميل او كلمة السر خاطئة.');
+            return redirect()->route('login')->with('error', 'الايميل او كلمة السر خاطئة.');
         } catch (FirebaseException $e) {
-            return redirect()->back()->with('error', 'حدثت مشكلة فحص البيانات, يرجى المحاولة مرة اخرى.');
+            return redirect()->route('login')->with('error', 'حدثت مشكلة فحص البيانات, يرجى المحاولة مرة اخرى.');
         } catch (NotFoundException $exception) {
-            return redirect()->back()->with('error', 'الايميل غير موجود.');
+            return redirect()->route('login')->with('error', 'الايميل غير موجود.');
         } catch (RouteNotFoundException $exception) {
-            return redirect()->back()->with('error', 'لم يتم إيجاد حسابك.');
+            return redirect()->route('login')->with('error', 'لم يتم إيجاد حسابك.');
         }
     }
 

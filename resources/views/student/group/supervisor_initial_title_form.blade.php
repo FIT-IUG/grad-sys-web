@@ -1,4 +1,5 @@
 @extends('layout')
+@section('title','إختيار مشرف وعنوان المشروع')
 @section('content')
     <div class="col-md-12">
         <div class="card card-info">

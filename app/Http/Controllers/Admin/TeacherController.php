@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\MainController;
 use App\Http\Requests\UpdateTeacherRequest;
+use Illuminate\Support\Arr;
 use Kreait\Firebase\Exception\ApiException;
+use PhpParser\Node\Expr\Array_;
 
 class TeacherController extends MainController
 {
@@ -17,8 +19,35 @@ class TeacherController extends MainController
     public function index()
     {
         $teachers = getUserByRole('teacher');
+        $admins = getUserByRole('admin');
+        $teachers = Arr::collapse([$teachers, $admins]);
+        $groups_counter = 0;
+        $teachers_info = [];
+        $group_access = 0;
+        try {
+            $groups = firebaseGetReference('groups')->getValue();
+            foreach ($teachers as $teacher_key => $teacher) {
+                foreach ($groups as $key => $group) {
+                    if (isset($group['teacher']) && $group['teacher'] == $teacher['user_id']) {
+                        Arr::forget($groups, $key);
+                        $groups_counter++;
+                        $group_access++;
+                    }
+                    if ($group_access == sizeof($groups))
+                        break;
+                }
+                Arr::set($groups_number, 'groups_number', $groups_counter);
+                $teacher = Arr::except($teacher, ['remember_token']);
+                $collapse = Arr::collapse([$groups_number, $teacher]);
+                Arr::set($teachers_info, $teacher_key, $collapse);
+                Arr::forget($teachers, $teacher_key);
+                $groups_counter = 0;
+            }
+            return view('admin.teacher.index', ['teachers' => $teachers_info]);
 
-        return view('admin.teacher.index', ['teachers' => $teachers]);
+        } catch (ApiException $e) {
+        }
+
     }
 
     public function edit($user_key)
@@ -111,7 +140,7 @@ class TeacherController extends MainController
 //        $groups_data = [];
 //        $students_data = [];
 //        $index = 0;
-//        $group_counter = 0;
+//        $groups_counter = 0;
 //
 //        foreach ($groups as $group) {
 //            if (isset($group['teacher']) && $group['teacher'] == $teacher_id) {
@@ -129,7 +158,7 @@ class TeacherController extends MainController
 //                $group_data = Arr::collapse([$group, ['students_data' => $students_data]]);
 //                $students_data = [];
 //                $index = 0;
-//                Arr::set($groups_data, $group_counter++, $group_data);
+//                Arr::set($groups_data, $groups_counter++, $group_data);
 //            }
 //        }
 //        return $groups_data;

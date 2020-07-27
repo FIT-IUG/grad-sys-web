@@ -1,6 +1,5 @@
 @extends('layout')
 @section('content')
-    @includeIf('student.group.members_form')
 
     @if(isset($notifications) and $notifications != null)
         <div class="row">
@@ -44,5 +43,7 @@
             </div>
         </div>
     @endif
+
+    @includeIf('student.group.members_form')
 
 @endsection

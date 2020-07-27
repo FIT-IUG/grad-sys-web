@@ -65,7 +65,7 @@
                                     <table class="table">
                                         <tbody>
                                         <tr>
-                                            <th>الرقم الجامعي:</th>
+                                            <th>الرقم الوظيفي:</th>
                                             <td>{{isset($group['teacher_data']['user_id']) ? $group['teacher_data']['user_id'] : '-'}}</td>
                                         </tr>
                                         <tr>
@@ -76,10 +76,10 @@
                                             <th>رقم الهاتف:</th>
                                             <td>{{isset($group['teacher_data']['mobile_number']) ? $group['teacher_data']['mobile_number'] : '-'}}</td>
                                         </tr>
-                                        <tr>
-                                            <th>القسم:</th>
-                                            <td>{{isset($group['teacher_data']['department']) ? $group['teacher_data']['department'] : '-'}}</td>
-                                        </tr>
+{{--                                        <tr>--}}
+{{--                                            <th>القسم:</th>--}}
+{{--                                            <td>{{isset($group['teacher_data']['department']) ? $group['teacher_data']['department'] : '-'}}</td>--}}
+{{--                                        </tr>--}}
                                         <tr>
                                             <th>الايميل:</th>
                                             <td>{{isset($group['teacher_data']['email']) ? $group['teacher_data']['email'] : '-'}}</td>

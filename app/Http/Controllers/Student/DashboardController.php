@@ -296,29 +296,29 @@ class DashboardController extends MainController
         }
     }
 
-    private function getTeachersCanBeSupervisor()
-    {
-        $teachers = getUserByRole('teacher');
-        $admins = getUserByRole('admin');
-        $teachers = Arr::collapse([$teachers, $admins]);
-        $teacher_counter = 0;
-
-        try {
-            $groups = firebaseGetReference('groups')->getValue();
-            $max_teacher_groups = firebaseGetReference('settings/max_teacher_groups')->getValue();
-            foreach ($teachers as $key => $teacher) {
-                foreach ($groups as $group) {
-                    if (isset($group['teacher']) && $teacher['user_id'] == $group['teacher']) {
-                        $teacher_counter++;
-                    }
-                    if ($teacher_counter == $max_teacher_groups) {
-                        Arr::forget($teachers, $key);
-                    }
-                }
-            }
-            return $teachers;
-        } catch (ApiException $e) {
-            return redirect()->back()->with('error', 'حصلت مشكلة بالنظام.');
-        }
-    }
+//    private function getTeachersCanBeSupervisor()
+//    {
+//        $teachers = getUserByRole('teacher');
+//        $admins = getUserByRole('admin');
+//        $teachers = Arr::collapse([$teachers, $admins]);
+//        $teacher_counter = 0;
+//
+//        try {
+//            $groups = firebaseGetReference('groups')->getValue();
+//            $max_teacher_groups = firebaseGetReference('settings/max_teacher_groups')->getValue();
+//            foreach ($teachers as $key => $teacher) {
+//                foreach ($groups as $group) {
+//                    if (isset($group['teacher']) && $teacher['user_id'] == $group['teacher']) {
+//                        $teacher_counter++;
+//                    }
+//                    if ($teacher_counter == $max_teacher_groups) {
+//                        Arr::forget($teachers, $key);
+//                    }
+//                }
+//            }
+//            return $teachers;
+//        } catch (ApiException $e) {
+//            return redirect()->back()->with('error', 'حصلت مشكلة بالنظام.');
+//        }
+//    }
 }

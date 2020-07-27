@@ -10,11 +10,12 @@
             <table id="data-table" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>الرقم المدرس</th>
+                    <th>رقم المدرس</th>
                     <th>الاسم</th>
-                    <th>الإيميل</th>
+{{--                    <th>الإيميل</th>--}}
                     <th>رقم الجوال</th>
-                    <th>القسم</th>
+                    {{--                    <th>القسم</th>--}}
+                    <th>عدد المجموعات</th>
                     <th>الإعدادات</th>
                 </tr>
                 </thead>
@@ -29,17 +30,21 @@
                             style="text-align: center" @endif>
                             {{isset($teacher['name']) ? $teacher['name'] : '-'}}
                         </td>
-                        <td @if(!isset($teacher['email']))
-                            style="text-align: center" @endif>
-                            {{isset($teacher['email']) ? $teacher['email'] : '-'}}
-                        </td>
+{{--                        <td @if(!isset($teacher['email']))--}}
+{{--                            style="text-align: center" @endif>--}}
+{{--                            {{isset($teacher['email']) ? $teacher['email'] : '-'}}--}}
+{{--                        </td>--}}
                         <td @if(!isset($teacher['mobile_number']))
                             style="text-align: center" @endif>
                             {{isset($teacher['mobile_number']) ? $teacher['mobile_number'] : '-'}}
                         </td>
+                        {{--                        <td style="text-align: center">--}}
+                        {{--                            {{isset($teacher['department']) ? $teacher['department'] : '-'}}--}}
+                        {{--                        </td>--}}
                         <td style="text-align: center">
-                            {{isset($teacher['department']) ? $teacher['department'] : '-'}}
+                            {{isset($teacher['groups_number']) ? $teacher['groups_number'] : '-'}}
                         </td>
+
                         <td class="project-actions text-right">
                             <a class="btn btn-info btn-sm" href="{{route('admin.teacher.show',['key'=>$key])}}">
                                 <i class="fa fa-users">
@@ -51,9 +56,14 @@
                                 </i>
                                 تعديل
                             </a>
-                            <a class="btn btn-warning btn-sm promotion"
-                               href="{{route('admin.teacher.promotion',['key'=>$key])}}">
-                                <i class="fa fa-pencil">
+                            <a @if($teacher['role'] == 'admin')
+                               class="btn btn-secondary btn-sm"
+                               href="#"
+                               @else
+                               class="btn btn-warning btn-sm promotion"
+                               href="{{route('admin.teacher.promotion',['key'=>$key])}}"
+                                @endif>
+                                <i class="fa fa-user-plus">
                                 </i>
                                 ترقية
                             </a>
@@ -71,9 +81,10 @@
                 <tr>
                     <th>الرقم المدرس</th>
                     <th>الاسم</th>
-                    <th>الإيميل</th>
+{{--                    <th>الإيميل</th>--}}
                     <th>رقم الجوال</th>
-                    <th>القسم</th>
+                    {{--                    <th>القسم</th>--}}
+                    <th>عدد المجموعات</th>
                     <th>الإعدادات</th>
                 </tr>
                 </tfoot>

@@ -1,5 +1,5 @@
 @extends('layout')
-@section('title', 'title')
+@section('title', 'بيانات المجموعة')
 @section('content')
     <div class="card card-primary card-tabs">
         <div class="card-header">
@@ -105,7 +105,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="card card-info">
                 <div class="card-header">
                     <h3 class="card-title">إضافة أعضاء على الفريق</h3>
@@ -119,7 +119,7 @@
                     <form action="{{route('admin.group.update',['group_key'=>$group_key])}}" method="POST">
                         @csrf
                         <div class="row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-12">
                                 <label for="exampleInputEmail1">الرقم الجامعي للطالب </label>
                                 <select class="students-std form-control select2 select2-hidden-accessible"
                                         name="student_id"
@@ -131,9 +131,49 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                @error('student_id')
+                                <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary">إضافة</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">تغيير مشرف المجموعة</h3>
+                </div>
+                <div class="card-body">
+                    @error('membersStd')
+                    <div class="alert alert-danger">
+                        {{$message}}
+                    </div>
+                    @enderror
+                    <form action="{{route('admin.group.update.teacher',['group_key'=>$group_key])}}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label>مشرف المجموعة</label>
+                            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;"
+                                    tabindex="-1" aria-hidden="true" dir="rtl" name="teacher_id">
+                                <option value=""></option>
+                                @if(isset($teachers) && $teachers != null)
+                                    @foreach($teachers as $teacher)
+                                        <option value="{{$teacher['user_id']}}">
+                                            {{$teacher['name']}}
+                                        </option>
+                                    @endforeach
+                                @else
+                                    <option value="" disabled>لا يوجد مشرفين متوفرين</option>
+                                @endif
+                            </select>
+                            @error('teacher_id')
+                            <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn-primary">تغيير</button>
                     </form>
                 </div>
             </div>

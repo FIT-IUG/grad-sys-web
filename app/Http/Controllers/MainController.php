@@ -20,19 +20,21 @@ class MainController extends Controller
             $user_notifications = [];
             $user_id = getUserId();
             $teacher_notification = [];
-
             if ($notifications != null) {
                 foreach ($notifications as $key => $notification) {
                     if ($notification['to'] == $user_id && ($notification['status'] == 'wait' xor $notification['status'] == 'readOnce')) {
 //               this type of notification to teacher and need with normal data in notification a project initial title
 //                       to be supervisor notification type send for teacher and admin
                         if ($notification['type'] == 'to_be_supervisor') {
-//                            dd($notification);
                             $groups = firebaseGetReference('groups')->getValue();
 //                      get project initial title
                             foreach ($groups as $group) {
                                 if ($group['leaderStudentStd'] == $notification['from']) {
-                                    $teacher_notification = Arr::add($notification, 'initialProjectTitle', $group['initialProjectTitle']);
+                                    $teacher_notification = Arr::collapse([$notification, [
+                                        'initialProjectTitle' => $group['initialProjectTitle'],
+                                        'tags' => $group['tags'],
+                                        'members_names' => $this->getGroupMembersDataForNotifications($group['membersStd'], $group['leaderStudentStd'])
+                                    ]]);
                                     break;
                                 }
                             }
@@ -45,7 +47,7 @@ class MainController extends Controller
                     }
                 }
             }
-
+//            dd($user_notifications);
             return $user_notifications;
 
         } catch (Exception $exception) {
@@ -83,11 +85,11 @@ class MainController extends Controller
                 $uid = firebaseAuth()->createUserWithEmailAndPassword($role . '' . $index . '@example.com', $password)->uid;
                 firebaseGetReference('users/' . $uid)->set([
                     'email' => $role . '' . $index . '@example.com',
-                    'name' => 'student' . $index,
+                    'name' => 'teacher' . $index,
                     'role' => $role,
                     'mobile_number' => '059' . $this->generateRandomNumber(7),
                     'user_id' => '12016' . $this->generateRandomNumber(),
-                    'department' => Arr::random($departments, 1)[0]
+                    'department' => 'FIT'
                 ]);
             }
             return 'users created successfully';
@@ -126,14 +128,14 @@ class MainController extends Controller
         $group_members_data = [];
         $students = getUserByRole('student');
         $index = 0;
-
         if ($leader_id == 0) {
             if ($students != null)
-                foreach ($students as $student) {
+                foreach ($students as $key => $student) {
                     foreach ($members_std as $std)
                         if ($student['user_id'] == $std) {
                             $student = Arr::except($student, ['remember_token', 'role']);
-                            Arr::set($group_members_data, $index++, $student);
+                            Arr::set($group_members_data, $key, $student);
+                            $index++;
                             break;
                         }
                     if (sizeof($members_std) == $index)
@@ -143,14 +145,16 @@ class MainController extends Controller
         } else {
             $leader_data = [];
             if ($students != null)
-                foreach ($students as $student) {
+                foreach ($students as $key => $student) {
                     if ($student['user_id'] == $leader_id) {
                         $leader_data = Arr::except($student, ['remember_token', 'role']);
+                        Arr::set($leader_data, 'key', $key);
                     }
                     foreach ($members_std as $std) {
                         if (isset($student['user_id']) && $student['user_id'] == $std) {
                             $student = Arr::except($student, ['remember_token', 'role']);
-                            Arr::set($group_members_data, $index++, $student);
+                            Arr::set($group_members_data, $key, $student);
+                            $index++;
                             break;
                         }
                     }
@@ -166,14 +170,37 @@ class MainController extends Controller
 
     }
 
+    private function getGroupMembersDataForNotifications($members, $leader)
+    {
+        $group_data = $this->getGroupMembersData($members, $leader);
+//        dd($group_data);
+        $excepted_info = ['email', 'mobile_number'];
+//        $leader_data = Arr::except($group_data['leader_data'], $excepted_info);
+        $members_data = [];
+        Arr::set($members_names, $group_data['leader_data']['key'], $group_data['leader_data']['name']);
+//        dd($members_names);
+        foreach ($group_data['members_data'] as $key => $member) {
+//            $excepted_member_info = Arr::except($member, $excepted_info);
+            Arr::set($members_names, $key, $member['name']);
+//            Arr::set($members_data, $key, $excepted_member_info);
+        }
+//        dd($members_names);
+        return
+//            'leader_data' => $leader_data,
+//            'members_data' => $members_data
+            $members_names;
+    }
+
     protected function getTeacherData($teacher_id)
     {
         $teachers = getUserByRole('teacher');
+        $admins = getUserByRole('admin');
+        $teachers = Arr::collapse([$teachers, $admins]);
         $teacher_data = [];
 
         foreach ($teachers as $teacher)
             if ($teacher['user_id'] == $teacher_id) {
-                $teacher_data = Arr::except($teacher, ['role', 'user_id', 'remember_token']);
+                $teacher_data = Arr::except($teacher, ['role', 'remember_token']);
                 break;
             }
         return $teacher_data;
@@ -192,7 +219,7 @@ class MainController extends Controller
 
             foreach ($groups as $index => $group)
                 if ($group['leaderStudentStd'] == $student_std) {
-                    $group_key = $key;
+                    $group_key = $index;
                     break;
                 }
 
@@ -206,11 +233,11 @@ class MainController extends Controller
                 firebaseGetReference('notifications/' . $key)->update(['status' => 'reject']);
                 firebaseGetReference('groups/' . $group_key)->update(['status' => 'teacher_reject']);
 
-                return redirect()->back()->with('success', 'تم رفض الطلب بنجاح.');
+                return redirect()->route(getRole() . 'index')->with('success', 'تم رفض الطلب بنجاح.');
             } else
-                return redirect()->back()->with('error', 'حصلت مشكلة في الطلب.');
+                return redirect()->route(getRole() . 'index')->with('error', 'حصلت مشكلة في الطلب.');
         } catch (ApiException $e) {
-            return redirect()->back()->with('error', 'حصلت مشكلة في الطلب.');
+            return redirect()->route(getRole() . 'index')->with('error', 'حصلت مشكلة في الطلب.');
         }
     }
 
@@ -251,9 +278,36 @@ class MainController extends Controller
                 return [];
 
         } catch (ApiException $e) {
-            return redirect()->back()->with('error', 'حصلت مشكلة في جلب بيانات المجموعات.');
+            return redirect()->route(getRole() . 'index')->with('error', 'حصلت مشكلة في جلب بيانات المجموعات.');
         }
 
     }
 
+    public function getTeachersCanBeSupervisor($teacher_id = 0)
+    {
+        $teachers = getUserByRole('teacher');
+        $admins = getUserByRole('admin');
+        $teachers = Arr::collapse([$teachers, $admins]);
+        $teacher_counter = 0;
+
+        try {
+            $groups = firebaseGetReference('groups')->getValue();
+            $max_teacher_groups = firebaseGetReference('settings/max_teacher_groups')->getValue();
+            foreach ($teachers as $key => $teacher) {
+                foreach ($groups as $group) {
+                    if (isset($group['teacher']) && $teacher['user_id'] == $group['teacher']) {
+                        $teacher_counter++;
+                    }
+                    if ($teacher['user_id'] == $teacher_id)
+                        Arr::forget($teachers, $key);
+                    if ($teacher_counter == $max_teacher_groups) {
+                        Arr::forget($teachers, $key);
+                    }
+                }
+            }
+            return $teachers;
+        } catch (ApiException $e) {
+            return redirect()->back()->with('error', 'حصلت مشكلة بالنظام.');
+        }
+    }
 }

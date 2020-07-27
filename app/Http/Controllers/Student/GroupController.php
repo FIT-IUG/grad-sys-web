@@ -188,7 +188,7 @@ class GroupController extends Controller
         $groups = firebaseGetReference('groups')->getValue();
         $project_data = Arr::except($request->validated(), 'teacher');
         $notifications_keys = $request->get('notification_key');
-
+        Arr::set($project_data, 'status', 'wait_teacher');
         if ($notifications_keys)
             foreach ($notifications_keys as $key) {
                 firebaseGetReference('notifications/' . $key)->update(['status' => 'read']);

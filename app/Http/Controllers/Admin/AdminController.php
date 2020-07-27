@@ -10,6 +10,7 @@ use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\SettingsRequest;
 use App\Imports\StudentsImport;
 use App\Mail\SendCreatePassword;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -174,4 +175,7 @@ class AdminController extends MainController
         return $notifications;
     }
 
+    public function replayToBeSupervisor(Request $request){
+        $this->replayToBeSupervisorRequest($request);
+    }
 }

@@ -65,7 +65,8 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
         Route::get('groups', 'GroupController@index')->name('admin.group.index');
         Route::get('groups/edit/{group_key}', 'GroupController@edit')->name('admin.group.edit');
         Route::post('groups/update/{group_key}', 'GroupController@update')->name('admin.group.update');
-        Route::post('replyJoinGroupRequest', 'MainController@replayToBeSupervisorRequest')->name('admin.group.replyRequest');
+        Route::post('groups/update/teacher/{group_key}', 'GroupController@updateTeacher')->name('admin.group.update.teacher');
+        Route::post('replyJoinGroupRequest', 'AdminController@replayToBeSupervisor')->name('admin.group.replyRequest');
     });
 
     Route::get('teacher', 'TeacherController@index')->name('teacher.index');

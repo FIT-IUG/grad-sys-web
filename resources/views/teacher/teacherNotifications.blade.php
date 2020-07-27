@@ -12,6 +12,7 @@
                             <th>#</th>
                             <th>الرسالة</th>
                             <th>العنوان المبدئي للمشروع</th>
+                            <th>أسماء الفريق</th>
                             <th>الرد</th>
                         </tr>
                         </thead>
@@ -21,6 +22,14 @@
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{isset($notification['message']) ? $notification['message'] : '-'}}</td>
                                 <td>{{isset($notification['initialProjectTitle']) ? $notification['initialProjectTitle'] : '-'}}</td>
+                                <td>
+                                    @if(isset($notification['members_names']))
+                                        @foreach($notification['members_names'] as $name)
+                                            @if($loop->last) {{$name}}.
+                                            @else {{$name}},
+                                @endif
+                                @endforeach
+                                @endif
                                 <td>
                                     <form
                                         action="{{route(getRole().'.group.replyRequest',['from'=>$notification['from'],'to'=>$notification['to']])}}"
