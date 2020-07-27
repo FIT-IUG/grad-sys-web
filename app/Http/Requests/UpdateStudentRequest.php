@@ -24,10 +24,10 @@ class UpdateStudentRequest extends FormRequest
      */
     public function rules()
     {
-//        regex:/(.*)@iugaza\.edu\.com/i
+//        'regex:/^[a-zA-Z0-9._-]+@(iugaza\.edu\.ps|gmail\.com)/',
         return [
             'name' => ['required:alpha', new UpdateUserRule()],
-            'email' => ['required', 'regex:/^[a-zA-Z0-9._-]+@(iugaza\.edu\.ps|gmail\.com)/', new UpdateUserRule()],
+            'email' => ['required', new UpdateUserRule()],
             'mobile_number' => ['required', 'numeric', 'digits:10', new UpdateUserRule()],
             'user_id' => ['required', 'numeric', 'digits:9', new UpdateUserRule()],
             'department' => 'required',
