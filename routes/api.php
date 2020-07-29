@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -8,8 +9,8 @@ use Illuminate\Http\Request;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a admin which
-| is assigned the "api" middleware admin. Enjoy building your API!
+| routes are loaded by the RouteServiceProvider within a leader which
+| is assigned the "api" middleware leader. Enjoy building your API!
 |
 */
 

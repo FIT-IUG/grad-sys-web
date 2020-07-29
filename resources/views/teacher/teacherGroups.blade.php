@@ -78,7 +78,7 @@
                                         </tr>
 {{--                                        <tr>--}}
 {{--                                            <th>القسم:</th>--}}
-{{--                                            <td>{{isset($admin['teacher_data']['department']) ? $admin['teacher_data']['department'] : '-'}}</td>--}}
+{{--                                            <td>{{isset($leader['teacher_data']['department']) ? $leader['teacher_data']['department'] : '-'}}</td>--}}
 {{--                                        </tr>--}}
                                         <tr>
                                             <th>البريد الإلكتروني:</th>

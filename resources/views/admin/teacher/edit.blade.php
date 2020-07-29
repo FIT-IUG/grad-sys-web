@@ -43,7 +43,7 @@
                         <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                         @enderror
                     </div>
-{{--                    <div class="form-admin col-md-6">--}}
+{{--                    <div class="form-leader col-md-6">--}}
 {{--                        <label>التخصص</label>--}}
 {{--                        <select class="form-control @error('department') is-invalid  @enderror" name="department">--}}
 {{--                            <option value=""></option>--}}

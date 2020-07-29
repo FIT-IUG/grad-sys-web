@@ -12,7 +12,7 @@
             @error('membersStd')
             <div class="alert alert-danger" style="margin-top: 10px">{{$message}}</div>
             @enderror
-            <form action="{{route('student.admin.store')}}" method="POST">
+            <form action="{{route('student.group.store')}}" method="POST">
                 @csrf
                 @for($i = 0; $i < $max_members_number; $i++)
                     <div class="row">
@@ -34,7 +34,7 @@
                         </div>
                     </div>
                 @endfor
-                {{-- Check if a admin will be graduate in first semester. --}}
+                {{-- Check if a group will be graduate in first semester. --}}
                 <div class="form-group">
                     {{--1 for yes 0 for no--}}
                     <label for="">هل المجموعة خريجة الفصل الاول؟</label>

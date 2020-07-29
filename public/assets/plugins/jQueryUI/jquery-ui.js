@@ -5473,14 +5473,14 @@ $.extend(Datepicker.prototype, {
 				cornerClass = " ui-corner-all";
 				calender = "";
 				if (isMultiMonth) {
-					calender += "<div class='ui-datepicker-admin";
+					calender += "<div class='ui-datepicker-leader";
 					if (numMonths[1] > 1) {
 						switch (col) {
-							case 0: calender += " ui-datepicker-admin-first";
+							case 0: calender += " ui-datepicker-leader-first";
 								cornerClass = " ui-corner-" + (isRTL ? "right" : "left"); break;
-							case numMonths[1]-1: calender += " ui-datepicker-admin-last";
+							case numMonths[1]-1: calender += " ui-datepicker-leader-last";
 								cornerClass = " ui-corner-" + (isRTL ? "left" : "right"); break;
-							default: calender += " ui-datepicker-admin-middle"; cornerClass = ""; break;
+							default: calender += " ui-datepicker-leader-middle"; cornerClass = ""; break;
 						}
 					}
 					calender += "'>";

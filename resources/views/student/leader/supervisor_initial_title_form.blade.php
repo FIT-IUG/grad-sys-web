@@ -7,7 +7,7 @@
                 <h3 class="card-title">استكمال اجراءات إنشاء مجموعة</h3>
             </div>
             <div class="card-body">
-                <form action="{{route('student.admin.storeSupervisor')}}" method="POST">
+                <form action="{{route('student.group.storeSupervisor')}}" method="POST">
                     @csrf
                     @if(isset($notifications) and $notifications != null)
                         @foreach($notifications as $key=>$notification)

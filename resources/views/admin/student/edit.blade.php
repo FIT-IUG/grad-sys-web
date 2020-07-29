@@ -12,7 +12,7 @@
                     <div class="form-group col-md-6">
                         <label>الاسم</label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                name="name" value="{{$student['name']}}">
+                               name="name" value="{{$student['name']}}">
                         @error('name')
                         <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                         @enderror
@@ -20,7 +20,7 @@
                     <div class="form-group col-md-6">
                         <label>الرقم الجامعي</label>
                         <input type="text" class="form-control @error('user_id') is-invalid  @enderror"
-                                name="user_id" value="{{$student['user_id']}}">
+                               name="user_id" value="{{$student['user_id']}}">
                         @error('user_id')
                         <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                         @enderror
@@ -28,13 +28,9 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-<<<<<<< HEAD
-                        <label>الإيميل</label>
-=======
-                        <label for="exampleInputEmail1">البريد الإلكتروني</label>
->>>>>>> ee3a44873b75501166e5074f6a3a16f38bae8eef
+                        <label>البريد الإلكتروني</label>
                         <input type="email" class="form-control @error('email') is-invalid  @enderror"
-                                name="email" value="{{$student['email']}}">
+                               name="email" value="{{$student['email']}}">
                         @error('email')
                         <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                         @enderror
@@ -55,13 +51,9 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-<<<<<<< HEAD
-                        <label>رقم الجوال</label>
-=======
-                        <label for="exampleInputEmail1">رقم الموبايل</label>
->>>>>>> ee3a44873b75501166e5074f6a3a16f38bae8eef
+                        <label>رقم الموبايل</label>
                         <input type="text" class="form-control @error('mobile_number') is-invalid  @enderror"
-                                name="mobile_number" value="{{$student['mobile_number']}}">
+                               name="mobile_number" value="{{$student['mobile_number']}}">
                         @error('mobile_number')
                         <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                         @enderror

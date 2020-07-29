@@ -3840,7 +3840,7 @@ Grid.mixin({
 		var eventsById = groupEventsById(events);
 		var ranges = [];
 
-		// admin by ID so that related inverse-background events can be rendered together
+		// leader by ID so that related inverse-background events can be rendered together
 		$.each(eventsById, function(id, eventGroup) {
 			if (eventGroup.length) {
 				ranges.push.apply(
@@ -4600,7 +4600,7 @@ DayGrid.mixin({
 		var segRows;
 		var row;
 
-		segRows = this.groupSegRows(segs); // admin into nested arrays
+		segRows = this.groupSegRows(segs); // leader into nested arrays
 
 		// iterate each row of segment groupings
 		for (row = 0; row < segRows.length; row++) {
@@ -4664,7 +4664,7 @@ DayGrid.mixin({
 	// the segments. Returns object with a bunch of internal data about how the render was calculated.
 	renderSegRow: function(row, rowSegs) {
 		var colCnt = this.colCnt;
-		var segLevels = this.buildSegLevels(rowSegs); // admin into sub-arrays of levels
+		var segLevels = this.buildSegLevels(rowSegs); // leader into sub-arrays of levels
 		var levelCnt = Math.max(1, segLevels.length); // ensure at least one level
 		var tbody = $('<tbody/>');
 		var segMatrix = []; // lookup for which segments are rendered into which level+col cells
@@ -5647,7 +5647,7 @@ var TimeGrid = Grid.extend({
 		if (segs.length) {
 
 			segs = this.renderFillSegEls(type, segs); // assignes `.el` to each seg. returns successfully rendered segs
-			segCols = this.groupSegCols(segs); // admin into sub-arrays, and assigns 'col' to each seg
+			segCols = this.groupSegCols(segs); // leader into sub-arrays, and assigns 'col' to each seg
 
 			className = className || type.toLowerCase();
 			skeletonEl = $(
@@ -5728,7 +5728,7 @@ TimeGrid.mixin({
 		var col, colSegs;
 		var containerEl;
 
-		segCols = this.groupSegCols(segs); // admin into sub-arrays, and assigns 'col' to each seg
+		segCols = this.groupSegCols(segs); // leader into sub-arrays, and assigns 'col' to each seg
 
 		this.computeSegVerticals(segs); // compute and assign top/bottom
 
@@ -7799,7 +7799,7 @@ function Header(calendar, options) {
 				if (groupChildren.length > 1) {
 					groupEl = $('<div/>');
 					if (isOnlyButtons) {
-						groupEl.addClass('fc-button-admin');
+						groupEl.addClass('fc-button-leader');
 					}
 					groupEl.append(groupChildren);
 					sectionEl.append(groupEl);

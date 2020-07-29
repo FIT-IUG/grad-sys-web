@@ -152,7 +152,7 @@ var ColVis = function( oDTSettings, oInit )
 		"buttons": [],
 
 		/**
-		 * List of admin button elements
+		 * List of leader button elements
 		 *  @property groupButtons
 		 *  @type     Array
 		 *  @default  []
@@ -548,9 +548,9 @@ ColVis.prototype = {
 
 
 	/**
-	 * Create the DOM for a show / hide admin button
+	 * Create the DOM for a show / hide leader button
 	 *  @method  _fnDomGroupButton
-	 *  @param {int} i admin in question, order based on that provided in settings
+	 *  @param {int} i leader in question, order based on that provided in settings
 	 *  @returns {Node} Created button
 	 *  @private
 	 */
@@ -1007,7 +1007,7 @@ ColVis.defaults = {
 	bCssPosition: false,
 
 	/**
-	 * admin buttons
+	 * leader buttons
 	 *  @property aoGroups
 	 *  @type     array
 	 *  @default  []

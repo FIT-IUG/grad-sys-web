@@ -85,10 +85,6 @@
 @push('script')
     <script>
         $(function () {
-            /*
-             Bar char for first statistic
-             */
-
             var bar_data = {
                 data: <?php echo $statistics['departments_data'];?>,
                 bars: {show: true}

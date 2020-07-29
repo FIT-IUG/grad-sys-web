@@ -5,7 +5,6 @@
         <div class="card-header">
             <h3 class="card-title">بيانات المشرفين</h3>
         </div>
-        <!-- /.card-header -->
         <div class="card-body">
             <table id="data-table" class="table table-bordered table-striped">
                 <thead>
@@ -52,12 +51,12 @@
                                 </i>
                                 تعديل
                             </a>
-                            {{--                                @if($teacher['role'] == 'admin')--}}
+                            {{--                                @if($teacher['role'] == 'leader')--}}
                             {{--                               class="btn btn-secondary btn-sm"--}}
                             {{--                               href="#"--}}
                             {{--                               @else--}}
                             {{--                               class="btn btn-warning btn-sm promotion"--}}
-                            {{--                               href="{{route('admin.teacher.promotion',['key'=>$key])}}"--}}
+                            {{--                               href="{{route('leader.teacher.promotion',['key'=>$key])}}"--}}
                             {{--                               @endif--}}
                             {{--                               class="btn btn-secondary btn-sm"--}}
                             {{--                               href="#"--}}
@@ -102,6 +101,7 @@
 @endsection
 @push('script')
     <script>
+        $(function () {
         $('.delete-confirm').on('click', function (event) {
             event.preventDefault();
             const url = $(this).attr('href');
@@ -142,6 +142,7 @@
                         window.location.href = url;
                     }
                 });
-        });
+            });
+        })
     </script>
 @endpush

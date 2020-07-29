@@ -8608,7 +8608,7 @@
 			__setColumnVis( settings, column, vis );
 		} );
 
-		// admin the column visibility changes
+		// leader the column visibility changes
 		if ( vis !== undefined ) {
 			// Second loop once the first is done for events
 			this.iterator( 'column', function ( settings, column ) {

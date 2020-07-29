@@ -39,7 +39,7 @@ class GroupController extends Controller
                 }
             }
 
-            //notification for every member to join admin by event
+            //notification for every member to join leader by event
             $members_std = array_filter($request->validated()['membersStd']);
 
             foreach ($members_std as $member_std) {
@@ -79,7 +79,7 @@ class GroupController extends Controller
 
             $leader_name = getLeaderName();
 
-            //notification for every member to join admin by event
+            //notification for every member to join leader by event
             $members_std = array_filter($request->validated()['membersStd']);
 
             foreach ($members_std as $member_std) {
@@ -143,7 +143,6 @@ class GroupController extends Controller
                                     return redirect()->back()->with('error', 'أنت متواجد في فريق, لا يمكنك الدخول في فريق آخر.');
                                 }
                             } else {
-<<<<<<< HEAD
                                 if (Str::substr(getUserId(), 0, 1) == 1) {
 
                                     return redirect()->back()->with('error', 'وصل الفريق الذي تحاول التسجيل به إلى الحد الاقصى.');
@@ -152,17 +151,7 @@ class GroupController extends Controller
                                     return redirect()->back()->with('error', 'وصل الفريق الذي تحاولين التسجيل به إلى الحد الاقصى.');
                                 }
 
-=======
-                                return redirect()->back()->with('error', 'أنت منضم لفريق، لا يمكنك الانضمام لفريق آخر.');
-                            }
-                        } else {
-                            if (Str::substr(getUserId(), 0, 1) == 1) {
 
-                                return redirect()->back()->with('error', 'وصل الفريق الذي تحاول الانضمام إليه إلى الحد الأقصى من عدد الأعضاء.');
-                            } else {
-
-                                return redirect()->back()->with('error', 'وصل الفريق الذي تحاولين الانضمام إليه إلى الحد الأقصى من عدد الأعضاء.');
->>>>>>> ee3a44873b75501166e5074f6a3a16f38bae8eef
                             }
 
                         }

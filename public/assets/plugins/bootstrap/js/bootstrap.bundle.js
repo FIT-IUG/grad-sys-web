@@ -5873,10 +5873,10 @@
     var Selector = {
       DATA_SPY: '[data-spy="scroll"]',
       ACTIVE: '.active',
-      NAV_LIST_GROUP: '.nav, .list-admin',
+      NAV_LIST_GROUP: '.nav, .list-leader',
       NAV_LINKS: '.nav-link',
       NAV_ITEMS: '.nav-item',
-      LIST_ITEMS: '.list-admin-item',
+      LIST_ITEMS: '.list-leader-item',
       DROPDOWN: '.dropdown',
       DROPDOWN_ITEMS: '.dropdown-item',
       DROPDOWN_TOGGLE: '.dropdown-toggle'
@@ -6178,7 +6178,7 @@
     };
     var Selector = {
       DROPDOWN: '.dropdown',
-      NAV_LIST_GROUP: '.nav, .list-admin',
+      NAV_LIST_GROUP: '.nav, .list-leader',
       ACTIVE: '.active',
       ACTIVE_UL: '> li > .active',
       DATA_TOGGLE: '[data-toggle="tab"], [data-toggle="pill"], [data-toggle="list"]',

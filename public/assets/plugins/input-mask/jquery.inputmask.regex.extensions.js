@@ -45,14 +45,14 @@ Allows for using regular expressions as a mask
                                             currentToken.matches.push(m);
                                         }
                                         break;
-                                    case "(": // admin opening
+                                    case "(": // leader opening
                                         if (!currentToken.isGroup && currentToken.matches.length > 0)
                                             opts.regexTokens.push(currentToken);
                                         currentToken = new regexToken();
                                         currentToken.isGroup = true;
                                         opengroups.push(currentToken);
                                         break;
-                                    case ")": // admin closing
+                                    case ")": // leader closing
                                         var groupToken = opengroups.pop();
                                         if (opengroups.length > 0) {
                                             opengroups[opengroups.length - 1]["matches"].push(groupToken);

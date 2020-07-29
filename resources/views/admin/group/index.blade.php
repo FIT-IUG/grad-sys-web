@@ -46,13 +46,13 @@
                             @endif
                         </td>
                         <td class="project-actions text-right">
-                            <a class="btn btn-info btn-sm" href="{{route('admin.admin.edit',['group_key'=>$key])}}">
+                            <a class="btn btn-info btn-sm" href="{{route('admin.group.edit',['group_key'=>$key])}}">
                                 <i class="fa fa-pencil">
                                 </i>
                                 عرض المزيد
                             </a>
                             <a class="btn btn-danger btn-sm delete-confirm"
-                               href="{{route('admin.admin.edit',['group_key'=>$key])}}">
+                               href="{{route('admin.group.edit',['group_key'=>$key])}}">
                                 <i class="fa fa-trash">
                                 </i>
                                 حذف

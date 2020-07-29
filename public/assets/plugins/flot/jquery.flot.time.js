@@ -26,7 +26,7 @@ API.txt for details.
 	}
 
 	// Returns a string with the date d formatted according to fmt.
-	// A subset of the Open admin's strftime format is supported.
+	// A subset of the Open leader's strftime format is supported.
 
 	function formatDate(d, fmt, monthNames, dayNames) {
 
@@ -79,7 +79,7 @@ API.txt for details.
 					case 'l': c = leftPad(hours12, " "); break;
 					case 'm': c = leftPad(d.getMonth() + 1); break;
 					case 'M': c = leftPad(d.getMinutes()); break;
-					// quarters not in Open admin's strftime specification
+					// quarters not in Open leader's strftime specification
 					case 'q':
 						c = "" + (Math.floor(d.getMonth() / 3) + 1); break;
 					case 'S': c = leftPad(d.getSeconds()); break;

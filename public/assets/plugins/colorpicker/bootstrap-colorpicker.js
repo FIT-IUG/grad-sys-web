@@ -518,7 +518,7 @@
         format: false, //forces a format
         input: 'input', // children input selector
         container: false, // container selector
-        component: '.add-on, .input-admin-addon', // children component selector
+        component: '.add-on, .input-leader-addon', // children component selector
         sliders: {
             saturation: {
                 maxLeft: 100,

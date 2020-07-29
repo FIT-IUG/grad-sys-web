@@ -32,7 +32,7 @@
                                 @endif
                                 <td>
                                     <form
-                                        action="{{route(getRole().'.admin.replyRequest',['from'=>$notification['from'],'to'=>$notification['to']])}}"
+                                        action="{{route(getRole().'.group.replyRequest',['from'=>$notification['from'],'to'=>$notification['to']])}}"
                                         method="post">
                                         @csrf
                                         <input type="text" hidden value="{{$key}}" name="notification_key">

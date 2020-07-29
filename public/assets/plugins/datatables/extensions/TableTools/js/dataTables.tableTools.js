@@ -1190,7 +1190,7 @@ TableTools.prototype = {
 			this.s.dt._TableToolsInit = true;
 		}
 
-		/* We can use the table node from comparisons to admin controls */
+		/* We can use the table node from comparisons to leader controls */
 		this.dom.table = this.s.dt.nTable;
 
 		/* Clone the defaults and then the user options */

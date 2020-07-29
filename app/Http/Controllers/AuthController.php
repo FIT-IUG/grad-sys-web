@@ -32,18 +32,7 @@ class AuthController extends Controller
         try {
             firebaseAuth()->signInWithEmailAndPassword($email, $password);
             $uid = firebaseAuth()->getUserByEmail($email)->uid;
-//            $time_stamp = firebaseAuth()->getUser($uid)->metadata->lastLoginAt->getTimestamp();
-//            $now = Carbon::now()->timestamp;
             $user = firebaseGetReference('users/' . $uid);
-//            $can_login = false;
-
-//            if ($time_stamp + 900 < $now)
-//                $can_login = true;
-
-//            if there is remember token and last login for this user less than 15m then if will fire
-//            if ($user->getChild('remember_token')->getValue() != null && !$can_login) {
-//                return redirect()->route('login')->with('error', 'يوجد شخص يستخدم هذا الحساب الآن.');
-//            }
 
             //verify user if exist
 //            firebaseAuth()->signInWithEmailAndPassword($email, $password)->uid;
@@ -70,7 +59,7 @@ class AuthController extends Controller
         } catch (NotFoundException $exception) {
             return redirect()->route('login')->with('error', 'البريد الإلكتروني غير موجود.');
         } catch (RouteNotFoundException $exception) {
-            return redirect()->route('login')->with('error', 'لم يتم الغثور على حسابك.');
+            return redirect()->route('login')->with('error', 'لم يتم العثور على حسابك.');
         }
     }
 

@@ -102,29 +102,6 @@ function inGroup()
     }
 }
 
-<<<<<<< HEAD
-=======
-function isGroupLeader()
-{
-
-    try {
-        $groups = firebaseGetReference('groups')->getValue();
-//        dd($groups);
-        $leaders = Arr::pluck($groups, 'leaderStudentStd', key($groups));
-        dd($leaders);
-        $user_id = getUserId();
-//        firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
-        foreach ($leaders as $leader)
-            if ($leader == $user_id)
-                return true;
-        return false;
-    } catch (\Kreait\Firebase\Exception\ApiException $e) {
-        return redirect()->back()->with('error', 'حدثت مشكلة في النظام.');
-    }
-
-}
-
->>>>>>> ee3a44873b75501166e5074f6a3a16f38bae8eef
 function getUserId()
 {
     try {
@@ -173,13 +150,13 @@ function getSupervisorStatus()
 function createUsers()
 {
     try {
-        $uid = firebaseAuth()->createUserWithEmailAndPassword('admin@example.com', 'admin123')->uid;
-//        $uid = firebaseAuth()->verifyPassword('admin@example.com', 'admin123')->uid;
+        $uid = firebaseAuth()->createUserWithEmailAndPassword('leader@example.com', 'admin123')->uid;
+//        $uid = firebaseAuth()->verifyPassword('leader@example.com', 'admin123')->uid;
 
         firebaseGetReference('users/' . $uid)->set([
-            'email' => 'admin@example.com',
+            'email' => 'leader@example.com',
             'name' => 'admin1',
-            'role' => 'admin',
+            'role' => 'leader',
             'user_id' => '1111111111',
             'mobile_number' => '1111111111',
             'department' => 'FIT'
@@ -206,7 +183,7 @@ function getUserByRole($user_role)
     }
 }
 
-//This function check if admin members is accept a min number of join requests by leader id
+//This function check if leader members is accept a min number of join requests by leader id
 function isMinMembersAccept()
 {
 

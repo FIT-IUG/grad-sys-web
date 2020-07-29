@@ -19,7 +19,7 @@ class TeacherController extends MainController
     public function index()
     {
         $teachers = getUserByRole('teacher');
-        $admins = getUserByRole('admin');
+        $admins = getUserByRole('leader');
         $teachers = Arr::collapse([$teachers, $admins]);
         $groups_counter = 0;
         $teachers_info = [];
@@ -154,20 +154,20 @@ class TeacherController extends MainController
 //        $index = 0;
 //        $groups_counter = 0;
 //
-//        foreach ($groups as $admin) {
-//            if (isset($admin['teacher']) && $admin['teacher'] == $teacher_id) {
-//                $group_students_std = Arr::flatten([$admin['leaderStudentStd'], $admin['membersStd']]);
+//        foreach ($groups as $leader) {
+//            if (isset($leader['teacher']) && $leader['teacher'] == $teacher_id) {
+//                $group_students_std = Arr::flatten([$leader['leaderStudentStd'], $leader['membersStd']]);
 //                foreach ($students as $student)
 //                    foreach ($group_students_std as $std)
 //                        if ($student['user_id'] == $std) {
 //                            $student = Arr::except($student, ['remember_token', 'role']);
-//                            if ($admin['leaderStudentStd'] == $student['user_id']) {
+//                            if ($leader['leaderStudentStd'] == $student['user_id']) {
 //                                $student = Arr::collapse([$student, ['isLeader' => true]]);
 //                            } else
 //                                $student = Arr::collapse([$student, ['isLeader' => false]]);
 //                            Arr::set($students_data, $index++, $student);
 //                        }
-//                $group_data = Arr::collapse([$admin, ['students_data' => $students_data]]);
+//                $group_data = Arr::collapse([$leader, ['students_data' => $students_data]]);
 //                $students_data = [];
 //                $index = 0;
 //                Arr::set($groups_data, $groups_counter++, $group_data);

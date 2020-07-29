@@ -63,11 +63,7 @@ class Handler extends ExceptionHandler
             } elseif ($exception instanceof ServiceException) {
                 return redirect()->route('logout')->with('error', 'حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
             } elseif ($exception instanceof ErrorException) {
-<<<<<<< HEAD
-                return redirect()->route('logout')->with('error', 'حدثت مشكلة في النظام.');
-=======
                 return redirect()->route('login')->with('error', 'حاول أحدهم الدخول إلى حسابك.');
->>>>>>> ee3a44873b75501166e5074f6a3a16f38bae8eef
             }
 
         return parent::render($request, $exception);

@@ -6,7 +6,6 @@
         <div class="card-header">
             <h3 class="card-title">بيانات الطلبة</h3>
         </div>
-        <!-- /.card-header -->
         <div class="card-body">
             <table id="data-table" class="table table-bordered table-striped">
                 <thead>

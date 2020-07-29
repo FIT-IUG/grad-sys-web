@@ -823,7 +823,7 @@ if (!document.createElement('canvas').getContext) {
     var H = 10;
 
     // For some reason that I've now forgotten, using divs didn't work
-    vmlStr.push(' <g_vml_:admin',
+    vmlStr.push(' <g_vml_:leader',
                 ' coordsize="', Z * W, ',', Z * H, '"',
                 ' coordorigin="0,0"' ,
                 ' style="width:', W, 'px;height:', H, 'px;position:absolute;');
@@ -872,7 +872,7 @@ if (!document.createElement('canvas').getContext) {
                 ' cropright="', (w - sx - sw) / w, '"',
                 ' cropbottom="', (h - sy - sh) / h, '"',
                 ' />',
-                '</g_vml_:admin>');
+                '</g_vml_:leader>');
 
     this.element_.insertAdjacentHTML('BeforeEnd', vmlStr.join(''));
   };

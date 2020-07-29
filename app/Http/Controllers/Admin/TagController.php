@@ -51,7 +51,6 @@ class TagController extends MainController
                                     ->update([$key => $tag_name]);
                             }
                         }
-
                     }
                 }
                 return redirect()->route('admin.settings')

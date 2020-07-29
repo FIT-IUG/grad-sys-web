@@ -39,11 +39,11 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
     Route::namespace('Student')->prefix('student')->group(function () {
         Route::get('/', 'DashboardController@index')->name('student.index');
         Route::get('wait', 'DashboardController@wait')->name('student.wait');
-        Route::get('createGroup', 'GroupController@create')->name('student.admin.create');
-        Route::post('createGroup/store', 'GroupController@store')->name('student.admin.store');
-        Route::post('createGroup/storeExtra', 'GroupController@storeExtra')->name('student.admin.storeExtra');
-        Route::post('admin/response', 'GroupController@memberResponse')->name('student.admin.response');
-        Route::post('admin/addSupervisor', 'GroupController@storeGroupSupervisor')->name('student.admin.storeSupervisor');
+        Route::get('createGroup', 'GroupController@create')->name('student.group.create');
+        Route::post('createGroup/store', 'GroupController@store')->name('student.group.store');
+        Route::post('createGroup/storeExtra', 'GroupController@storeExtra')->name('student.group.storeExtra');
+        Route::post('group/response', 'GroupController@memberResponse')->name('student.group.response');
+        Route::post('group/addSupervisor', 'GroupController@storeGroupSupervisor')->name('student.group.storeSupervisor');
     });
 
     Route::namespace('Admin')->prefix('admin')->group(function () {
@@ -67,16 +67,15 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
         Route::get('teacher/promotion/{key}', 'TeacherController@promotion')->name('admin.teacher.promotion');
         Route::get('teacher/demotion/{key}', 'TeacherController@demotion')->name('admin.teacher.demotion');
         Route::get('teacher/destroy/{key}', 'TeacherController@destroy')->name('admin.teacher.destroy');
-        Route::get('groups', 'GroupController@index')->name('admin.admin.index');
-        Route::get('groups/edit/{group_key}', 'GroupController@edit')->name('admin.admin.edit');
-        Route::post('groups/update/{group_key}', 'GroupController@update')->name('admin.admin.update');
-        Route::post('groups/update/teacher/{group_key}', 'GroupController@updateTeacher')->name('admin.admin.update.teacher');
-        Route::post('replyJoinGroupRequest', 'DashboardController@replayToBeSupervisor')->name('admin.admin.replyRequest');
+        Route::get('groups', 'GroupController@index')->name('admin.group.index');
+        Route::get('groups/edit/{group_key}', 'GroupController@edit')->name('admin.group.edit');
+        Route::post('groups/update/{group_key}', 'GroupController@update')->name('admin.group.update');
+        Route::post('groups/update/teacher/{group_key}', 'GroupController@updateTeacher')->name('admin.group.update.teacher');
+        Route::post('replyJoinGroupRequest', 'DashboardController@replayToBeSupervisor')->name('admin.group.replyRequest');
     });
 
     Route::get('teacher', 'TeacherController@index')->name('teacher.index');
-    Route::post('storeGroupMembers', 'StudentController@storeGroupMembers')->name('admin.members.store');
-    Route::post('storeGroupSupervisor', 'StudentController@storeGroupSupervisor')->name('admin.teacher.store');
-//    Route::post('acceptTeamJoinRequest', 'StudentController@acceptTeamJoinRequest')->name('acceptTeamJoinRequest');
+    Route::post('storeGroupMembers', 'StudentController@storeGroupMembers')->name('group.members.store');
+    Route::post('storeGroupSupervisor', 'StudentController@storeGroupSupervisor')->name('group.teacher.store');
     Route::post('teacher/replyJoinGroupRequest', 'MainController@replayToBeSupervisorRequest')->name('teacher.admin.replyRequest');
 });

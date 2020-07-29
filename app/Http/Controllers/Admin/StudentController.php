@@ -27,11 +27,7 @@ class StudentController extends Controller
             $student = firebaseGetReference('users/' . $user_id)->getSnapshot();
             $key = $student->getKey();
             $student = $student->getValue();
-<<<<<<< HEAD
-            $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'وسائط متعددة', 'برمجة تطبيقات الموبايل', 'تكنولوجيا المعلومات'];
-=======
             $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم تكنولوجيا المعلومات', 'الوسائط المتعددة وتطوير الويب', 'الحوسبة المتنقلة وتطبيقات الأجهزة الذكية'];
->>>>>>> ee3a44873b75501166e5074f6a3a16f38bae8eef
 
             if ($student == null)
                 return redirect()->back()->with('error', 'حدثت مشكلة أثناء جلب بيانات الطالب.');

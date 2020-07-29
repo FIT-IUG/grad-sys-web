@@ -65,13 +65,8 @@
                                     <td>{{isset($teacher_data['department']) ? $teacher_data['department'] : 'لا يوجد'}}</td>
                                 </tr>
                                 <tr>
-<<<<<<< HEAD
-                                    <th>الايميل:</th>
-                                    <td>{{isset($teacher_data['email']) ? $teacher_data['email'] : 'لا يوجد'}}</td>
-=======
                                     <th>البريد الإلكتروني:</th>
                                     <td>{{isset($teacher_data['email']) ? $teacher_data['email'] : '-'}}</td>
->>>>>>> ee3a44873b75501166e5074f6a3a16f38bae8eef
                                 </tr>
                                 </tbody>
                             </table>
@@ -87,13 +82,8 @@
                                     <td>{{isset($project_data['initialProjectTitle']) ? $project_data['initialProjectTitle'] : 'لا يوجد'}}</td>
                                 </tr>
                                 <tr>
-<<<<<<< HEAD
-                                    <th>هل المجموعة خريجة فصل أول:</th>
-                                    <td>{{(isset($project_data['graduateInFirstSemester']) ? $project_data['graduateInFirstSemester'] : 'لا يوجد') == 0 ? 'لا' : 'نعم'}}</td>
-=======
                                     <th>هل المجموعة خريجة فصل أول؟</th>
                                     <td>{{(isset($project_data['graduateInFirstSemester']) ? $project_data['graduateInFirstSemester'] : '-') == 0 ? 'لا' : 'نعم'}}</td>
->>>>>>> ee3a44873b75501166e5074f6a3a16f38bae8eef
                                 </tr>
                                 <tr>
                                     <th>شكل المشروع:</th>
@@ -128,7 +118,7 @@
                         {{$message}}
                     </div>
                     @enderror
-                    <form action="{{route('admin.admin.update',['group_key'=>$group_key])}}" method="POST">
+                    <form action="{{route('admin.group.update',['group_key'=>$group_key])}}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="form-group col-md-12">
@@ -164,7 +154,7 @@
                         {{$message}}
                     </div>
                     @enderror
-                    <form action="{{route('admin.admin.update.teacher',['group_key'=>$group_key])}}" method="POST">
+                    <form action="{{route('admin.group.update.teacher',['group_key'=>$group_key])}}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label>مشرف المجموعة</label>

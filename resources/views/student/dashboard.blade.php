@@ -28,7 +28,7 @@
                                     <td>{{isset($notification['message']) ? $notification['message'] : '-'}}</td>
                                     <td>
                                         <form
-                                            action="{{route('student.admin.response',['from'=>$notification['from'],'to'=>$notification['to']])}}"
+                                            action="{{route('student.group.response',['from'=>$notification['from'],'to'=>$notification['to']])}}"
                                             method="post">
                                             @csrf
                                             <input type="text" value="{{$key}}" name="notification_key" hidden>
@@ -161,7 +161,7 @@
                             {{$message}}
                         </div>
                         @enderror
-                        <form action="{{route('student.admin.storeExtra')}}" method="POST">
+                        <form action="{{route('student.group.storeExtra')}}" method="POST">
                             @csrf
                             <spam style="display: none">{{$next_student = $group_students_complete}}</spam>
                             <div class="row">

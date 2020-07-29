@@ -24,7 +24,7 @@
                                     <td>{{$notification['message']}}</td>
                                     <td>
                                         <form
-                                            action="{{route('student.admin.response',['from'=>$notification['from'],'to'=>$notification['to']])}}"
+                                            action="{{route('student.group.response',['from'=>$notification['from'],'to'=>$notification['to']])}}"
                                             method="post">
                                             @csrf
                                             <label>

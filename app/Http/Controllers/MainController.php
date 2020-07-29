@@ -24,7 +24,7 @@ class MainController extends Controller
                 foreach ($notifications as $key => $notification) {
                     if ($notification['to'] == $user_id && ($notification['status'] == 'wait' xor $notification['status'] == 'readOnce')) {
 //               this type of notification to teacher and need with normal data in notification a project initial title
-//                       to be supervisor notification type send for teacher and admin
+//                       to be supervisor notification type send for teacher and leader
                         if ($notification['type'] == 'to_be_supervisor') {
                             $groups = firebaseGetReference('groups')->getValue();
 //                      get project initial title
@@ -77,7 +77,7 @@ class MainController extends Controller
 //        }
 
 //        createUsers();
-//        dd('admin created');
+//        dd('leader created');
         $role = 'teacher';
         $password = $role . '123';
         $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم تكنولوجيا المعلومات', 'الوسائط المتعددة وتطوير الويب', 'الحوسبة المتنقلة وتطبيقات الأجهزة الذكية'];
@@ -196,7 +196,7 @@ class MainController extends Controller
     protected function getTeacherData($teacher_id)
     {
         $teachers = getUserByRole('teacher');
-        $admins = getUserByRole('admin');
+        $admins = getUserByRole('leader');
         $teachers = Arr::collapse([$teachers, $admins]);
         $teacher_data = [];
 
@@ -292,7 +292,7 @@ class MainController extends Controller
     public function getTeachersCanBeSupervisor($teacher_id = 0)
     {
         $teachers = getUserByRole('teacher');
-        $admins = getUserByRole('admin');
+        $admins = getUserByRole('leader');
         $teachers = Arr::collapse([$teachers, $admins]);
         $teacher_counter = 0;
 
