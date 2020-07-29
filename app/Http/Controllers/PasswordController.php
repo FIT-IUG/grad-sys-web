@@ -25,7 +25,7 @@ class PasswordController extends Controller
                     return view('createPassword');
         } catch (ApiException $e) {
         }
-        return redirect()->route('home')->with('error', 'ليس لديك الصلاحية لفعل ذلك.');
+        return redirect()->route('home')->with('error', 'ليس لديك صلاحية لفعل ذلك.');
 
     }
 
@@ -41,7 +41,7 @@ class PasswordController extends Controller
                     $user_id = $emailed_user['user_id'];
                     $emailed_user = firebaseGetReference('usersFromExcel/' . $user_id)->getValue();
                     if ($this->checkUniqueUser($emailed_user) == false) {
-                        return redirect()->back()->with('error', 'بيانات هذا الحساب موجودة مسبقاً.');
+                        return redirect()->back()->with('error', 'بيانات هذا الحساب موجودة مسبق.');
                     }
                     $email = $emailed_user['email'];
                     $password = $request->get('password');
@@ -51,9 +51,9 @@ class PasswordController extends Controller
                     break;
                 }
 
-            return redirect()->route('login')->with('success', 'تم حفظ كلمة السر بنجاح, يمكنك الأن الدخول للنظام.');
+            return redirect()->route('login')->with('success', 'تم حفظ كلمة المرور بنجاح، يمكنك الآن الدّخول للنظام.');
         } catch (AuthException $e) {
-            return redirect()->route('home')->with('error', 'المستخدم موجود مسبقاً.');
+            return redirect()->route('home')->with('error', 'المستخدم موجود مسبقًا.');
         } catch (FirebaseException $e) {
         }
     }

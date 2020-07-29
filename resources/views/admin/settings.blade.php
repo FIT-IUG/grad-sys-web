@@ -12,7 +12,11 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="form-group col-md-3">
+<<<<<<< HEAD
                                 <label>الحد الأقصى لعدد اعضاء الفريق</label>
+=======
+                                <label for="exampleInputEmail1">الحد الأقصى لعدد أعضاء الفريق</label>
+>>>>>>> ee3a44873b75501166e5074f6a3a16f38bae8eef
                                 <input type="text"
                                        class="form-control @error('max_group_members') is-invalid  @enderror"
                                        name="max_group_members"
@@ -22,7 +26,11 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-3">
+<<<<<<< HEAD
                                 <label>الحد الادنى لعدد اعضاء الفريق</label>
+=======
+                                <label for="exampleInputEmail1">الحد الأدنى لعدد أعضاء الفريق</label>
+>>>>>>> ee3a44873b75501166e5074f6a3a16f38bae8eef
                                 <input type="text"
                                        class="form-control @error('min_group_members') is-invalid  @enderror"
                                        name="min_group_members"
@@ -32,7 +40,11 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-3">
+<<<<<<< HEAD
                                 <label>الحد الاقصى لعدد المجموعات للمدرس</label>
+=======
+                                <label for="exampleInputEmail1">الحد الأقصى لعدد المجموعات للمشرف</label>
+>>>>>>> ee3a44873b75501166e5074f6a3a16f38bae8eef
                                 <input type="text"
                                        class="form-control @error('max_teacher_groups') is-invalid  @enderror"
                                        name="max_teacher_groups"

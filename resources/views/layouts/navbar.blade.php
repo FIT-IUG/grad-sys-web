@@ -42,7 +42,7 @@
                 <div class="media">
                     <div class="media-body">
                         <h3 class="dropdown-item-title">
-                            لا يوجد اي اشعار
+                            لا يوجدإشعارات
                         </h3>
                     </div>
                 </div>

@@ -3,7 +3,7 @@
         <div class="card-header">
             <h3 class="card-title">
                 @if(isset($teacher))
-                    بيانات المجموعات الخاصة بالمدرس {{isset($teacher['name']) ? $teacher['name'] : '-'}}
+                    بيانات المجموعات الخاصة بالمشرف {{isset($teacher['name']) ? $teacher['name'] : '-'}}
                 @else
                     بيانات المجموعات الخاصة بك
                 @endif
@@ -30,9 +30,9 @@
                             <tr>
                                 <th>الرقم الجامعي</th>
                                 <th>اسم الطالب</th>
-                                <th>رقم الجوال</th>
+                                <th>رقم الموبايل</th>
                                 <th>القسم</th>
-                                <th>الايميل</th>
+                                <th>البريد الإلكتروني</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -81,7 +81,7 @@
 {{--                                            <td>{{isset($admin['teacher_data']['department']) ? $admin['teacher_data']['department'] : '-'}}</td>--}}
 {{--                                        </tr>--}}
                                         <tr>
-                                            <th>الايميل:</th>
+                                            <th>البريد الإلكتروني:</th>
                                             <td>{{isset($group['teacher_data']['email']) ? $group['teacher_data']['email'] : '-'}}</td>
                                         </tr>
                                         </tbody>
@@ -98,7 +98,7 @@
                                             <td>{{isset($group['project_data']['initialProjectTitle']) ? $group['project_data']['initialProjectTitle'] : '-'}}</td>
                                         </tr>
                                         <tr>
-                                            <th>هل المجموعة خريجة فصل أول:</th>
+                                            <th>هل المجموعة خريجة فصل أول؟</th>
                                             <td>{{(isset($group['project_data']['graduateInFirstSemester']) ? $group['project_data']['graduateInFirstSemester'] : '-') == 0 ? 'لا' : 'نعم'}}</td>
                                         </tr>
                                         <tr>
@@ -126,6 +126,6 @@
     @if(isset($teacher) )
         <h1>لا يوجد مجموعات تخص المشرف: {{$teacher['name']}}.</h1>
     @elseif(getRole() == 'teacher' && $notifications == null)
-        <h1>لا يوجد لديك أي مجموعات.</h1>
+        <h1>لا يوجد لديك مجموعات.</h1>
     @endif
 @endif

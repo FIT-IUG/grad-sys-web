@@ -34,6 +34,6 @@ class UniqueStudentDataRule implements Rule
      */
     public function message()
     {
-        return ':attribute مسجل مسبقا.';
+        return ':attribute مسجل مسبقًا.';
     }
 }

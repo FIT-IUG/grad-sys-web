@@ -5,9 +5,9 @@
         </div>
         <div class="card-body">
             @if(Str::substr(getUserId(), 0, 1) == 1)
-                <span style="padding-right: 4px;">الطالب المسجل يعتبر مشرف الفريق في حال أتم التسجيل.</span>
+                <span style="padding-right: 4px;">الطالب المسجل يعتبر قائد الفريق في حال أتم عملية التسجيل.</span>
             @else
-                <span style="padding-right: 4px;">الطالبة المسجلة تعتبر مشرفة الفريق في حال أتمت التسجيل.</span>
+                <span style="padding-right: 4px;">الطالبة المسجلة تعتبر قائدة الفريق في حال أتمت عملية التسجيل.</span>
             @endif
             @error('membersStd')
             <div class="alert alert-danger" style="margin-top: 10px">{{$message}}</div>
@@ -37,7 +37,7 @@
                 {{-- Check if a admin will be graduate in first semester. --}}
                 <div class="form-group">
                     {{--1 for yes 0 for no--}}
-                    <label for="">المجموعة خريجة الفصل الاول؟</label>
+                    <label for="">هل المجموعة خريجة الفصل الاول؟</label>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" value="1" name="graduateInFirstSemester"
                                @if(old('graduateInFirstSemester') == 1) checked @endif >

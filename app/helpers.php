@@ -35,7 +35,7 @@ function getRole()
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
         return redirect()->back()->with('error', 'حلصت مشكلة بالنظام.');
     } catch (ErrorException $exception) {
-        return redirect()->back()->with('error', 'حلصت مشكلة بالنظام.');
+        return redirect()->back()->with('error', 'حدثت مشكلة بالنظام.');
     }
 }
 
@@ -78,7 +78,7 @@ function getStudentsStdWithoutGroup()
 
         return array_diff($students_std, $studentsStdInGroup);
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
-        return redirect()->back()->with('error', 'حصلت مشكلة في جلب الطلبة');
+        return redirect()->back()->with('error', 'حدثت مشكلة أثناء جلب الطلبة');
     }
 }
 
@@ -102,6 +102,29 @@ function inGroup()
     }
 }
 
+<<<<<<< HEAD
+=======
+function isGroupLeader()
+{
+
+    try {
+        $groups = firebaseGetReference('groups')->getValue();
+//        dd($groups);
+        $leaders = Arr::pluck($groups, 'leaderStudentStd', key($groups));
+        dd($leaders);
+        $user_id = getUserId();
+//        firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
+        foreach ($leaders as $leader)
+            if ($leader == $user_id)
+                return true;
+        return false;
+    } catch (\Kreait\Firebase\Exception\ApiException $e) {
+        return redirect()->back()->with('error', 'حدثت مشكلة في النظام.');
+    }
+
+}
+
+>>>>>>> ee3a44873b75501166e5074f6a3a16f38bae8eef
 function getUserId()
 {
     try {
@@ -121,7 +144,7 @@ function isTeacherHasNotification()
                 return true;
         return false;
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
-        return redirect()->back()->with('error', 'حصلت مشكلة');
+        return redirect()->back()->with('error', 'حدثت مشكلة');
     } catch (ErrorException $exception) {
         return route('logout');
     }
@@ -142,7 +165,7 @@ function getSupervisorStatus()
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
         return redirect()->back()->with('error', 'حصلت مشكلة');
     } catch (ErrorException $exception) {
-        return redirect()->back()->with('error', 'هنالك مشكلة في النظام.');
+        return redirect()->back()->with('error', 'حدثت مشكلة في النظام.');
     }
 
 }
@@ -179,7 +202,7 @@ function getUserByRole($user_role)
                     Arr::set($selected_users, $key, $user);
         return $selected_users;
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
-        return redirect()->route('logout')->with('error', 'حصلت مشكلة في النظام.');
+        return redirect()->route('logout')->with('error', 'حدثت مشكلة في النظام.');
     }
 }
 
@@ -225,7 +248,7 @@ function isMemberHasNotification()
 
         return null;
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
-        return redirect()->route('home')->with('error', 'حصلت مشكلة في النظام.');
+        return redirect()->route('home')->with('error', 'حدثت مشكلة في النظام.');
     }
 
 }

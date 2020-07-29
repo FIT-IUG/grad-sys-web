@@ -27,6 +27,6 @@ class CheckUserInCreatePassword
             if ($user['token'] == $token)
                 return $next($request);
 
-        return redirect()->route('home')->with('error', 'ليس لديك الصلاحية لفعل ذلك.');
+        return redirect()->route('home')->with('error', 'ليس لديك صلاحية لفعل ذلك.');
     }
 }

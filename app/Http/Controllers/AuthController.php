@@ -64,13 +64,13 @@ class AuthController extends Controller
 
             return redirect()->route($role . '.index');
         } catch (AuthException $e) {
-            return redirect()->route('login')->with('error', 'الايميل او كلمة السر خاطئة.');
+            return redirect()->route('login')->with('error', 'البريد الإلكتروني أو كلمة المرور خاطئة.');
         } catch (FirebaseException $e) {
-            return redirect()->route('login')->with('error', 'حدثت مشكلة فحص البيانات, يرجى المحاولة مرة اخرى.');
+            return redirect()->route('login')->with('error', 'حدثت مشكلة في فحص البيانات، يرجى المحاولة مرة أخرى.');
         } catch (NotFoundException $exception) {
-            return redirect()->route('login')->with('error', 'الايميل غير موجود.');
+            return redirect()->route('login')->with('error', 'البريد الإلكتروني غير موجود.');
         } catch (RouteNotFoundException $exception) {
-            return redirect()->route('login')->with('error', 'لم يتم إيجاد حسابك.');
+            return redirect()->route('login')->with('error', 'لم يتم الغثور على حسابك.');
         }
     }
 
@@ -103,11 +103,11 @@ class AuthController extends Controller
 
             return redirect()->route('login');
         } catch (BadRequestException $exception) {
-            return redirect()->route('login')->with('error', 'انت غير مسجل.');
+            return redirect()->route('login')->with('error', 'أنت غير مسجل.');
         } catch (ServiceException $exception) {
-            return redirect()->route('login')->with('error', 'حصلت مشكلة في الاتصال.');
+            return redirect()->route('login')->with('error', 'حدثت مشكلة أثناء الاتصال.');
         } catch (ApiException $e) {
-            return redirect()->route('login')->with('error', 'حصلت مشكلة في الاتصال.');
+            return redirect()->route('login')->with('error', 'حدثت مشكلة أثناء الاتصال.');
         }
 
     }

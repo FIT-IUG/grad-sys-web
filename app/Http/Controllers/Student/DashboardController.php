@@ -28,7 +28,7 @@ class DashboardController extends MainController
                     case 'wait_min_members':
 
                         return view('student.dashboard', [
-                            'message' => 'انتظر حتى يوافق الحد الادنى من اعضاء الفريق',
+                            'message' => 'انتظر حتى يوافق الحد الأدنى من أعضاء الفريق',
                             'notifications' => $notifications
                         ]);
                     case 'teacher_reject' :
@@ -44,7 +44,7 @@ class DashboardController extends MainController
                                 'tags' => $tags,
                             ]);
                         } catch (ApiException $e) {
-                            return redirect()->back()->with('error', 'حصلت مشكلة بالنظام.');
+                            return redirect()->back()->with('error', 'حدثت مشكلة في النظام.');
                         }
 
                     case 'wait_teacher':
@@ -89,7 +89,7 @@ class DashboardController extends MainController
                     case 'choose_teacher':
 
                         return view('student.dashboard', [
-                            'message' => 'انتظر انتهاء القائد من اعدادات الفريق.',
+                            'message' => 'انتظر انتهاء قائد الفريق من إتمام إعدادات الفريق.',
                             'notifications' => $notifications
                         ]);
 
@@ -133,7 +133,7 @@ class DashboardController extends MainController
                                 'project_data' => $project_data,
                             ]);
                         } catch (ApiException $e) {
-                            return redirect()->back()->with('error', 'حصلت مشكلة بالنظام.');
+                            return redirect()->back()->with('error', 'حدثت مشكلة في النظام.');
                         }
                 }
             }
@@ -164,7 +164,7 @@ class DashboardController extends MainController
                 firebaseGetReference('notifications/' . $index)->update(['status' => 'accept']);
             }
         }
-        return redirect()->route('student.index')->with('success', 'تم الموافقة على طلب الإنضمام بنجاح.');
+        return redirect()->route('student.index')->with('success', 'تمت الموافقة على طلب الانضمام بنجاح.');
     }
 
     private function getMemberNotifications()
@@ -252,7 +252,7 @@ class DashboardController extends MainController
                 'project_data' => $project_data[0]
             ];
         } catch (ApiException $e) {
-            return redirect()->back()->with('error', 'حصلت مشكلة بالنظام.');
+            return redirect()->back()->with('error', 'حدثت مشكلة في النظام.');
         }
 
     }

@@ -4,7 +4,7 @@
     <div class="card card-primary card-tabs">
         <div class="card-header">
             <h3 class="card-title">
-                بيانات المجموعات الخاصة بالمدرس {{isset($teacher_data['name']) ? $teacher_data['name'] : '-'}}
+                بيانات المجموعات الخاصة بالمشرف {{isset($teacher_data['name']) ? $teacher_data['name'] : '-'}}
             </h3>
         </div>
         <div class="card-body">
@@ -14,9 +14,9 @@
                     <tr>
                         <th>الرقم الجامعي</th>
                         <th>اسم الطالب</th>
-                        <th>رقم الجوال</th>
+                        <th>رقم الموبايل</th>
                         <th>القسم</th>
-                        <th>الايميل</th>
+                        <th>البريد الإلكتروني</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -65,8 +65,13 @@
                                     <td>{{isset($teacher_data['department']) ? $teacher_data['department'] : 'لا يوجد'}}</td>
                                 </tr>
                                 <tr>
+<<<<<<< HEAD
                                     <th>الايميل:</th>
                                     <td>{{isset($teacher_data['email']) ? $teacher_data['email'] : 'لا يوجد'}}</td>
+=======
+                                    <th>البريد الإلكتروني:</th>
+                                    <td>{{isset($teacher_data['email']) ? $teacher_data['email'] : '-'}}</td>
+>>>>>>> ee3a44873b75501166e5074f6a3a16f38bae8eef
                                 </tr>
                                 </tbody>
                             </table>
@@ -82,8 +87,13 @@
                                     <td>{{isset($project_data['initialProjectTitle']) ? $project_data['initialProjectTitle'] : 'لا يوجد'}}</td>
                                 </tr>
                                 <tr>
+<<<<<<< HEAD
                                     <th>هل المجموعة خريجة فصل أول:</th>
                                     <td>{{(isset($project_data['graduateInFirstSemester']) ? $project_data['graduateInFirstSemester'] : 'لا يوجد') == 0 ? 'لا' : 'نعم'}}</td>
+=======
+                                    <th>هل المجموعة خريجة فصل أول؟</th>
+                                    <td>{{(isset($project_data['graduateInFirstSemester']) ? $project_data['graduateInFirstSemester'] : '-') == 0 ? 'لا' : 'نعم'}}</td>
+>>>>>>> ee3a44873b75501166e5074f6a3a16f38bae8eef
                                 </tr>
                                 <tr>
                                     <th>شكل المشروع:</th>
@@ -110,7 +120,7 @@
         <div class="col-md-6">
             <div class="card card-info">
                 <div class="card-header">
-                    <h3 class="card-title">إضافة أعضاء على الفريق</h3>
+                    <h3 class="card-title">إضافة أعضاء إلى الفريق</h3>
                 </div>
                 <div class="card-body">
                     @error('membersStd')
@@ -168,7 +178,7 @@
                                         </option>
                                     @endforeach
                                 @else
-                                    <option value="" disabled>لا يوجد مشرفين متوفرين</option>
+                                    <option value="" disabled>لا يوجد مشرفين متاحين</option>
                                 @endif
                             </select>
                             @error('teacher_id')

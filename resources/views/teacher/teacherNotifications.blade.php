@@ -3,7 +3,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">الاشعارات</h3>
+                    <h3 class="card-title">الإشعارات</h3>
                 </div>
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover">
@@ -12,7 +12,7 @@
                             <th>#</th>
                             <th>الرسالة</th>
                             <th>العنوان المبدئي للمشروع</th>
-                            <th>أسماء الفريق</th>
+                            <th>أسماء أعضاء الفريق</th>
                             <th>الرد</th>
                         </tr>
                         </thead>

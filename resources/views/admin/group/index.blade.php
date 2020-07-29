@@ -81,8 +81,8 @@
             event.preventDefault();
             const url = $(this).attr('href');
             swal({
-                title: 'هل تريد حذف المجموعة',
-                text: 'هذا سيقوم بحذف المجموعة نهائياً!',
+                title: 'هل تريد حذف المجموعة حقًا؟',
+                text: 'هذا سيقوم بحذف المجموعة نهائيًا!',
                 icon: 'warning',
                 buttons: ["إلغاء", "نعم"],
             }).then(function (value) {

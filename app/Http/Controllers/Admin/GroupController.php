@@ -32,7 +32,7 @@ class GroupController extends MainController
             ]);
 
         } catch (ApiException $e) {
-            return redirect()->back()->with('error', 'حصلت مشكلة في جلب بيانات المجموعات.');
+            return redirect()->back()->with('error', 'حدثت مشكلة أثناء جلب بيانات المجموعات.');
         }
 
     }
@@ -56,7 +56,11 @@ class GroupController extends MainController
                 ->set($student->getChild('user_id')->getValue());
             firebaseGetReference('androidStudentsStdInGroups')->push($student->getChild('user_id'));
 
+<<<<<<< HEAD
             return redirect()->route('admin.admin.edit', ['group_key' => $group_key])->with('success', 'تم اضافة الطالب ' . $student->getChild('name')->getValue() . ' إلى المجموعة بنجاح.');
+=======
+            return redirect()->route('admin.group.edit', ['group_key' => $group_key])->with('success', 'تم إضافة الطالب ' . $student->getChild('name')->getValue() . ' إلى المجموعة بنجاح.');
+>>>>>>> ee3a44873b75501166e5074f6a3a16f38bae8eef
         } catch (ApiException $e) {
         }
     }

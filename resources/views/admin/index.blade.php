@@ -28,7 +28,7 @@
             <div class="small-box bg-warning">
                 <div class="inner">
                     <h3>{{isset($statistics['number_of_teamed_students']) ? $statistics['number_of_teamed_students'] : '-'}}</h3>
-                    <p>عدد الطلاب المتواجدين في فريق </p>
+                    <p>عدد الطلاب المنضمين لِفِرَق </p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-person-add"></i>

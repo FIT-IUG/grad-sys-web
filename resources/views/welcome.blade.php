@@ -72,7 +72,7 @@
 
     <div class="content">
         <div class="title m-b-md">
-            اهلا بك في
+            أهلًا بك في
             <br>
             نظام متابعة مشاريع التخرج
         </div>

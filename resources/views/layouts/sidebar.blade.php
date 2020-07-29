@@ -27,7 +27,7 @@
                         <a href="{{route('admin.settings')}}" class="nav-link active">
                             <i class="nav-icon fa fa-cogs"></i>
                             <p>
-                                اعدادات النظام
+                                إعدادات النظام
                             </p>
                         </a>
                     </li>
