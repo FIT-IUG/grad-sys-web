@@ -26,23 +26,24 @@ class TeacherController extends MainController
         $group_access = 0;
         try {
             $groups = firebaseGetReference('groups')->getValue();
-            foreach ($teachers as $teacher_key => $teacher) {
-                foreach ($groups as $key => $group) {
-                    if (isset($group['teacher']) && $group['teacher'] == $teacher['user_id']) {
-                        Arr::forget($groups, $key);
-                        $groups_counter++;
-                        $group_access++;
+            if ($groups != null)
+                foreach ($teachers as $teacher_key => $teacher) {
+                    foreach ($groups as $key => $group) {
+                        if (isset($group['teacher']) && $group['teacher'] == $teacher['user_id']) {
+                            Arr::forget($groups, $key);
+                            $groups_counter++;
+                            $group_access++;
+                        }
+                        if ($group_access == sizeof($groups))
+                            break;
                     }
-                    if ($group_access == sizeof($groups))
-                        break;
+                    Arr::set($groups_number, 'groups_number', $groups_counter);
+                    $teacher = Arr::except($teacher, ['remember_token']);
+                    $collapse = Arr::collapse([$groups_number, $teacher]);
+                    Arr::set($teachers_info, $teacher_key, $collapse);
+                    Arr::forget($teachers, $teacher_key);
+                    $groups_counter = 0;
                 }
-                Arr::set($groups_number, 'groups_number', $groups_counter);
-                $teacher = Arr::except($teacher, ['remember_token']);
-                $collapse = Arr::collapse([$groups_number, $teacher]);
-                Arr::set($teachers_info, $teacher_key, $collapse);
-                Arr::forget($teachers, $teacher_key);
-                $groups_counter = 0;
-            }
             return view('admin.teacher.index', ['teachers' => $teachers_info]);
 
         } catch (ApiException $e) {
@@ -117,6 +118,17 @@ class TeacherController extends MainController
         }
     }
 
+    public function demotion($key)
+    {
+        try {
+            $teacher = firebaseGetReference('users/' . $key);
+            $teacher->update(['role' => 'teacher']);
+            return redirect()->route('admin.teacher.index')->with('success', 'تم تخفيض المدرس ' . $teacher->getChild('name')->getValue() . ' بنجاح');
+        } catch (ApiException $e) {
+            return redirect()->route('admin.teacher.index')->with('error', 'حصلت مشكلة في تخفيض المشرف.');
+        }
+    }
+
 
     public function destroy($teacher_key)
     {
@@ -142,20 +154,20 @@ class TeacherController extends MainController
 //        $index = 0;
 //        $groups_counter = 0;
 //
-//        foreach ($groups as $group) {
-//            if (isset($group['teacher']) && $group['teacher'] == $teacher_id) {
-//                $group_students_std = Arr::flatten([$group['leaderStudentStd'], $group['membersStd']]);
+//        foreach ($groups as $admin) {
+//            if (isset($admin['teacher']) && $admin['teacher'] == $teacher_id) {
+//                $group_students_std = Arr::flatten([$admin['leaderStudentStd'], $admin['membersStd']]);
 //                foreach ($students as $student)
 //                    foreach ($group_students_std as $std)
 //                        if ($student['user_id'] == $std) {
 //                            $student = Arr::except($student, ['remember_token', 'role']);
-//                            if ($group['leaderStudentStd'] == $student['user_id']) {
+//                            if ($admin['leaderStudentStd'] == $student['user_id']) {
 //                                $student = Arr::collapse([$student, ['isLeader' => true]]);
 //                            } else
 //                                $student = Arr::collapse([$student, ['isLeader' => false]]);
 //                            Arr::set($students_data, $index++, $student);
 //                        }
-//                $group_data = Arr::collapse([$group, ['students_data' => $students_data]]);
+//                $group_data = Arr::collapse([$admin, ['students_data' => $students_data]]);
 //                $students_data = [];
 //                $index = 0;
 //                Arr::set($groups_data, $groups_counter++, $group_data);

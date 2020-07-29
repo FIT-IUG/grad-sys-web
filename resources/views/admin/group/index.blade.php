@@ -23,32 +23,36 @@
                         <td>{{$loop->iteration}}</td>
                         <td @if(!isset($group['group_leader_data']))
                             style="text-align: center" @endif>
-                            {{isset($group['group_leader_data']['name']) ? $group['group_leader_data']['name'] : '-'}}
+                            {{isset($group['group_leader_data']['name']) ? $group['group_leader_data']['name'] : 'لا يوجد'}}
                         </td>
                         <td @if(!isset($group['teacher_data']))
                             style="text-align: center" @endif>
-                            {{isset($group['teacher_data']['name']) ? $group['teacher_data']['name'] : '-'}}
+                            {{isset($group['teacher_data']['name']) ? $group['teacher_data']['name'] : 'لا يوجد'}}
                         </td>
                         <td @if(!isset($group['project_data']['initialProjectTitle']))
                             style="text-align: center" @endif>
-                            {{isset($group['project_data']['initialProjectTitle']) ? $group['project_data']['initialProjectTitle'] : '-'}}
+                            {{isset($group['project_data']['initialProjectTitle']) ? $group['project_data']['initialProjectTitle'] : 'لا يوجد'}}
                         </td>
                         <td @if(isset($group['project_data']['tags']))
                             style="text-align: center" @endif>
-                            @foreach($group['project_data']['tags'] as $tag)
-                                @if($loop->last) {{$tag}}.
-                                @else {{$tag}},
-                                @endif
-                            @endforeach
+                            @if(isset($group['project_data']['tags']) && $group['project_data']['tags']  != null)
+                                @foreach($group['project_data']['tags'] as $tag)
+                                    @if($loop->last) {{$tag}}.
+                                    @else {{$tag}},
+                                    @endif
+                                @endforeach
+                            @else
+                                لا يوجد
+                            @endif
                         </td>
                         <td class="project-actions text-right">
-                            <a class="btn btn-info btn-sm" href="{{route('admin.group.edit',['group_key'=>$key])}}">
+                            <a class="btn btn-info btn-sm" href="{{route('admin.admin.edit',['group_key'=>$key])}}">
                                 <i class="fa fa-pencil">
                                 </i>
                                 عرض المزيد
                             </a>
                             <a class="btn btn-danger btn-sm delete-confirm"
-                               href="{{route('admin.group.edit',['group_key'=>$key])}}">
+                               href="{{route('admin.admin.edit',['group_key'=>$key])}}">
                                 <i class="fa fa-trash">
                                 </i>
                                 حذف

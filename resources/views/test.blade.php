@@ -1,4 +1,5 @@
 @extends('layout')
+@section('title','test')
 @section('content')
-    @includeIf('group.form')
 @endsection
+

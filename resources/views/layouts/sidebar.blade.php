@@ -48,7 +48,7 @@
                         </a>
                     </li>
                     <li class="nav-item menu-open">
-                        <a href="{{route('admin.group.index')}}" class="nav-link active">
+                        <a href="{{route('admin.admin.index')}}" class="nav-link active">
                             <i class="nav-icon fa fa-users"></i>
                             <p>
                                 بيانات المجموعات

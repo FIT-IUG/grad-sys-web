@@ -823,7 +823,7 @@ if (!document.createElement('canvas').getContext) {
     var H = 10;
 
     // For some reason that I've now forgotten, using divs didn't work
-    vmlStr.push(' <g_vml_:group',
+    vmlStr.push(' <g_vml_:admin',
                 ' coordsize="', Z * W, ',', Z * H, '"',
                 ' coordorigin="0,0"' ,
                 ' style="width:', W, 'px;height:', H, 'px;position:absolute;');
@@ -872,7 +872,7 @@ if (!document.createElement('canvas').getContext) {
                 ' cropright="', (w - sx - sw) / w, '"',
                 ' cropbottom="', (h - sy - sh) / h, '"',
                 ' />',
-                '</g_vml_:group>');
+                '</g_vml_:admin>');
 
     this.element_.insertAdjacentHTML('BeforeEnd', vmlStr.join(''));
   };
@@ -939,11 +939,11 @@ if (!document.createElement('canvas').getContext) {
                          mr(p.xEnd), ',', mr(p.yEnd));
             break;
         }
-  
-  
+
+
         // TODO: Following is broken for curves due to
         //       move to proper paths.
-  
+
         // Figure out dimensions so we can do gradient fills
         // properly
         if (p) {
@@ -962,15 +962,15 @@ if (!document.createElement('canvas').getContext) {
         }
       }
       lineStr.push(' ">');
-  
+
       if (!aFill) {
         appendStroke(this, lineStr);
       } else {
         appendFill(this, lineStr, min, max);
       }
-  
+
       lineStr.push('</g_vml_:shape>');
-  
+
       this.element_.insertAdjacentHTML('beforeEnd', lineStr.join(''));
     }
   };

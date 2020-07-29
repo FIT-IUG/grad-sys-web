@@ -2442,9 +2442,9 @@ var ScrollSpy = function ($) {
   var Selector = {
     DATA_SPY: '[data-spy="scroll"]',
     ACTIVE: '.active',
-    NAV_LIST_GROUP: '.nav, .list-group',
+    NAV_LIST_GROUP: '.nav, .list-admin',
     NAV_LINKS: '.nav-link',
-    LIST_ITEMS: '.list-group-item',
+    LIST_ITEMS: '.list-admin-item',
     DROPDOWN: '.dropdown',
     DROPDOWN_ITEMS: '.dropdown-item',
     DROPDOWN_TOGGLE: '.dropdown-toggle'
@@ -2748,7 +2748,7 @@ var Tab = function ($) {
 
   var Selector = {
     DROPDOWN: '.dropdown',
-    NAV_LIST_GROUP: '.nav, .list-group',
+    NAV_LIST_GROUP: '.nav, .list-admin',
     ACTIVE: '.active',
     DATA_TOGGLE: '[data-toggle="tab"], [data-toggle="pill"], [data-toggle="list"]',
     DROPDOWN_TOGGLE: '.dropdown-toggle',

@@ -22,20 +22,20 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td>{{isset($group_leader_data['user_id']) ? $group_leader_data['user_id'] : '-'}}</td>
-                        <td>{{isset($group_leader_data['name']) ? $group_leader_data['name'] : '-'}}</td>
-                        <td>{{isset($group_leader_data['mobile_number']) ? $group_leader_data['mobile_number'] : '-'}}</td>
-                        <td>{{isset($group_leader_data['department']) ? $group_leader_data['department'] : '-'}}</td>
-                        <td>{{isset($group_leader_data['email']) ? $group_leader_data['email'] : '-'}}</td>
+                        <td>{{isset($group_leader_data['user_id']) ? $group_leader_data['user_id'] : 'لا يوجد'}}</td>
+                        <td>{{isset($group_leader_data['name']) ? $group_leader_data['name'] : 'لا يوجد'}}</td>
+                        <td>{{isset($group_leader_data['mobile_number']) ? $group_leader_data['mobile_number'] : 'لا يوجد'}}</td>
+                        <td>{{isset($group_leader_data['department']) ? $group_leader_data['department'] : 'لا يوجد'}}</td>
+                        <td>{{isset($group_leader_data['email']) ? $group_leader_data['email'] : 'لا يوجد'}}</td>
                         <td><span class="fa fa-star text-warning"></span></td>
                     </tr>
                     @foreach($group_members_data as $member)
                         <tr>
-                            <td>{{isset($member['user_id']) ? $member['user_id'] : '-'}}</td>
-                            <td>{{isset($member['name']) ? $member['name'] : '-'}}</td>
-                            <td>{{isset($member['mobile_number']) ? $member['mobile_number'] : '-'}}</td>
-                            <td>{{isset($member['department']) ? $member['department'] : '-'}}</td>
-                            <td>{{isset($member['email']) ? $member['email'] : '-'}}</td>
+                            <td>{{isset($member['user_id']) ? $member['user_id'] : 'لا يوجد'}}</td>
+                            <td>{{isset($member['name']) ? $member['name'] : 'لا يوجد'}}</td>
+                            <td>{{isset($member['mobile_number']) ? $member['mobile_number'] : 'لا يوجد'}}</td>
+                            <td>{{isset($member['department']) ? $member['department'] : 'لا يوجد'}}</td>
+                            <td>{{isset($member['email']) ? $member['email'] : 'لا يوجد'}}</td>
                             <td></td>
                         </tr>
                     @endforeach
@@ -50,23 +50,23 @@
                                 <tbody>
                                 <tr>
                                     <th>الرقم الجامعي:</th>
-                                    <td>{{isset($teacher_data['user_id']) ? $teacher_data['user_id'] : '-'}}</td>
+                                    <td>{{isset($teacher_data['user_id']) ? $teacher_data['user_id'] : 'لا يوجد'}}</td>
                                 </tr>
                                 <tr>
                                     <th>الاسم:</th>
-                                    <td>{{isset($teacher_data['name']) ? $teacher_data['name'] : '-'}}</td>
+                                    <td>{{isset($teacher_data['name']) ? $teacher_data['name'] : 'لا يوجد'}}</td>
                                 </tr>
                                 <tr>
                                     <th>رقم الهاتف:</th>
-                                    <td>{{isset($teacher_data['mobile_number']) ? $teacher_data['mobile_number'] : '-'}}</td>
+                                    <td>{{isset($teacher_data['mobile_number']) ? $teacher_data['mobile_number'] : 'لا يوجد'}}</td>
                                 </tr>
                                 <tr>
                                     <th>القسم:</th>
-                                    <td>{{isset($teacher_data['department']) ? $teacher_data['department'] : '-'}}</td>
+                                    <td>{{isset($teacher_data['department']) ? $teacher_data['department'] : 'لا يوجد'}}</td>
                                 </tr>
                                 <tr>
                                     <th>الايميل:</th>
-                                    <td>{{isset($teacher_data['email']) ? $teacher_data['email'] : '-'}}</td>
+                                    <td>{{isset($teacher_data['email']) ? $teacher_data['email'] : 'لا يوجد'}}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -79,20 +79,22 @@
                                 <tbody>
                                 <tr>
                                     <th>العنوان المبدئي:</th>
-                                    <td>{{isset($project_data['initialProjectTitle']) ? $project_data['initialProjectTitle'] : '-'}}</td>
+                                    <td>{{isset($project_data['initialProjectTitle']) ? $project_data['initialProjectTitle'] : 'لا يوجد'}}</td>
                                 </tr>
                                 <tr>
                                     <th>هل المجموعة خريجة فصل أول:</th>
-                                    <td>{{(isset($project_data['graduateInFirstSemester']) ? $project_data['graduateInFirstSemester'] : '-') == 0 ? 'لا' : 'نعم'}}</td>
+                                    <td>{{(isset($project_data['graduateInFirstSemester']) ? $project_data['graduateInFirstSemester'] : 'لا يوجد') == 0 ? 'لا' : 'نعم'}}</td>
                                 </tr>
                                 <tr>
                                     <th>شكل المشروع:</th>
-                                    <td>@if(isset($project_data['tags']))
+                                    <td>@if(isset($project_data['tags']) && $project_data['tags'] != null)
                                             @foreach($project_data['tags'] as $tag)
                                                 @if($loop->last) {{$tag}}.
                                                 @else {{$tag}},
                                                 @endif
                                             @endforeach
+                                        @else
+                                            لا يوجد
                                         @endif
                                     </td>
                                 </tr>
@@ -116,11 +118,11 @@
                         {{$message}}
                     </div>
                     @enderror
-                    <form action="{{route('admin.group.update',['group_key'=>$group_key])}}" method="POST">
+                    <form action="{{route('admin.admin.update',['group_key'=>$group_key])}}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="form-group col-md-12">
-                                <label for="exampleInputEmail1">الرقم الجامعي للطالب </label>
+                                <label>الرقم الجامعي للطالب </label>
                                 <select class="students-std form-control select2 select2-hidden-accessible"
                                         name="student_id"
                                         style="width: 100%;text-align: right" tabindex="-1" aria-hidden="true">
@@ -152,7 +154,7 @@
                         {{$message}}
                     </div>
                     @enderror
-                    <form action="{{route('admin.group.update.teacher',['group_key'=>$group_key])}}" method="POST">
+                    <form action="{{route('admin.admin.update.teacher',['group_key'=>$group_key])}}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label>مشرف المجموعة</label>

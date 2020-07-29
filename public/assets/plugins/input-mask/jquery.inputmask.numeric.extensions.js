@@ -129,7 +129,7 @@ Optional extensions on the jquery.inputmask base
                             bufferStr += "0";
                             isValid = opts.regex.number(opts).test(bufferStr);
                             if (!isValid) {
-                                //make a valid group
+                                //make a valid admin
                                 var lastGroupSeparator = bufferStr.lastIndexOf(opts.groupSeparator);
                                 for (var i = bufferStr.length - lastGroupSeparator; i <= 3; i++) {
                                     bufferStr += "0";

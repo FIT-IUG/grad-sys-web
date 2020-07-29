@@ -27,7 +27,7 @@ class GroupController extends MainController
                 foreach ($groups as $key => $group)
                     Arr::set($all_groups, $key, $this->getAllGroupInfoForTeacher($key));
 
-            return view('admin.group.index')->with([
+            return view('admin.admin.index')->with([
                 'groups' => $all_groups
             ]);
 
@@ -42,7 +42,7 @@ class GroupController extends MainController
         $teacher_id = firebaseGetReference('groups/' . $group_key)->getChild('teacher')->getValue();
         $teachers = $this->getTeachersCanBeSupervisor($teacher_id);
 
-        return view('admin.group.edit', $this->getAllGroupInfoForTeacher($group_key))->with([
+        return view('admin.admin.edit', $this->getAllGroupInfoForTeacher($group_key))->with([
             'teachers' => $teachers
         ]);
     }
@@ -56,7 +56,7 @@ class GroupController extends MainController
                 ->set($student->getChild('user_id')->getValue());
             firebaseGetReference('androidStudentsStdInGroups')->push($student->getChild('user_id'));
 
-            return redirect()->route('admin.group.edit', ['group_key' => $group_key])->with('success', 'تم اضافة الطالب ' . $student->getChild('name')->getValue() . ' إلى المجموعة بنجاح.');
+            return redirect()->route('admin.admin.edit', ['group_key' => $group_key])->with('success', 'تم اضافة الطالب ' . $student->getChild('name')->getValue() . ' إلى المجموعة بنجاح.');
         } catch (ApiException $e) {
         }
     }
@@ -65,7 +65,7 @@ class GroupController extends MainController
     {
         try {
             firebaseGetReference('groups/' . $group_key)->update(['teacher' => $teacher->get('teacher_id')]);
-            return redirect()->route('admin.group.edit', ['group_key' => $group_key]);
+            return redirect()->route('admin.admin.edit', ['group_key' => $group_key]);
         } catch (ApiException $e) {
         }
     }

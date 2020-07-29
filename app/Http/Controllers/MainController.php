@@ -28,16 +28,17 @@ class MainController extends Controller
                         if ($notification['type'] == 'to_be_supervisor') {
                             $groups = firebaseGetReference('groups')->getValue();
 //                      get project initial title
-                            foreach ($groups as $group) {
-                                if ($group['leaderStudentStd'] == $notification['from']) {
-                                    $teacher_notification = Arr::collapse([$notification, [
-                                        'initialProjectTitle' => $group['initialProjectTitle'],
-                                        'tags' => $group['tags'],
-                                        'members_names' => $this->getGroupMembersDataForNotifications($group['membersStd'], $group['leaderStudentStd'])
-                                    ]]);
-                                    break;
+                            if ($groups != null)
+                                foreach ($groups as $group) {
+                                    if ($group['leaderStudentStd'] == $notification['from']) {
+                                        $teacher_notification = Arr::collapse([$notification, [
+                                            'initialProjectTitle' => $group['initialProjectTitle'],
+                                            'tags' => $group['tags'],
+                                            'members_names' => $this->getGroupMembersDataForNotifications($group['membersStd'], $group['leaderStudentStd'])
+                                        ]]);
+                                        break;
+                                    }
                                 }
-                            }
 
                             Arr::set($user_notifications, $key, $teacher_notification);
                         } else
@@ -109,6 +110,7 @@ class MainController extends Controller
                 $teacher_id = getUserId();
             $groups = firebaseGetReference('groups')->getValue();
             $groups_data = [];
+
             if ($groups != null)
                 foreach ($groups as $key => $group) {
                     if (isset($group['teacher']) && $group['teacher'] == $teacher_id) {
@@ -217,27 +219,30 @@ class MainController extends Controller
             $groups = firebaseGetReference('groups')->getValue();
             $group_key = '';
 
-            foreach ($groups as $index => $group)
-                if ($group['leaderStudentStd'] == $student_std) {
-                    $group_key = $index;
-                    break;
-                }
+            if ($groups != null)
+                foreach ($groups as $index => $group)
+                    if ($group['leaderStudentStd'] == $student_std) {
+                        $group_key = $index;
+                        break;
+                    }
 
             if ($reply == 'accept') {
-                firebaseGetReference('notifications/' . $key)->update(['status' => 'accept']);
+                firebaseGetReference('notifications/' . $key)
+                    ->update(['status' => 'accept']);
 
-                firebaseGetReference('groups/' . $group_key)->update(['teacher' => $teacher_id, 'status' => 'group_complete']);
+                firebaseGetReference('groups/' . $group_key)
+                    ->update(['teacher' => $teacher_id, 'status' => 'group_complete']);
 
                 return redirect()->route(getRole() . '.index')->with('success', 'تم قبول الطلب بنجاح.');
             } elseif ($reply == 'reject') {
                 firebaseGetReference('notifications/' . $key)->update(['status' => 'reject']);
                 firebaseGetReference('groups/' . $group_key)->update(['status' => 'teacher_reject']);
 
-                return redirect()->route(getRole() . 'index')->with('success', 'تم رفض الطلب بنجاح.');
+                return redirect()->route(getRole() . '.index')->with('success', 'تم رفض الطلب بنجاح.');
             } else
-                return redirect()->route(getRole() . 'index')->with('error', 'حصلت مشكلة في الطلب.');
+                return redirect()->route(getRole() . '.index')->with('error', 'حصلت مشكلة في الطلب.');
         } catch (ApiException $e) {
-            return redirect()->route(getRole() . 'index')->with('error', 'حصلت مشكلة في الطلب.');
+            return redirect()->route(getRole() . '.index')->with('error', 'حصلت مشكلة في الطلب.');
         }
     }
 
@@ -245,6 +250,7 @@ class MainController extends Controller
     {
         try {
             $group = firebaseGetReference('groups/' . $group_key)->getValue();
+
             if ($group != null) {
                 if (is_array($group['membersStd']))
                     $group_members_data = $this->getGroupMembersData($group['membersStd'], $group['leaderStudentStd']);
@@ -293,21 +299,108 @@ class MainController extends Controller
         try {
             $groups = firebaseGetReference('groups')->getValue();
             $max_teacher_groups = firebaseGetReference('settings/max_teacher_groups')->getValue();
-            foreach ($teachers as $key => $teacher) {
-                foreach ($groups as $group) {
-                    if (isset($group['teacher']) && $teacher['user_id'] == $group['teacher']) {
-                        $teacher_counter++;
-                    }
-                    if ($teacher['user_id'] == $teacher_id)
-                        Arr::forget($teachers, $key);
-                    if ($teacher_counter == $max_teacher_groups) {
-                        Arr::forget($teachers, $key);
+
+            if ($groups != null)
+                foreach ($teachers as $key => $teacher) {
+                    foreach ($groups as $group) {
+                        if (isset($group['teacher']) && $teacher['user_id'] == $group['teacher']) {
+                            $teacher_counter++;
+                        }
+                        if ($teacher['user_id'] == $teacher_id)
+                            Arr::forget($teachers, $key);
+                        if ($teacher_counter == $max_teacher_groups) {
+                            Arr::forget($teachers, $key);
+                        }
                     }
                 }
-            }
             return $teachers;
         } catch (ApiException $e) {
             return redirect()->back()->with('error', 'حصلت مشكلة بالنظام.');
         }
     }
+
+    protected function getGroupMembersDepartments()
+    {
+        $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'وسائط متعددة', 'برمجة تطبيقات الهاتف', 'تكنولوجيا المعلومات'];
+        $departments_to_send = [
+            'تطوير البرمجيات' => 0,
+            'علم الحاسوب' => 0,
+            'نظم المعلومات' => 0,
+            'وسائط متعددة' => 0,
+            'برمجة تطبيقات الهاتف' => 0,
+            'تكنولوجيا المعلومات' => 0
+        ];
+
+        try {
+            $groups = firebaseGetReference('groups')->getValue();
+            $grouped_students_departments = [];
+            $index = 0;
+            if ($groups != null)
+                foreach ($groups as $group) {
+                    $membersStd = [];
+                    if ($group['membersStd'] != null)
+                        $membersStd = $group['membersStd'];
+                    $data = $this->getGroupMembersData($membersStd, $group['leaderStudentStd']);
+                    if ($data['leader_data']['department'] != null)
+                        Arr::set($grouped_students_departments, $index++, $data['leader_data']['department']);
+                    foreach ($data['members_data'] as $member)
+                        if ($member['department'] != null)
+                            Arr::set($grouped_students_departments, $index++, $member['department']);
+                }
+            foreach ($grouped_students_departments as $student_department)
+                foreach ($departments as $department)
+                    if ($department == $student_department)
+                        $departments_to_send[$department]++;
+            return $departments_to_send;
+        } catch (ApiException $e) {
+        }
+    }
+
+    protected function getNumberOfStudentsInDepartments()
+    {
+        $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'وسائط متعددة', 'برمجة تطبيقات الهاتف', 'تكنولوجيا المعلومات'];
+        $departments_to_send = [
+            'تطوير البرمجيات' => 0,
+            'علم الحاسوب' => 0,
+            'نظم المعلومات' => 0,
+            'وسائط متعددة' => 0,
+            'برمجة تطبيقات الهاتف' => 0,
+            'تكنولوجيا المعلومات' => 0
+        ];
+
+        try {
+            $students = getUserByRole('student');
+            $students_departments = [];
+            $index = 0;
+            if ($students != null)
+                foreach ($students as $student) {
+                    if (isset($student['department']) && $student['department'] != null)
+                        Arr::set($students_departments, $index++, $student['department']);
+                }
+            foreach ($students_departments as $student_department)
+                foreach ($departments as $department)
+                    if ($department == $student_department)
+                        $departments_to_send[$department]++;
+
+            return $this->arrayToStringConverter($departments_to_send);
+        } catch (ApiException $e) {
+        }
+    }
+
+    protected function arrayToStringConverter($array){
+        $index = 0;
+        $result = "[";
+        foreach ($array as $value) {
+            $result .= "[";
+            $result .= ++$index . ", ";
+            $result .= $value;
+            if ($index == sizeof($array))
+                $result .= "]";
+            else
+                $result .= "], ";
+        }
+        $result .= "]";
+        return $result;
+    }
+
 }

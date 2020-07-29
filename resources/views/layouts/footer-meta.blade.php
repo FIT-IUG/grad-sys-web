@@ -13,6 +13,8 @@
 <!-- Morris.js charts -->
 {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>--}}
 {{--<script src="{{asset('assets/plugins/morris/morris.min.js')}}"></script>--}}
+<!-- ChartJS -->
+{{--<script src="{{asset('assets/plugins/chart.js/Chart.min.js')}}"></script>--}}
 <!-- Sparkline -->
 {{--<script src="{{asset('assets/plugins/sparkline/jquery.sparkline.min.js')}}"></script>--}}
 <!-- jvectormap -->
@@ -43,6 +45,12 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('assets/dist/js/demo.js')}}"></script>
 <script src="{{asset('assets/bootstrap-notify/bootstrap-notify-3.1.3/dist/bootstrap-notify.js')}}"></script>
+
+<!-- FLOT CHARTS -->
+<script src="{{asset('assets/plugins/flot/jquery.flot.js')}}"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="{{asset('assets/plugins/flot-old/jquery.flot.resize.min.js')}}"></script>
+
 
 {{-- select 2 things --}}
 <script>

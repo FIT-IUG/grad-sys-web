@@ -34,8 +34,8 @@ class TeacherController extends MainController
 //
 //            if ($reply == 'accept') {
 //                firebaseGetReference('notifications/' . $key)->update(['status' => 'accept']);
-//                foreach ($groups as $index => $group)
-//                    if ($group['leaderStudentStd'] == $student_std) {
+//                foreach ($groups as $index => $admin)
+//                    if ($admin['leaderStudentStd'] == $student_std) {
 //                        firebaseGetReference('groups/' . $index)->update(['teacher' => $teacher_id]);
 //                        break;
 //                    }

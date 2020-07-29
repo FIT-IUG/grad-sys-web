@@ -8,25 +8,25 @@
             @csrf
             <div class="row">
                 <div class="form-group col-md-4">
-                    <label for="exampleInputEmail1">الاسم</label>
+                    <label>الاسم</label>
                     <input type="text" class="form-control @error('name') is-invalid @enderror"
-                           id="exampleInputEmail1" name="name" value="{{old('name')}}">
+                            name="name" value="{{old('name')}}">
                     @error('name')
                     <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="exampleInputEmail1">الإيميل</label>
+                    <label>الإيميل</label>
                     <input type="email" class="form-control @error('email') is-invalid  @enderror"
-                           id="exampleInputEmail1" name="email" value="{{old('email')}}">
+                            name="email" value="{{old('email')}}">
                     @error('email')
                     <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="exampleInputEmail1">الرقم الجامعي</label>
+                    <label>الرقم الجامعي</label>
                     <input type="text" class="form-control @error('user_id') is-invalid  @enderror"
-                           id="exampleInputEmail1" name="user_id" value="{{old('user_id')}}">
+                            name="user_id" value="{{old('user_id')}}">
                     @error('user_id')
                     <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                     @enderror
@@ -45,9 +45,9 @@
                     @enderror
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="exampleInputEmail1">رقم الجوال</label>
+                    <label>رقم الجوال</label>
                     <input type="text" class="form-control @error('mobile_number') is-invalid  @enderror"
-                           id="exampleInputEmail1" name="mobile_number" value="{{old('mobile_number')}}">
+                            name="mobile_number" value="{{old('mobile_number')}}">
                     @error('mobile_number')
                     <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                     @enderror

@@ -17,7 +17,7 @@ use Illuminate\Support\Str;
 use Kreait\Firebase\Exception\ApiException;
 use Maatwebsite\Excel\Facades\Excel;
 
-class AdminController extends MainController
+class DashboardController extends MainController
 {
 
     public function __construct()
@@ -42,7 +42,7 @@ class AdminController extends MainController
 
         $number_of_teamed_students = 0;
 
-        if (isset($groups))
+        if ($groups != null)
             foreach ($groups as $group) {
                 $number_of_teamed_students++;
                 if (isset($group['membersStd']) && $group['membersStd'] != null)
@@ -51,11 +51,15 @@ class AdminController extends MainController
         else
             $number_of_teamed_students = '0';
 
+        $statistics_departments = $this->getDepartmentsStatistic();
         $statistics = [
             'number_of_students' => $number_of_students,
             'number_of_groups' => $number_of_groups,
             'number_of_teamed_students' => $number_of_teamed_students,
-            'number_of_teachers' => sizeof($teachers)
+            'number_of_teachers' => sizeof($teachers),
+            'departments' => $statistics_departments['departments'],
+            'departments_data' => $statistics_departments['departments_data'],
+            'students' => $this->getNumberOfStudentsInDepartments()
         ];
 
         // get user id, every user have unique id
@@ -71,15 +75,43 @@ class AdminController extends MainController
 
     public function settings()
     {
-        $notifications = [];
-        $statistics = '';
-        $settings = firebaseGetReference('settings')->getValue();
 
-        return view('admin.settings')->with([
-            'notifications' => $notifications,
-            'statistics' => $statistics,
-            'settings' => $settings
-        ]);
+        $notifications = $this->getNotifications();
+        try {
+            $settings = firebaseGetReference('settings')->getValue();
+            $tags = firebaseGetReference('tags')->getValue();
+            $t_tags = [];
+            foreach ($tags as $tag) {
+                Arr::set($t_tags, $tag, 0);
+            }
+            $groups = firebaseGetReference('groups')->getValue();
+            foreach ($groups as $group) {
+                if (isset($group['tags']) && $group['tags'] != null)
+                    foreach ($group['tags'] as $tag) {
+                        $t_tags[$tag]++;
+                    }
+            }
+            $com_tags = [];
+            foreach ($tags as $tag_key => $tag) {
+                foreach ($t_tags as $key => $frequency_use) {
+                    if ($tag == $key) {
+                        Arr::set($com_tags, $tag_key, [
+                            'name' => $tag,
+                            'frequency_use' => $frequency_use
+                        ]);
+                    }
+                }
+            }
+
+            return view('admin.settings')->with([
+                'notifications' => $notifications,
+                'settings' => $settings,
+                'tags' => $com_tags
+            ]);
+        } catch (ApiException $e) {
+        }
+
+
     }
 
     public function storeUser(RegisterUserRequest $request)
@@ -158,24 +190,47 @@ class AdminController extends MainController
         $user_notifications = firebaseGetReference('notifications')->getValue();
         $notifications = [];
         $user_id = getUserId();
-
-        foreach ($user_notifications as $key => $notification) {
-            if ($notification['to'] == $user_id && $notification['status'] == 'wait') {
-                if ($notification['type'] == 'to_be_supervisor') {
-                    foreach ($groups as $group) {
-                        if ($group['leaderStudentStd'] == $notification['from']) {
-                            $notification = Arr::collapse([$notification, ['initialProjectTitle' => $group['initialProjectTitle']]]);
-                            Arr::set($notifications, $key, $notification);
-                            break;
+        if ($groups != null)
+            foreach ($user_notifications as $key => $notification) {
+                if ($notification['to'] == $user_id && $notification['status'] == 'wait') {
+                    if ($notification['type'] == 'to_be_supervisor') {
+                        foreach ($groups as $group) {
+                            if ($group['leaderStudentStd'] == $notification['from']) {
+                                $notification = Arr::collapse([$notification, ['initialProjectTitle' => $group['initialProjectTitle']]]);
+                                Arr::set($notifications, $key, $notification);
+                                break;
+                            }
                         }
                     }
                 }
             }
-        }
         return $notifications;
     }
 
-    public function replayToBeSupervisor(Request $request){
+    public function replayToBeSupervisor(Request $request)
+    {
         $this->replayToBeSupervisorRequest($request);
     }
+
+    private function getDepartmentsStatistic()
+    {
+
+        $departments = [[1, 'تطوير البرمجيات'], [2, 'علم الحاسوب'], [3, 'نظم المعلومات'], [4, 'وسائط متعددة'], [5, 'برمجة تطبيقات الهاتف'], [6, 'تكنولوجيا المعلومات']];
+
+        $departments_name = "[";
+        foreach ($departments as $department) {
+            $departments_name .= "[";
+            $departments_name .= $department[0] . ",";
+            $departments_name .= "'" . $department[1] . "'";
+            $departments_name .= "], ";
+        }
+        $departments_name .= "]";
+
+        $groups_members_departments = $this->getGroupMembersDepartments();
+        $departments_data = $this->arrayToStringConverter($groups_members_departments);
+
+        return ['departments' => $departments_name, 'departments_data' => $departments_data];
+
+    }
+
 }

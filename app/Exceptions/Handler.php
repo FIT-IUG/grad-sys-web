@@ -59,11 +59,11 @@ class Handler extends ExceptionHandler
     {
         if (env('APP_ENV') === 'production')
             if ($exception instanceof ConnectException) {
-                return redirect()->back()->with('error', 'حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
+                return redirect()->route('logout')->with('error', 'حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
             } elseif ($exception instanceof ServiceException) {
-                return redirect()->back()->with('error', 'حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
+                return redirect()->route('logout')->with('error', 'حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
             } elseif ($exception instanceof ErrorException) {
-                return redirect()->route('login')->with('error', 'حاول احدهم الدخول إلى حسابك.');
+                return redirect()->route('logout')->with('error', 'حدثت مشكلة في النظام.');
             }
 
         return parent::render($request, $exception);

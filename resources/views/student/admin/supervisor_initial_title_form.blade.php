@@ -7,7 +7,7 @@
                 <h3 class="card-title">إستكمال إجراءات انشاء مجموعة</h3>
             </div>
             <div class="card-body">
-                <form action="{{route('student.group.storeSupervisor')}}" method="POST">
+                <form action="{{route('student.admin.storeSupervisor')}}" method="POST">
                     @csrf
                     @if(isset($notifications) and $notifications != null)
                         @foreach($notifications as $key=>$notification)
@@ -37,7 +37,7 @@
                         <div class="form-group">
                             <label for="">العنوان المبدئي للمشروع</label>
                             <input type="text" class="form-control @error('initialProjectTitle') is-invalid @enderror"
-                                   id="exampleInputEmail1" name="initialProjectTitle"
+                                    name="initialProjectTitle"
                                    value="{{old('initialProjectTitle')}}">
                             @error('initialProjectTitle')
                             <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>

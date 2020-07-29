@@ -38,7 +38,7 @@ class DashboardController extends MainController
                             $tags = firebaseGetReference('tags')->getValue();
                             $teachers = $this->getTeachersCanBeSupervisor();
 
-                            return view('student.group.supervisor_initial_title_form', [
+                            return view('student.admin.supervisor_initial_title_form', [
                                 'teachers' => $teachers,
                                 'notifications' => $notifications,
                                 'tags' => $tags,
@@ -56,7 +56,7 @@ class DashboardController extends MainController
 
                     case 'group_complete':
 
-//                       return group information project information teacher information
+//                       return admin information project information teacher information
                         $group_data = $this->getGroupData();
 
                         $students = '';
@@ -80,7 +80,7 @@ class DashboardController extends MainController
                         $students = getStudentsStdWithoutGroup();
                         $max_members_number = firebaseGetReference('settings/max_group_members')->getValue();
 
-                        return view('student.group.create', [
+                        return view('student.admin.create', [
                             'max_members_number' => $max_members_number,
                             'students' => $students,
                             'notifications' => $notifications,
@@ -143,7 +143,7 @@ class DashboardController extends MainController
             $students = getStudentsStdWithoutGroup();
             $max_members_number = firebaseGetReference('settings/max_group_members')->getValue();
 
-            return view('student.group.create', [
+            return view('student.admin.create', [
                 'max_members_number' => $max_members_number,
                 'students' => $students,
                 'notifications' => $notifications,
@@ -307,8 +307,8 @@ class DashboardController extends MainController
 //            $groups = firebaseGetReference('groups')->getValue();
 //            $max_teacher_groups = firebaseGetReference('settings/max_teacher_groups')->getValue();
 //            foreach ($teachers as $key => $teacher) {
-//                foreach ($groups as $group) {
-//                    if (isset($group['teacher']) && $teacher['user_id'] == $group['teacher']) {
+//                foreach ($groups as $admin) {
+//                    if (isset($admin['teacher']) && $teacher['user_id'] == $admin['teacher']) {
 //                        $teacher_counter++;
 //                    }
 //                    if ($teacher_counter == $max_teacher_groups) {
