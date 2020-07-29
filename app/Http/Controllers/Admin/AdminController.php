@@ -28,7 +28,7 @@ class AdminController extends MainController
     public function index()
     {
 
-        $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'وسائط متعددة', 'برمجة تطبيقات الهاتف', 'تكنولوجيا المعلومات'];
+        $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم تكنولوجيا المعلومات', 'الوسائط المتعددة وتطوير الويب', 'الحوسبة المتنقلة وتطبيقات الأجهزة الذكية'];
         $notifications = $this->getNotifications();
         $number_of_students = sizeof(getUserByRole('student'));
         $teacher_groups = $this->groupsDataForTeacher(null);
@@ -106,7 +106,7 @@ class AdminController extends MainController
 
             return redirect()->back()->with('success', 'تم تسجيل المستخدم بنجاح.');
         } catch (ApiException $e) {
-            return redirect()->back()->with('error', 'حصلت مشكلة في تسجيل المستخدم.');
+            return redirect()->back()->with('error', 'حدثت مشكلة أثناء تسجيل المستخدم.');
         }
     }
 
@@ -136,7 +136,7 @@ class AdminController extends MainController
 
 
             } catch (ApiException $e) {
-                return redirect()->back()->with('error', 'حصل مشكلة في رفع الملف.');
+                return redirect()->back()->with('error', 'حدثت مشكلة أثناء رفع الملف.');
             }
         }
         return redirect()->back()->with('success', 'تم رفع الملف بنجاح.');
@@ -148,7 +148,7 @@ class AdminController extends MainController
             firebaseGetReference('settings')->update($settingsRequest->validated());
             return redirect()->back()->with('success', 'تم تحديث إعدادات النظام بنجاح.');
         } catch (ApiException $e) {
-            return redirect()->back()->with('error', 'حصلت مشكلة في تعديل بيانات النظام.');
+            return redirect()->back()->with('error', 'حدثت مشكلة أثناء تعديل إعدادات النظام.');
         }
     }
 

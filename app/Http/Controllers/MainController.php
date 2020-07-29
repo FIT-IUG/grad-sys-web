@@ -79,7 +79,7 @@ class MainController extends Controller
 //        dd('admin created');
         $role = 'teacher';
         $password = $role . '123';
-        $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'وسائط متعددة', 'برمجة تطبيقات الهاتف', 'تكنولوجيا المعلومات'];
+        $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم تكنولوجيا المعلومات', 'الوسائط المتعددة وتطوير الويب', 'الحوسبة المتنقلة وتطبيقات الأجهزة الذكية'];
         try {
             for ($index = 0; $index <= 50; $index++) {
                 $uid = firebaseAuth()->createUserWithEmailAndPassword($role . '' . $index . '@example.com', $password)->uid;
@@ -278,7 +278,7 @@ class MainController extends Controller
                 return [];
 
         } catch (ApiException $e) {
-            return redirect()->route(getRole() . 'index')->with('error', 'حصلت مشكلة في جلب بيانات المجموعات.');
+            return redirect()->route(getRole() . 'index')->with('error', 'حدثت مشكلة أثناء جلب بيانات المجموعات.');
         }
 
     }
@@ -307,7 +307,7 @@ class MainController extends Controller
             }
             return $teachers;
         } catch (ApiException $e) {
-            return redirect()->back()->with('error', 'حصلت مشكلة بالنظام.');
+            return redirect()->back()->with('error', 'حدثت مشكلة فيل النظام.');
         }
     }
 }

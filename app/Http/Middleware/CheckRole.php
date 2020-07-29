@@ -20,7 +20,7 @@ class CheckRole
         $role = getRole();
 //        dd($changed_role);
         if ($changed_role != $role) {
-            return redirect()->route($role.'.index')->with('error', 'ليس لديك الصلاحية لفعل ذلك.');
+            return redirect()->route($role.'.index')->with('error', 'ليس لديك صلاحية لفعل ذلك.');
         }
         return $next($request);
     }

@@ -33,6 +33,6 @@ class CheckEmailRule implements Rule
      */
     public function message()
     {
-        return 'الايميل خاطئ أو غير موجود.';
+        return 'البريد الإلكتروني خاطئ أو غير موجود.';
     }
 }

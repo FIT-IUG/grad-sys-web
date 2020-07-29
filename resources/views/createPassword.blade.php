@@ -5,7 +5,7 @@
 <body>
 <div class="login-box" style="width: 400px">
     <div class="login-logo"><span
-            class="login100-form-title p-b-40 form-row">أهلا بك في نظام متابعة مشاريع التخرج</span>
+            class="login100-form-title p-b-40 form-row">أهلًا بك في نظام متابعة مشاريع التخرج</span>
     </div>
     <div class="card">
         <div class="card-body login-card-body">
@@ -14,7 +14,7 @@
                 @csrf
                 <div class="input-group mb-3">
                     <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"
-                           placeholder="كلمة السر" required>
+                           placeholder="كلمة المرور" required>
                     <div class="input-group-append">
                         <span class="fa fa-lock input-group-text"></span>
                     </div>
@@ -27,7 +27,7 @@
                 <div class="input-group mb-3">
                     <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
                            name="password_confirmation"
-                           placeholder="تأكيد كلمة السر" required>
+                           placeholder="تأكيد كلمة المرور" required>
                     <div class="input-group-append">
                         <span class="fa fa-lock input-group-text"></span>
                     </div>
@@ -39,7 +39,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-5">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">حفظ كلمة السر</button>
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">حفظ كلمة المرور</button>
                     </div>
                 </div>
             </form>

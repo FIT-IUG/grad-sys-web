@@ -3,7 +3,7 @@
 @section('content')
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">تعديل طالب يدوياً</h3>
+            <h3 class="card-title">تعديل طالب يدويًا</h3>
         </div>
         <div class="card-body">
             <form action="{{route('admin.student.update',['key' => request()->segment(5)])}}" method="POST">
@@ -28,7 +28,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="exampleInputEmail1">الإيميل</label>
+                        <label for="exampleInputEmail1">البريد الإلكتروني</label>
                         <input type="email" class="form-control @error('email') is-invalid  @enderror"
                                id="exampleInputEmail1" name="email" value="{{$student['email']}}">
                         @error('email')
@@ -51,7 +51,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="exampleInputEmail1">رقم الجوال</label>
+                        <label for="exampleInputEmail1">رقم الموبايل</label>
                         <input type="text" class="form-control @error('mobile_number') is-invalid  @enderror"
                                id="exampleInputEmail1" name="mobile_number" value="{{$student['mobile_number']}}">
                         @error('mobile_number')

@@ -10,7 +10,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">الاشعارات</h3>
+                        <h3 class="card-title">الإشعارات</h3>
                     </div>
                     <div class="card-body table-responsive p-0">
                         <table class="table table-hover">
@@ -60,8 +60,8 @@
                                 <th>#</th>
                                 <th>الاسم</th>
                                 <th>الرقم الجامعي</th>
-                                <th>رقم الجوال</th>
-                                <th>الايميل</th>
+                                <th>رقم الموبايل</th>
+                                <th>البريد الإلكتروني</th>
                                 <th>التخصص</th>
                             </tr>
                             </thead>
@@ -101,7 +101,7 @@
                                     class="float-left">{{isset($teacher_data['mobile_number']) ? $teacher_data['mobile_number'] : 'لا يوجد'}}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>الايميل</b> <a
+                                <b>البريد الإلكتروني</b> <a
                                     class="float-left">{{isset($teacher_data['email']) ? $teacher_data['email'] : 'لا يوجد'}}</a>
                             </li>
                         </ul>
@@ -123,7 +123,7 @@
                                     class="float-left">{{isset($project_data['initialProjectTitle']) ? $project_data['initialProjectTitle'] : 'لا يوجد'}}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>ستتخرجون في الفصل الاول</b> <a class="float-left">{{isset($project_data['graduateInFirstSemester']) ?
+                                <b>؟هل ستتخرجون في الفصل الاول</b> <a class="float-left">{{isset($project_data['graduateInFirstSemester']) ?
                                                         ($project_data['graduateInFirstSemester'] == 0 ? 'لا': 'نعم') : 'لا يوجد'}}</a>
                             </li>
                             <li class="list-group-item">
