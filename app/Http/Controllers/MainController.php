@@ -196,7 +196,7 @@ class MainController extends Controller
     protected function getTeacherData($teacher_id)
     {
         $teachers = getUserByRole('teacher');
-        $admins = getUserByRole('leader');
+        $admins = getUserByRole('admin');
         $teachers = Arr::collapse([$teachers, $admins]);
         $teacher_data = [];
 
@@ -292,7 +292,7 @@ class MainController extends Controller
     public function getTeachersCanBeSupervisor($teacher_id = 0)
     {
         $teachers = getUserByRole('teacher');
-        $admins = getUserByRole('leader');
+        $admins = getUserByRole('admin');
         $teachers = Arr::collapse([$teachers, $admins]);
         $teacher_counter = 0;
 

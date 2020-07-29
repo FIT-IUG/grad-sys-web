@@ -150,13 +150,13 @@ function getSupervisorStatus()
 function createUsers()
 {
     try {
-        $uid = firebaseAuth()->createUserWithEmailAndPassword('leader@example.com', 'admin123')->uid;
+        $uid = firebaseAuth()->createUserWithEmailAndPassword('admin@example.com', 'admin123')->uid;
 //        $uid = firebaseAuth()->verifyPassword('leader@example.com', 'admin123')->uid;
 
         firebaseGetReference('users/' . $uid)->set([
-            'email' => 'leader@example.com',
+            'email' => 'admin@example.com',
             'name' => 'admin1',
-            'role' => 'leader',
+            'role' => 'admin',
             'user_id' => '1111111111',
             'mobile_number' => '1111111111',
             'department' => 'FIT'

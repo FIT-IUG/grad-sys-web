@@ -19,7 +19,7 @@ class TeacherController extends MainController
     public function index()
     {
         $teachers = getUserByRole('teacher');
-        $admins = getUserByRole('leader');
+        $admins = getUserByRole('admin');
         $teachers = Arr::collapse([$teachers, $admins]);
         $groups_counter = 0;
         $teachers_info = [];
@@ -102,9 +102,6 @@ class TeacherController extends MainController
 
         } catch (ApiException $e) {
         }
-//
-
-
     }
 
     public function promotion($key)
