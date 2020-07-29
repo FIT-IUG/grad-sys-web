@@ -4,7 +4,7 @@
     <div class="col-md-12">
         <div class="card card-info">
             <div class="card-header">
-                <h3 class="card-title">إستكمال إجراءات انشاء مجموعة</h3>
+                <h3 class="card-title">استكمال اجراءات إنشاء مجموعة</h3>
             </div>
             <div class="card-body">
                 <form action="{{route('student.group.storeSupervisor')}}" method="POST">
@@ -26,7 +26,7 @@
                                     </option>
                                 @endforeach
                             @else
-                                <option value="" disabled>لا يوجد مشرفين متوفرين</option>
+                                <option value="" disabled>لا يوجد مشرفين متاحين</option>
                             @endif
                         </select>
                         @error('teacher')
@@ -48,7 +48,7 @@
                         <div class="form-group col-md-12">
                             <label>نوع المشروع </label>
                             <h6 style="font-size: small">
-                                إذا كان المشروع يحتوي على اكثر من نوع, يمكن اختيار أكثر من إختيار.
+                                نوع المشروع، يمكنك اختيار خيار واحد أو أكثر.
                             </h6>
                             <select class="form-control select2 select2-hidden-accessible" multiple=""
                                     name="tags[]"

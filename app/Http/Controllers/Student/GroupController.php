@@ -48,13 +48,13 @@ class GroupController extends Controller
                     'from_name' => $leader_name,
                     'to' => $member_std,
                     'type' => 'join_group',
-                    'message' => 'طلب منك الطالب ' . $leader_name . ' الانضمام الى فريق التخرج الخاص بيه.',
+                    'message' => 'لقد طلب منك الطالب ' . $leader_name . ' الانضمام إلى فريق التخرج الخاص به.',
                     'status' => 'wait',
                 ]);
             }
 
 //            return redirect()->back()->with('success', 'تم ارسال الطلبات لاعضاء المجموعة.');
-            return redirect()->route('student.index')->with('success', 'تم ارسال الطلبات لاعضاء المجموعة.');
+            return redirect()->route('student.index')->with('success', 'تم إرسال طلبات الانضمام لأعضاء المجموعة.');
         } catch (ApiException $e) {
         }
     }
@@ -87,12 +87,12 @@ class GroupController extends Controller
                     'from_name' => $leader_name,
                     'to' => $member_std,
                     'type' => 'join_group',
-                    'message' => 'طلب منك الطالب ' . $leader_name . ' الانضمام الى فريق التخرج الخاص بيه.',
+                    'message' => 'لقد طلب منك الطالب ' . $leader_name . ' الانضمام إلى فريق التخرج الخاص به.',
                     'status' => 'wait',
                 ]);
             }
 
-            return redirect()->route('student.index')->with('success', 'تم ارسال الطلبات لاعضاء المجموعة.');
+            return redirect()->route('student.index')->with('success', 'تم إرسال طلبات الانضمام لأعضاء المجموعة.');
         } catch (ApiException $e) {
         }
     }
@@ -138,15 +138,15 @@ class GroupController extends Controller
                                     }
                                 }
                             } else {
-                                return redirect()->back()->with('error', 'أنت متواجد في فريق, لا يمكنك الدخول في فريق آخر.');
+                                return redirect()->back()->with('error', 'أنت منضم لفريق، لا يمكنك الانضمام لفريق آخر.');
                             }
                         } else {
                             if (Str::substr(getUserId(), 0, 1) == 1) {
 
-                                return redirect()->back()->with('error', 'وصل الفريق الذي تحاول التسجيل به إلى الحد الاقصى.');
+                                return redirect()->back()->with('error', 'وصل الفريق الذي تحاول الانضمام إليه إلى الحد الأقصى من عدد الأعضاء.');
                             } else {
 
-                                return redirect()->back()->with('error', 'وصل الفريق الذي تحاولين التسجيل به إلى الحد الاقصى.');
+                                return redirect()->back()->with('error', 'وصل الفريق الذي تحاولين الانضمام إليه إلى الحد الأقصى من عدد الأعضاء.');
                             }
 
                         }
@@ -169,10 +169,10 @@ class GroupController extends Controller
                     'from_name' => 'student name',
                     'to' => $leader_id,
                     'type' => 'reject_join_team',
-                    'message' => 'رفض ' . $member_name . ' الانضمام الى فريق التخرج.',
+                    'message' => 'رفض ' . $member_name . ' الانضمام الى فريق التخرّج.',
                     'status' => 'readOnce',
                 ]);
-                return redirect()->route('student.index')->with('success', 'تم رفض طلب الانضمام بنجاح.');
+                return redirect()->route('student.index')->with('success', 'تم رفض طلب الانضمام.');
             }
         } catch (ApiException $e) {
             return '';
@@ -204,12 +204,12 @@ class GroupController extends Controller
             'from' => $leader_id,
             'from_name' => $leader_name,
             'to' => $request->get('teacher'),
-            'message' => 'طلب منك الطالب ' . $leader_name . 'أن تكون مشرف فريقه.',
+            'message' => 'لقد طلب منك الطالب ' . $leader_name . 'أن تكون مشرفَ مشروع التخرّج لفريقه.',
             'project_initial_title' => $request->get('initial_title'),
             'type' => 'to_be_supervisor',
             'status' => 'wait',
         ]);
-        return redirect()->route('student.index')->with('success', 'تم ارسال الطلب بنجاح');
+        return redirect()->route('student.index')->with('success', 'تم إرسال الطلب بنجاح');
     }
 
 }

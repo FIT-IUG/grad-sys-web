@@ -59,7 +59,7 @@ class TeacherController extends MainController
 //            $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'مالتيميديا', 'موبايل', 'تكنولوجيا المعلومات'];
 
             if ($teacher == null)
-                return redirect()->back()->with('error', 'حصلت مشكلة في جلب بيانات المشرف.');
+                return redirect()->back()->with('error', 'حدثت مشكلة أثناء جلب بيانات المشرف.');
 
             return view('admin.teacher.edit')->with([
                 'key' => $key,
@@ -67,7 +67,7 @@ class TeacherController extends MainController
 //                'departments' => $departments
             ]);
         } catch (ApiException $e) {
-            return redirect()->back()->with('error', 'حصلت مشكلة في جلب بيانات المشرف.');
+            return redirect()->back()->with('error', 'حدثت مشكلة أثناء جلب بيانات المشرف.');
         }
     }
 
@@ -81,7 +81,7 @@ class TeacherController extends MainController
             return redirect()->route('admin.teacher.index')->with('success', 'تم تحديث بيانات المشرف بنجاح.');
 
         } catch (ApiException $e) {
-            return redirect()->route('admin.teacher.index')->with('error', 'حصلت مشكلة في تعديل بيانات المشرف.');
+            return redirect()->route('admin.teacher.index')->with('error', 'حدثت مشكلة أثناء تعديل بيانات المشرف.');
 
         }
 
@@ -111,9 +111,9 @@ class TeacherController extends MainController
         try {
             $teacher = firebaseGetReference('users/' . $key);
             $teacher->update(['role' => 'admin']);
-            return redirect()->route('admin.teacher.index')->with('success', 'تم ترقية المدرس ' . $teacher->getChild('name')->getValue() . ' بنجاح');
+            return redirect()->route('admin.teacher.index')->with('success', 'تم ترقية المشرف ' . $teacher->getChild('name')->getValue() . ' بنجاح');
         } catch (ApiException $e) {
-            return redirect()->route('admin.teacher.index')->with('error', 'حصلت مشكلة في ترقية المشرف.');
+            return redirect()->route('admin.teacher.index')->with('error', 'حدثت مشكلة أثناء ترقية المشرف.');
         }
     }
 
@@ -128,7 +128,7 @@ class TeacherController extends MainController
             }
             return redirect()->route('admin.teacher.index')->with('error', 'لم يتم حذف المشرف.');
         } catch (ApiException $e) {
-            return redirect()->route('admin.teacher.index')->with('error', 'حصلت مشكلة في حذف المشرف.');
+            return redirect()->route('admin.teacher.index')->with('error', 'حدثت مشكلة أثناء حذف المشرف.');
         }
     }
 

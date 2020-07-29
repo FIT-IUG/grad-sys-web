@@ -33,6 +33,6 @@ class MinimumGroupMembersRule implements Rule
     public function message()
     {
         $min_group_members = firebaseGetReference('settings/min_group_members')->getValue();
-        return 'الحد الادنى لعدد أعضاء الفريق هو' . $min_group_members;
+        return 'الحد الأدنى لعدد أعضاء الفريق' . $min_group_members;
     }
 }

@@ -36,7 +36,7 @@ class CreateUserFromExcelListener
                 ]);
 
             } catch (ApiException $e) {
-                return redirect()->back()->with('error', 'حصل مشكلة في رفع الملف.');
+                return redirect()->back()->with('error', 'حدثت مشكلة أثناء رفع الملف.');
             }
         }
     }

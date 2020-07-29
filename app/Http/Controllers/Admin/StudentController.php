@@ -27,10 +27,10 @@ class StudentController extends Controller
             $student = firebaseGetReference('users/' . $user_id)->getSnapshot();
             $key = $student->getKey();
             $student = $student->getValue();
-            $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'مالتيميديا', 'موبايل', 'تكنولوجيا المعلومات'];
+            $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم تكنولوجيا المعلومات', 'الوسائط المتعددة وتطوير الويب', 'الحوسبة المتنقلة وتطبيقات الأجهزة الذكية'];
 
             if ($student == null)
-                return redirect()->back()->with('error', 'حصلت مشكلة في جلب بيانات الطالب.');
+                return redirect()->back()->with('error', 'حدثت مشكلة أثناء جلب بيانات الطالب.');
 
             return view('admin.student.edit')->with([
                 'key' => $key,
@@ -38,7 +38,7 @@ class StudentController extends Controller
                 'departments' => $departments
             ]);
         } catch (ApiException $e) {
-            return redirect()->back()->with('error', 'حصلت مشكلة في جلب بيانات الطالب.');
+            return redirect()->back()->with('error', 'حدثت مشكلة أثناء جلب بيانات الطالب.');
         }
     }
 
@@ -51,7 +51,7 @@ class StudentController extends Controller
             return redirect()->route('admin.student.index')->with('success', 'تم تحديث بيانات الطالب بنجاح.');
 
         } catch (ApiException $e) {
-            return redirect()->route('admin.student.index')->with('error', 'حصلت مشكلة في تعديل بيانات الطالب.');
+            return redirect()->route('admin.student.index')->with('error', 'حدثت مشكلة أثناء تعديل بيانات الطالب.');
 
         }
 
@@ -67,7 +67,7 @@ class StudentController extends Controller
             }
             return redirect()->route('admin.student.index')->with('error', 'لم يتم حذف الطالب.');
         } catch (ApiException $e) {
-            return redirect()->route('admin.student.index')->with('error', 'حصلت مشكلة في حذف الطالب.');
+            return redirect()->route('admin.student.index')->with('error', 'حدثت مشكلة أثناء حذف الطالب.');
         }
 
     }

@@ -2,7 +2,7 @@
 <div class="login-box" style="width: 400px">
     <div class="login-logo">
 <span class="login100-form-title p-b-40 form-row">
-						أهلا بك في نظام متابعة مشاريع التخرج
+						أهلًا بك في نظام متابعة مشاريع التخرج
 					</span>
         <span class="login100-form-avatar">
 						<img src="{{asset('assets/loginAssets/images/collageIcon.png')}}" alt="AVATAR">
@@ -15,7 +15,7 @@
                 @csrf
                 <div class="input-group mb-3">{{-- style="direction: ltr;"--}}
                     <input type="text" class="form-control @error('email') is-invalid @enderror" name="email"
-                           placeholder="الإيميل" value="{{old('email')}}" required>
+                           placeholder="البريد الإلكتروني" value="{{old('email')}}" required>
                     <div class="input-group-append">
                         <span class="fa fa-envelope input-group-text"></span>
                     </div>
@@ -27,7 +27,7 @@
                 </div>
                 <div class="input-group mb-3">
                     <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"
-                           placeholder="كلمة السر" required>
+                           placeholder="كلمة المرور" required>
                     <div class="input-group-append">
                         <span class="fa fa-lock input-group-text"></span>
                     </div>

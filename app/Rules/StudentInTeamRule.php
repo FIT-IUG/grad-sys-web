@@ -37,6 +37,6 @@ class StudentInTeamRule implements Rule
      */
     public function message()
     {
-        return 'الطالب مسجل في مجموعة اخرى.';
+        return 'الطالب منضم لمجموعة أخرى.';
     }
 }

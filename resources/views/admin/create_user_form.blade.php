@@ -1,7 +1,7 @@
 {{-- user manually registration --}}
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">تسجيل مستخدم يدوياً</h3>
+        <h3 class="card-title">تسجيل مستخدم يدويًا</h3>
     </div>
     <div class="card-body">
         <form action="{{route('user.store')}}" method="POST">
@@ -16,7 +16,7 @@
                     @enderror
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="exampleInputEmail1">الإيميل</label>
+                    <label for="exampleInputEmail1">البريد الإلكتروني</label>
                     <input type="email" class="form-control @error('email') is-invalid  @enderror"
                            id="exampleInputEmail1" name="email" value="{{old('email')}}">
                     @error('email')
@@ -38,14 +38,14 @@
                     <select class="form-control @error('department') is-invalid  @enderror" name="department">
                         <option value="student">طالب</option>
                         <option value="teacher">مدرس</option>
-                        <option value="admin">أدمن</option>
+                        <option value="admin">آدمن</option>
                     </select>
                     @error('department')
                     <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="exampleInputEmail1">رقم الجوال</label>
+                    <label for="exampleInputEmail1">رقم الموبايل</label>
                     <input type="text" class="form-control @error('mobile_number') is-invalid  @enderror"
                            id="exampleInputEmail1" name="mobile_number" value="{{old('mobile_number')}}">
                     @error('mobile_number')
