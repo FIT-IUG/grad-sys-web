@@ -28,7 +28,10 @@ class DashboardController extends MainController
     public function index()
     {
 
-        $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم تكنولوجيا المعلومات', 'الوسائط المتعددة وتطوير الويب', 'الحوسبة المتنقلة وتطبيقات الأجهزة الذكية'];
+
+        $tags = firebaseGetReference('tags')->getValue();
+        $tags = $this->arrayToStringConverter($tags);
+        $departments = firebaseGetReference('departments')->getValue();
         $notifications = $this->getNotifications();
         $number_of_students = sizeof(getUserByRole('student'));
         $teacher_groups = $this->groupsDataForTeacher(null);
@@ -51,6 +54,9 @@ class DashboardController extends MainController
         else
             $number_of_teamed_students = '0';
 
+        $tags_data = $this->getTagsUse();
+        $tags_data = $this->arrayToStringConverter($tags_data);
+
         $statistics_departments = $this->getDepartmentsStatistic();
         $statistics = [
             'number_of_students' => $number_of_students,
@@ -59,9 +65,9 @@ class DashboardController extends MainController
             'number_of_teachers' => sizeof($teachers),
             'departments' => $statistics_departments['departments'],
             'departments_data' => $statistics_departments['departments_data'],
-            'students' => $this->getNumberOfStudentsInDepartments()
+            'tags' => $tags,
+            'tags_data' => $tags_data
         ];
-
         // get user id, every user have unique id
 
         return view('admin.index', [
@@ -80,18 +86,9 @@ class DashboardController extends MainController
         try {
             $settings = firebaseGetReference('settings')->getValue();
             $tags = firebaseGetReference('tags')->getValue();
-            $t_tags = [];
-            foreach ($tags as $tag) {
-                Arr::set($t_tags, $tag, 0);
-            }
-            $groups = firebaseGetReference('groups')->getValue();
-            foreach ($groups as $group) {
-                if (isset($group['tags']) && $group['tags'] != null)
-                    foreach ($group['tags'] as $tag) {
-                        $t_tags[$tag]++;
-                    }
-            }
+            $t_tags = $this->getTagsUse();
             $com_tags = [];
+
             foreach ($tags as $tag_key => $tag) {
                 foreach ($t_tags as $key => $frequency_use) {
                     if ($tag == $key) {
@@ -215,22 +212,46 @@ class DashboardController extends MainController
     private function getDepartmentsStatistic()
     {
 
-        $departments = [[1, 'تطوير البرمجيات'], [2, 'علم الحاسوب'], [3, 'نظم المعلومات'], [4, 'وسائط متعددة'], [5, 'برمجة تطبيقات الهاتف'], [6, 'تكنولوجيا المعلومات']];
+        try {
+            $firebase_departments = firebaseGetReference('departments')->getValue();
+            $departments = [];
+            $index = 1;
+            foreach ($firebase_departments as $department) {
+                Arr::set($departments, $index++, $department);
+            }
 
-        $departments_name = "[";
-        foreach ($departments as $department) {
-            $departments_name .= "[";
-            $departments_name .= $department[0] . ",";
-            $departments_name .= "'" . $department[1] . "'";
-            $departments_name .= "], ";
+            $departments_name = "[";
+            foreach ($departments as $key => $department) {
+                $departments_name .= "[";
+                $departments_name .= $key . ", ";
+                $departments_name .= "'" . $department . "'";
+                $departments_name .= "], ";
+            }
+            $departments_name .= "]";
+            $groups_members_departments = $this->getGroupMembersDepartments();
+            $departments_data = $this->arrayToStringConverter($groups_members_departments);
+            return ['departments' => $departments_name, 'departments_data' => $departments_data];
+        } catch (ApiException $e) {
         }
-        $departments_name .= "]";
 
-        $groups_members_departments = $this->getGroupMembersDepartments();
-        $departments_data = $this->arrayToStringConverter($groups_members_departments);
-
-        return ['departments' => $departments_name, 'departments_data' => $departments_data];
 
     }
 
+    private function getTagsUse()
+    {
+
+        $tags = firebaseGetReference('tags')->getValue();
+        $tags_data = [];
+        foreach ($tags as $tag) {
+            Arr::set($tags_data, $tag, 0);
+        }
+        $groups = firebaseGetReference('groups')->getValue();
+        foreach ($groups as $group) {
+            if (isset($group['tags']) && $group['tags'] != null)
+                foreach ($group['tags'] as $tag) {
+                    $tags_data[$tag]++;
+                }
+        }
+        return $tags_data;
+    }
 }

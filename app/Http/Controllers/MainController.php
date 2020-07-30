@@ -80,7 +80,7 @@ class MainController extends Controller
 //        dd('leader created');
         $role = 'teacher';
         $password = $role . '123';
-        $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم تكنولوجيا المعلومات', 'الوسائط المتعددة وتطوير الويب', 'الحوسبة المتنقلة وتطبيقات الأجهزة الذكية'];
+        $departments = firebaseGetReference('departments')->getValue();
         try {
             for ($index = 0; $index <= 50; $index++) {
                 $uid = firebaseAuth()->createUserWithEmailAndPassword($role . '' . $index . '@example.com', $password)->uid;
@@ -321,16 +321,10 @@ class MainController extends Controller
 
     protected function getGroupMembersDepartments()
     {
-        $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'وسائط متعددة', 'برمجة تطبيقات الهاتف', 'تكنولوجيا المعلومات'];
-        $departments_to_send = [
-            'تطوير البرمجيات' => 0,
-            'علم الحاسوب' => 0,
-            'نظم المعلومات' => 0,
-            'وسائط متعددة' => 0,
-            'برمجة تطبيقات الهاتف' => 0,
-            'تكنولوجيا المعلومات' => 0
-        ];
-
+        $departments = firebaseGetReference('departments')->getValue();
+        $departments_to_send = [];
+        foreach ($departments as $department)
+            Arr::set($departments_to_send, $department, 0);
         try {
             $groups = firebaseGetReference('groups')->getValue();
             $grouped_students_departments = [];
@@ -358,15 +352,10 @@ class MainController extends Controller
 
     protected function getNumberOfStudentsInDepartments()
     {
-        $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'وسائط متعددة', 'برمجة تطبيقات الهاتف', 'تكنولوجيا المعلومات'];
-        $departments_to_send = [
-            'تطوير البرمجيات' => 0,
-            'علم الحاسوب' => 0,
-            'نظم المعلومات' => 0,
-            'وسائط متعددة' => 0,
-            'برمجة تطبيقات الهاتف' => 0,
-            'تكنولوجيا المعلومات' => 0
-        ];
+        $departments = firebaseGetReference('departments')->getValue();
+        $departments_to_send = [];
+        foreach ($departments as $department)
+            Arr::set($departments_to_send, $department, 0);
 
         try {
             $students = getUserByRole('student');
@@ -387,13 +376,14 @@ class MainController extends Controller
         }
     }
 
-    protected function arrayToStringConverter($array){
+    protected function arrayToStringConverter($array)
+    {
         $index = 0;
         $result = "[";
         foreach ($array as $value) {
             $result .= "[";
             $result .= ++$index . ", ";
-            $result .= $value;
+            $result .= "'" . $value . "'";
             if ($index == sizeof($array))
                 $result .= "]";
             else

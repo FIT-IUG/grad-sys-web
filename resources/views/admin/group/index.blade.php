@@ -33,7 +33,7 @@
                             style="text-align: center" @endif>
                             {{isset($group['project_data']['initialProjectTitle']) ? $group['project_data']['initialProjectTitle'] : 'لا يوجد'}}
                         </td>
-                        <td @if(isset($group['project_data']['tags']))
+                        <td @if(!isset($group['project_data']['tags']))
                             style="text-align: center" @endif>
                             @if(isset($group['project_data']['tags']) && $group['project_data']['tags']  != null)
                                 @foreach($group['project_data']['tags'] as $tag)

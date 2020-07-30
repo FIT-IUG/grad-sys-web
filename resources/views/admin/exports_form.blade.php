@@ -1,13 +1,13 @@
 {{-- exports --}}
 <div class="row">
     {{-- export users from excel file --}}
-    <div class="col-md-12">
+    <div class="col-md-6">
         <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">رفع بيانات الطلبة والمشرفين</h3>
             </div>
             <form role="form" method="POST" action="{{route('admin.exportExcelFile')}}"
-                  enctype="multipart/form-data">
+                  enctype="multipart/form-data" style="margin-bottom: 0;">
                 @csrf
                 <div class="card-body">
                     <div class="form-group">

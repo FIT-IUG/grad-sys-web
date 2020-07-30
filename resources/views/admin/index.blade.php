@@ -56,11 +56,11 @@
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fa fa-bar-chart"></i>
-                        إحصائيات الطلبة المتواجدين في مجموعات حسب التخصص
+                        إحصائيات الطلبة حسب التخصص
                     </h3>
                 </div>
                 <div class="card-body">
-                    <div id="bar-chart" style="height: 250px;"></div>
+                    <div id="bar-chart2" style="height: 250px;"></div>
                 </div>
             </div>
         </div>
@@ -69,11 +69,11 @@
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fa fa-bar-chart"></i>
-                        إحصائيات الطلبة حسب التخصص
+                        إحصائيات شكل المشروع
                     </h3>
                 </div>
                 <div class="card-body">
-                    <div id="bar-chart2" style="height: 250px;"></div>
+                    <div id="bar-chart" style="height: 250px;"></div>
                 </div>
             </div>
         </div>
@@ -108,7 +108,7 @@
 
             /* Bar char for second statistic */
             var bar_data2 = {
-                data: <?php echo $statistics['students']; ?>,
+                data: <?php echo $statistics['tags_data']; ?>,
                 bars: {show: true}
             }
             $.plot('#bar-chart2', [bar_data2], {
@@ -124,7 +124,7 @@
                 },
                 colors: ['#3c8dbc'],
                 xaxis: {
-                    ticks: <?php echo $statistics['departments'];?>
+                    ticks: <?php echo $statistics['tags'];?>
                 }
             })
 

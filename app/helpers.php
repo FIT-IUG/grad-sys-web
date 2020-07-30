@@ -82,25 +82,6 @@ function getStudentsStdWithoutGroup()
     }
 }
 
-function inGroup()
-{
-    try {
-        $user_id = getUserId();
-        $students_std_in_group = array_filter(getStudentsStdInGroups());
-
-        if ($students_std_in_group == null)
-            return false;
-
-        foreach ($students_std_in_group as $std) {
-            if ($std == $user_id) {
-                return true;
-            }
-        }
-        return false;
-
-    } catch (\Kreait\Firebase\Exception\ApiException $e) {
-    }
-}
 
 function getUserId()
 {
@@ -111,62 +92,27 @@ function getUserId()
     }
 }
 
-function isTeacherHasNotification()
-{
-    try {
-        $user_id = firebaseGetReference('users/' . session()->get('uid'))->getValue()['user_id'];
-        $notifications = firebaseGetReference('notifications')->getValue();
-        foreach ($notifications as $notification)
-            if ($notification['type'] == 'to_be_supervisor' && $notification['from'] == $user_id)
-                return true;
-        return false;
-    } catch (\Kreait\Firebase\Exception\ApiException $e) {
-        return redirect()->back()->with('error', 'حدثت مشكلة');
-    } catch (ErrorException $exception) {
-        return route('logout');
-    }
 
-}
-
-function getSupervisorStatus()
-{
-
-    try {
-        $std = getUserId();
-        $notifications = firebaseGetReference('notifications')->getValue();
-        foreach ($notifications as $notification)
-            if ($notification['from'] == $std && $notification['type'] == 'to_be_supervisor')
-                return $notification['status'];
-
-        return false;
-    } catch (\Kreait\Firebase\Exception\ApiException $e) {
-        return redirect()->back()->with('error', 'حصلت مشكلة');
-    } catch (ErrorException $exception) {
-        return redirect()->back()->with('error', 'حدثت مشكلة في النظام.');
-    }
-
-}
-
-function createUsers()
-{
-    try {
-        $uid = firebaseAuth()->createUserWithEmailAndPassword('admin@example.com', 'admin123')->uid;
-//        $uid = firebaseAuth()->verifyPassword('leader@example.com', 'admin123')->uid;
-
-        firebaseGetReference('users/' . $uid)->set([
-            'email' => 'admin@example.com',
-            'name' => 'admin1',
-            'role' => 'admin',
-            'user_id' => '1111111111',
-            'mobile_number' => '1111111111',
-            'department' => 'FIT'
-        ]);
-
-    } catch (\Kreait\Firebase\Exception\AuthException $e) {
-    } catch (\Kreait\Firebase\Exception\FirebaseException $e) {
-    }
-
-}
+//function createUsers()
+//{
+//    try {
+//        $uid = firebaseAuth()->createUserWithEmailAndPassword('admin@example.com', 'admin123')->uid;
+////        $uid = firebaseAuth()->verifyPassword('leader@example.com', 'admin123')->uid;
+//
+//        firebaseGetReference('users/' . $uid)->set([
+//            'email' => 'admin@example.com',
+//            'name' => 'admin1',
+//            'role' => 'admin',
+//            'user_id' => '1111111111',
+//            'mobile_number' => '1111111111',
+//            'department' => 'FIT'
+//        ]);
+//
+//    } catch (\Kreait\Firebase\Exception\AuthException $e) {
+//    } catch (\Kreait\Firebase\Exception\FirebaseException $e) {
+//    }
+//
+//}
 
 function getUserByRole($user_role)
 {
@@ -181,51 +127,4 @@ function getUserByRole($user_role)
     } catch (\Kreait\Firebase\Exception\ApiException $e) {
         return redirect()->route('logout')->with('error', 'حدثت مشكلة في النظام.');
     }
-}
-
-//This function check if leader members is accept a min number of join requests by leader id
-function isMinMembersAccept()
-{
-
-    try {
-        $notifications = firebaseGetReference('notifications')->getValue();
-        $min_group_members = firebaseGetReference('settings/min_group_members')->getValue();
-        $accept_count = 0;
-        $std = getUserId();
-        if ($notifications != null)
-            foreach ($notifications as $notification) {
-                if ($notification['from'] == $std
-                    && $notification['type'] == 'join_group'
-                    && $notification['status'] == 'accept') {
-                    $accept_count++;
-                }
-            }
-        if ($accept_count >= $min_group_members)
-            return true;
-        return false;
-    } catch (\Kreait\Firebase\Exception\ApiException $e) {
-    }
-
-}
-
-function isMemberHasNotification()
-{
-    try {
-        $notifications = firebaseGetReference('notifications')->getValue();
-        $std = getUserId();
-
-        if ($notifications != null)
-            foreach ($notifications as $notification)
-                if ($notification['to'] == $std) {
-                    if ($notification['status'] == 'accept')
-                        return $notification['status'];
-                    elseif ($notification['status'] == 'reject')
-                        continue;
-                }
-
-        return null;
-    } catch (\Kreait\Firebase\Exception\ApiException $e) {
-        return redirect()->route('home')->with('error', 'حدثت مشكلة في النظام.');
-    }
-
 }
