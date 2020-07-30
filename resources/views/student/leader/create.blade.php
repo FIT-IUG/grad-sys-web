@@ -44,6 +44,6 @@
         </div>
     @endif
 
-    @includeIf('student.group.members_form')
+    @includeIf('student.leader.members_form')
 
 @endsection

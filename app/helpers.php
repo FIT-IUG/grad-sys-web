@@ -93,26 +93,26 @@ function getUserId()
 }
 
 
-//function createUsers()
-//{
-//    try {
-//        $uid = firebaseAuth()->createUserWithEmailAndPassword('admin@example.com', 'admin123')->uid;
-////        $uid = firebaseAuth()->verifyPassword('leader@example.com', 'admin123')->uid;
-//
-//        firebaseGetReference('users/' . $uid)->set([
-//            'email' => 'admin@example.com',
-//            'name' => 'admin1',
-//            'role' => 'admin',
-//            'user_id' => '1111111111',
-//            'mobile_number' => '1111111111',
-//            'department' => 'FIT'
-//        ]);
-//
-//    } catch (\Kreait\Firebase\Exception\AuthException $e) {
-//    } catch (\Kreait\Firebase\Exception\FirebaseException $e) {
-//    }
-//
-//}
+function createUsers()
+{
+    try {
+        $uid = firebaseAuth()->createUserWithEmailAndPassword('admin@example.com', 'admin123')->uid;
+//        $uid = firebaseAuth()->verifyPassword('leader@example.com', 'admin123')->uid;
+
+        firebaseGetReference('users/' . $uid)->set([
+            'email' => 'admin@example.com',
+            'name' => 'admin1',
+            'role' => 'admin',
+            'user_id' => '1111111111',
+            'mobile_number' => '1111111111',
+            'department' => 'FIT'
+        ]);
+
+    } catch (\Kreait\Firebase\Exception\AuthException $e) {
+    } catch (\Kreait\Firebase\Exception\FirebaseException $e) {
+    }
+
+}
 
 function getUserByRole($user_role)
 {

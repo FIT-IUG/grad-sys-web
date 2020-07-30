@@ -77,5 +77,5 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
     Route::get('teacher', 'TeacherController@index')->name('teacher.index');
     Route::post('storeGroupMembers', 'StudentController@storeGroupMembers')->name('group.members.store');
     Route::post('storeGroupSupervisor', 'StudentController@storeGroupSupervisor')->name('group.teacher.store');
-    Route::post('teacher/replyJoinGroupRequest', 'MainController@replayToBeSupervisorRequest')->name('teacher.admin.replyRequest');
+    Route::post('teacher/replyJoinGroupRequest', 'MainController@replayToBeSupervisorRequest')->name('teacher.group.replyRequest');
 });

@@ -21,7 +21,7 @@ class DashboardController extends MainController
         $group_info = $this->getGroupInfo();
         $notifications = $this->getNotifications();
 
-//      Check what is the status for student
+        //      Check what is the status for student
         if ($group_info['key'] != null) {
             if ($group_info['is_group_leader']) {
                 switch ($group_info['status']) {
@@ -38,7 +38,7 @@ class DashboardController extends MainController
                             $tags = firebaseGetReference('tags')->getValue();
                             $teachers = $this->getTeachersCanBeSupervisor();
 
-                            return view('student.group.supervisor_initial_title_form', [
+                            return view('student.leader.supervisor_initial_title_form', [
                                 'teachers' => $teachers,
                                 'notifications' => $notifications,
                                 'tags' => $tags,
@@ -80,7 +80,7 @@ class DashboardController extends MainController
                         $students = getStudentsStdWithoutGroup();
                         $max_members_number = firebaseGetReference('settings/max_group_members')->getValue();
 
-                        return view('student.group.create', [
+                        return view('student.leader.create', [
                             'max_members_number' => $max_members_number,
                             'students' => $students,
                             'notifications' => $notifications,
@@ -90,7 +90,7 @@ class DashboardController extends MainController
 
                         return view('student.dashboard', [
                             'message' => 'انتظر انتهاء قائد الفريق من إتمام إعدادات الفريق.',
-                            'notifications' => $notifications
+                            'notifications' => []
                         ]);
 
                     case 'group_complete':
@@ -114,7 +114,7 @@ class DashboardController extends MainController
                             }
 
                             foreach ($students as $student_key => $student) {
-                                if ($leader_data == null && $student['user_id'] == $leader_id)
+                                if ($student['user_id'] == $leader_id)
                                     $leader_data = Arr::except($student, ['role', 'remember_token']);
                                 foreach ($group['membersStd'] as $member) {
                                     if ($student['user_id'] == $member) {
@@ -122,7 +122,7 @@ class DashboardController extends MainController
                                         $members_counter++;
                                     }
                                 }
-                                if (sizeof($group['membersStd']) == $members_counter)
+                                if (sizeof($group['membersStd']) == $members_counter && $leader_data != null)
                                     break;
                             }
                             return view('student.member.index', [
@@ -138,12 +138,12 @@ class DashboardController extends MainController
                 }
             }
 
-        }else{
+        } else {
 
             $students = getStudentsStdWithoutGroup();
             $max_members_number = firebaseGetReference('settings/max_group_members')->getValue();
 
-            return view('student.group.create', [
+            return view('student.leader.create', [
                 'max_members_number' => $max_members_number,
                 'students' => $students,
                 'notifications' => $notifications,
@@ -296,29 +296,4 @@ class DashboardController extends MainController
         }
     }
 
-//    private function getTeachersCanBeSupervisor()
-//    {
-//        $teachers = getUserByRole('teacher');
-//        $admins = getUserByRole('leader');
-//        $teachers = Arr::collapse([$teachers, $admins]);
-//        $teacher_counter = 0;
-//
-//        try {
-//            $groups = firebaseGetReference('groups')->getValue();
-//            $max_teacher_groups = firebaseGetReference('settings/max_teacher_groups')->getValue();
-//            foreach ($teachers as $key => $teacher) {
-//                foreach ($groups as $leader) {
-//                    if (isset($leader['teacher']) && $teacher['user_id'] == $leader['teacher']) {
-//                        $teacher_counter++;
-//                    }
-//                    if ($teacher_counter == $max_teacher_groups) {
-//                        Arr::forget($teachers, $key);
-//                    }
-//                }
-//            }
-//            return $teachers;
-//        } catch (ApiException $e) {
-//            return redirect()->back()->with('error', 'حصلت مشكلة بالنظام.');
-//        }
-//    }
 }

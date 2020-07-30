@@ -1,5 +1,5 @@
 @extends('layout')
-@section('title','الصفحة الطالب الرئيسية')
+@section('title','صفحة الطالب الرئيسية')
 @section('content')
 
     <div class="row">
@@ -123,7 +123,7 @@
                                     class="float-left">{{isset($project_data['initialProjectTitle']) ? $project_data['initialProjectTitle'] : 'لا يوجد'}}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>؟هل ستتخرجون في الفصل الاول</b> <a class="float-left">{{isset($project_data['graduateInFirstSemester']) ?
+                                <b>هل ستتخرجون في الفصل الاول؟</b> <a class="float-left">{{isset($project_data['graduateInFirstSemester']) ?
                                                         ($project_data['graduateInFirstSemester'] == 0 ? 'لا': 'نعم') : 'لا يوجد'}}</a>
                             </li>
                             <li class="list-group-item">

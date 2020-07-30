@@ -8,6 +8,7 @@ use Google\Cloud\Core\Exception\ServiceException;
 use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
+use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Response;
 
 class Handler extends ExceptionHandler
@@ -64,6 +65,8 @@ class Handler extends ExceptionHandler
                 return redirect()->route('logout')->with('error', 'حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
             } elseif ($exception instanceof ErrorException) {
                 return redirect()->route('login')->with('error', 'حاول أحدهم الدخول إلى حسابك.');
+            }elseif ($exception instanceof InvalidArgumentException) {
+                return redirect()->route('login')->with('error', 'حصلت مشكلة بالنظام.');
             }
 
         return parent::render($request, $exception);

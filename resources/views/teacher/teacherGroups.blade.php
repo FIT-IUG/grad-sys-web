@@ -58,36 +58,39 @@
                         </table>
                         <hr>
                         <div class="row" style="padding-top: 15px;">
-                            <div class="col-6">
-                                <p class="lead">بيانات المشرف</p>
 
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <tbody>
-                                        <tr>
-                                            <th>الرقم الوظيفي:</th>
-                                            <td>{{isset($group['teacher_data']['user_id']) ? $group['teacher_data']['user_id'] : '-'}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>الاسم:</th>
-                                            <td>{{isset($group['teacher_data']['name']) ? $group['teacher_data']['name'] : '-'}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>رقم الهاتف:</th>
-                                            <td>{{isset($group['teacher_data']['mobile_number']) ? $group['teacher_data']['mobile_number'] : '-'}}</td>
-                                        </tr>
-{{--                                        <tr>--}}
-{{--                                            <th>القسم:</th>--}}
-{{--                                            <td>{{isset($leader['teacher_data']['department']) ? $leader['teacher_data']['department'] : '-'}}</td>--}}
-{{--                                        </tr>--}}
-                                        <tr>
-                                            <th>البريد الإلكتروني:</th>
-                                            <td>{{isset($group['teacher_data']['email']) ? $group['teacher_data']['email'] : '-'}}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                            @if(getRole() != 'teacher')
+                                <div class="col-6">
+                                    <p class="lead">بيانات المشرف</p>
+
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <tbody>
+                                            <tr>
+                                                <th>الرقم الوظيفي:</th>
+                                                <td>{{isset($group['teacher_data']['user_id']) ? $group['teacher_data']['user_id'] : '-'}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>الاسم:</th>
+                                                <td>{{isset($group['teacher_data']['name']) ? $group['teacher_data']['name'] : '-'}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>رقم الهاتف:</th>
+                                                <td>{{isset($group['teacher_data']['mobile_number']) ? $group['teacher_data']['mobile_number'] : '-'}}</td>
+                                            </tr>
+                                            {{--                                        <tr>--}}
+                                            {{--                                            <th>القسم:</th>--}}
+                                            {{--                                            <td>{{isset($leader['teacher_data']['department']) ? $leader['teacher_data']['department'] : '-'}}</td>--}}
+                                            {{--                                        </tr>--}}
+                                            <tr>
+                                                <th>البريد الإلكتروني:</th>
+                                                <td>{{isset($group['teacher_data']['email']) ? $group['teacher_data']['email'] : '-'}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                             <div class="col-6">
                                 <p class="lead">بيانات المشروع</p>
                                 <div class="table-responsive">

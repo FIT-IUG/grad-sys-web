@@ -77,7 +77,7 @@ class GroupController extends Controller
                     }
                 }
 
-            $leader_name = getLeaderName();
+            $leader_name = $this->getLeaderName($leader_std);
 
             //notification for every member to join leader by event
             $members_std = array_filter($request->validated()['membersStd']);
@@ -223,4 +223,13 @@ class GroupController extends Controller
         return redirect()->route('student.index')->with('success', 'تم إرسال الطلب بنجاح');
     }
 
+    private function getLeaderName($leader_id)
+    {
+        $students = getUserByRole('student');
+        foreach ($students as $student)
+            if ($leader_id == $student['user_id'])
+                return $student['name'];
+        return '';
+
+    }
 }

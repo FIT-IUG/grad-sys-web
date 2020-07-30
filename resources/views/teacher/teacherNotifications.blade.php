@@ -10,10 +10,10 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>الرسالة</th>
+                            <th style="width: 250px">الرسالة</th>
                             <th>العنوان المبدئي للمشروع</th>
-                            <th>أسماء أعضاء الفريق</th>
-                            <th>الرد</th>
+                            <th style="width: 330px">أسماء أعضاء الفريق</th>
+                            <th style="width: 147px">الرد</th>
                         </tr>
                         </thead>
                         <tbody>
