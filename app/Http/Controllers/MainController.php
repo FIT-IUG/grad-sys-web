@@ -327,8 +327,6 @@ class MainController extends Controller
             Arr::set($departments_to_send, $department, 0);
         try {
             $groups = firebaseGetReference('groups')->getValue();
-            $grouped_students_departments = [];
-            $index = 0;
             if ($groups != null)
                 foreach ($groups as $group) {
                     $membersStd = [];
@@ -336,15 +334,11 @@ class MainController extends Controller
                         $membersStd = $group['membersStd'];
                     $data = $this->getGroupMembersData($membersStd, $group['leaderStudentStd']);
                     if ($data['leader_data']['department'] != null)
-                        Arr::set($grouped_students_departments, $index++, $data['leader_data']['department']);
+                        $departments_to_send[$data['leader_data']['department']]++;
                     foreach ($data['members_data'] as $member)
                         if ($member['department'] != null)
-                            Arr::set($grouped_students_departments, $index++, $member['department']);
+                            $departments_to_send[$member['department']]++;
                 }
-            foreach ($grouped_students_departments as $student_department)
-                foreach ($departments as $department)
-                    if ($department == $student_department)
-                        $departments_to_send[$department]++;
             return $departments_to_send;
         } catch (ApiException $e) {
         }
@@ -364,14 +358,16 @@ class MainController extends Controller
             if ($students != null)
                 foreach ($students as $student) {
                     if (isset($student['department']) && $student['department'] != null)
-                        Arr::set($students_departments, $index++, $student['department']);
-                }
-            foreach ($students_departments as $student_department)
-                foreach ($departments as $department)
-                    if ($department == $student_department)
-                        $departments_to_send[$department]++;
+                        $departments_to_send[$student['department']]++;
 
-            return $this->arrayToStringConverter($departments_to_send);
+//                    Arr::set($students_departments, $index++, $student['department']);
+                }
+//            foreach ($students_departments as $student_department)
+//                foreach ($departments as $department)
+//                    if ($department == $student_department)
+//                        $departments_to_send[$department]++;
+
+            return $departments_to_send;
         } catch (ApiException $e) {
         }
     }

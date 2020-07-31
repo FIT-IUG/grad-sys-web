@@ -58,6 +58,7 @@ class DashboardController extends MainController
         $tags_data = $this->arrayToStringConverter($tags_data);
 
         $statistics_departments = $this->getDepartmentsStatistic();
+
         $statistics = [
             'number_of_students' => $number_of_students,
             'number_of_groups' => $number_of_groups,
@@ -228,8 +229,8 @@ class DashboardController extends MainController
                 $departments_name .= "], ";
             }
             $departments_name .= "]";
-            $groups_members_departments = $this->getGroupMembersDepartments();
-            $departments_data = $this->arrayToStringConverter($groups_members_departments);
+
+            $departments_data = $this->arrayToStringConverter($this->getNumberOfStudentsInDepartments());
             return ['departments' => $departments_name, 'departments_data' => $departments_data];
         } catch (ApiException $e) {
         }

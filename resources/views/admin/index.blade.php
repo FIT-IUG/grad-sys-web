@@ -60,7 +60,7 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <div id="bar-chart2" style="height: 250px;"></div>
+                    <div id="bar-chart" style="height: 250px;"></div>
                 </div>
             </div>
         </div>
@@ -73,7 +73,7 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <div id="bar-chart" style="height: 250px;"></div>
+                    <div id="bar-chart2" style="height: 250px;"></div>
                 </div>
             </div>
         </div>
