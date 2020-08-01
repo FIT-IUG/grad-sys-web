@@ -115,6 +115,7 @@ class DashboardController extends MainController
     public function storeUser(RegisterUserRequest $request)
     {
         $student = $request->validated();
+
         try {
             // store in users table at first
             $student = firebaseGetReference('users')->push($student);

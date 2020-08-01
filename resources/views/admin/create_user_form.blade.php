@@ -35,12 +35,12 @@
             <div class="row">
                 <div class="form-group col-md-4">
                     <label>الدور</label>
-                    <select class="form-control @error('department') is-invalid  @enderror" name="department">
-                        <option value="student">طالب</option>
+                    <select class="form-control @error('role') is-invalid  @enderror" name="role">
+                        <option value="student" selected>طالب</option>
                         <option value="teacher">مدرس</option>
                         <option value="admin">آدمن</option>
                     </select>
-                    @error('department')
+                    @error('role')
                     <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                     @enderror
                 </div>

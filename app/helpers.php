@@ -121,7 +121,7 @@ function getUserByRole($user_role)
         $users = firebaseGetReference('users')->getValue();
         if ($users != null)
             foreach ($users as $key => $user)
-                if ($user['role'] == $user_role)
+                if (isset($user['role']) && $user['role'] == $user_role)
                     Arr::set($selected_users, $key, $user);
         return $selected_users;
     } catch (\Kreait\Firebase\Exception\ApiException $e) {

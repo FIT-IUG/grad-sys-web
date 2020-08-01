@@ -31,8 +31,7 @@
         "sort-packages": true,
         "platform": {
             "ext-pcntl": "7.3",
-            "ext-posix": "7.3",
-            "ext-redis": "5.3"
+            "ext-posix": "7.3"
         }
     },
     "extra": {

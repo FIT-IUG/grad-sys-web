@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "545fb56d991ef6a4d7b3891998b836e3",
+    "content-hash": "c9f567de76e3e8c9712d604d07dd90d1",
     "packages": [
         {
             "name": "ahsankhatri/firestore-php",
@@ -7663,6 +7663,7 @@
     "platform-dev": [],
     "platform-overrides": {
         "ext-pcntl": "7.3",
-        "ext-posix": "7.3"
+        "ext-posix": "7.3",
+        "ext-redis": "5.3"
     }
 }

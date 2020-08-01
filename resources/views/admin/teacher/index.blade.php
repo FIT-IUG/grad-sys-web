@@ -10,7 +10,7 @@
                 <thead>
                 <tr>
                     <th style="width: 68px">رقم المدرس</th>
-                    <th>الاسم</th>
+                    <th style="width: 220px;">الاسم</th>
                     {{--                    <th>الإيميل</th>--}}
                     <th style="width: 70px;">رقم الجوال</th>
                     <th style="width: 52px;">عدد المجموعات</th>
