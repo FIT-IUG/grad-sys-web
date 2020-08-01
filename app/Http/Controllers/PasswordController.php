@@ -31,7 +31,6 @@ class PasswordController extends Controller
 
     public function store(StudentPasswordRequest $request)
     {
-
         try {
 
             $token = $request->get('token');
@@ -40,17 +39,34 @@ class PasswordController extends Controller
                 if ($emailed_user['token'] == $token) {
                     $user_id = $emailed_user['user_id'];
                     $emailed_user = firebaseGetReference('usersFromExcel/' . $user_id)->getValue();
-                    if ($this->checkUniqueUser($emailed_user) == false) {
+//                   check if there is same data in firebase
+                    if ($emailed_user != null && $this->checkUniqueUser($emailed_user) == false) {
                         return redirect()->back()->with('error', 'بيانات هذا الحساب موجودة مسبق.');
+//                  check if emailed user has data that mean it is find user in usersFromExcel table
+                    } elseif ($emailed_user != null) {
+                        dd('yes');
+                        $email = $emailed_user['email'];
+                        $password = $request->get('password');
+                        $uid = firebaseAuth()->createUserWithEmailAndPassword($email, $password)->uid;
+                        firebaseGetReference('usersFromExcel/' . $user_id)->remove();
+                        firebaseGetReference('users/' . $uid)->set($emailed_user);
+                        break;
+//                  if user did not find in usersFromExcel table this will check if user data in users table
+//                  this happen when user register by admin
+                    } elseif ($emailed_user == null) {
+                        $user = firebaseGetReference('users/' . $user_id)->getValue();
+                        if ($user != null) {
+                            $email = $user['email'];
+                            $password = $request->get('password');
+                            $uid = firebaseAuth()->createUserWithEmailAndPassword($email, $password)->uid;
+                            firebaseGetReference('users/' . $user_id)->remove();
+                            firebaseGetReference('users/' . $uid)->set($user);
+                            break;
+                        } else {
+                            return redirect()->back()->with('error', 'بياناتك غير موجودة على النظام.');
+                        }
                     }
-                    $email = $emailed_user['email'];
-                    $password = $request->get('password');
-                    $uid = firebaseAuth()->createUserWithEmailAndPassword($email, $password)->uid;
-                    firebaseGetReference('usersFromExcel/' . $user_id)->remove();
-                    firebaseGetReference('users/' . $uid)->set($emailed_user);
-                    break;
                 }
-
             return redirect()->route('login')->with('success', 'تم حفظ كلمة المرور بنجاح، يمكنك الآن الدّخول للنظام.');
         } catch (AuthException $e) {
             return redirect()->route('home')->with('error', 'المستخدم موجود مسبقًا.');
