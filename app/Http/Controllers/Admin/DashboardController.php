@@ -127,7 +127,7 @@ class DashboardController extends MainController
             $email = $request->get('email');
 
             //Send Email
-            $token = Str::random(60);
+            $token = Str::random(40);
             firebaseGetReference('emailedUsers')->push([
                 'user_id' => $key,
                 'token' => $token

@@ -60,13 +60,13 @@ class Handler extends ExceptionHandler
     {
         if (env('APP_ENV') === 'production')
             if ($exception instanceof ConnectException) {
-                return redirect()->route('logout')->with('error', 'حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
+                return redirect()->route(getRole() . '.index')->with('error', 'حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
             } elseif ($exception instanceof ServiceException) {
-                return redirect()->route('logout')->with('error', 'حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
+                return redirect()->route(getRole() . '.index')->with('error', 'حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
             } elseif ($exception instanceof ErrorException) {
-                return redirect()->route('logout')->with('error', 'حاول أحدهم الدخول إلى حسابك.');
-            }elseif ($exception instanceof InvalidArgumentException) {
-                return redirect()->route('logout')->with('error', 'حصلت مشكلة بالنظام.');
+                return redirect()->route(getRole() . '.index')->with('error', 'حاول أحدهم الدخول إلى حسابك.');
+            } elseif ($exception instanceof InvalidArgumentException) {
+                return redirect()->route(getRole() . '.index')->with('error', 'حصلت مشكلة بالنظام.');
             }
 
         return parent::render($request, $exception);
