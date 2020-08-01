@@ -11,6 +11,8 @@
 |
 */
 
+use App\Mail\SendCreatePassword;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 
@@ -19,6 +21,10 @@ if (env('APP_ENV') === 'production')
 
 
 Route::get('test', 'MainController@test');
+Route::get('test2', function () {
+    Mail::to('samer@example.com')->send(new SendCreatePassword());
+    return 'send email successfully';
+});
 
 Route::get('/', function () {
     return view('welcome');

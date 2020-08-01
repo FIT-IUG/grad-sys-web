@@ -26,7 +26,7 @@ class HelloMailListener implements ShouldQueue
      */
     public function handle($event)
     {
-        sleep(20);
+        sleep(10);
         Mail::to('samer@example.com')->send(new SendCreatePassword());
 
     }
