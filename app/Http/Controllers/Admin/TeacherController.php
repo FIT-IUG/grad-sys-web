@@ -23,8 +23,9 @@ class TeacherController extends MainController
         $teachers = Arr::collapse([$teachers, $admins]);
         $groups_counter = 0;
         $teachers_info = [];
-        $group_access = 0;
+//        $group_access = 0;
         try {
+//            $max_groups_number = firebaseGetReference('settings/max_teacher_groups')->getValue();
             $groups = firebaseGetReference('groups')->getValue();
             if ($groups != null)
                 foreach ($teachers as $teacher_key => $teacher) {
@@ -32,10 +33,9 @@ class TeacherController extends MainController
                         if (isset($group['teacher']) && $group['teacher'] == $teacher['user_id']) {
                             Arr::forget($groups, $key);
                             $groups_counter++;
-                            $group_access++;
                         }
-                        if ($group_access == sizeof($groups))
-                            break;
+//                        if ($groups_counter == $max_groups_number)
+//                            break;
                     }
                     Arr::set($groups_number, 'groups_number', $groups_counter);
                     $teacher = Arr::except($teacher, ['remember_token']);

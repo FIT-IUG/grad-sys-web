@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Events\NewStudentHasCreateEvent;
+use App\Events\TestEvent;
 use App\Events\UploadUsersExcelFileEvent;
+use App\Listeners\HelloMailListener;
 use App\Listeners\SendCreatePasswordEmailFromExcelListener;
 use App\Listeners\SendCreatePasswordEmailListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -21,6 +23,8 @@ class EventServiceProvider extends ServiceProvider
             SendCreatePasswordEmailFromExcelListener::class,
         ],NewStudentHasCreateEvent::class=>[
             SendCreatePasswordEmailListener::class
+        ],TestEvent::class=>[
+            HelloMailListener::class
         ]
     ];
 

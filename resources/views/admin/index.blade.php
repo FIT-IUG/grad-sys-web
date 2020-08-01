@@ -42,7 +42,7 @@
                     <p>عدد المشرفين</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
+                    <i class="fa fa-user-circle"></i>
                 </div>
             </div>
         </div>

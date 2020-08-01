@@ -9,12 +9,12 @@
             <table id="data-table" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>رقم المدرس</th>
+                    <th style="width: 68px">رقم المدرس</th>
                     <th>الاسم</th>
                     {{--                    <th>الإيميل</th>--}}
-                    <th>رقم الجوال</th>
-                    <th>عدد المجموعات</th>
-                    <th>الإعدادات</th>
+                    <th style="width: 70px;">رقم الجوال</th>
+                    <th style="width: 52px;">عدد المجموعات</th>
+                    <th style="width: 250px;">الإعدادات</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -64,7 +64,7 @@
                             @if($teacher['role'] == 'teacher')
                                 <a class="btn btn-warning btn-sm promotion"
                                    href="{{route('admin.teacher.promotion',['key'=>$key])}}"
-                                   style="padding-right: 15px; padding-left: 15px;">
+                                   style="padding-right: 14px; padding-left: 15px;">
                                     <i class="fa fa-user-plus"></i>
                                     ترقية
                                 </a>
@@ -102,39 +102,12 @@
 @push('script')
     <script>
         $(function () {
-        $('.delete-confirm').on('click', function (event) {
-            event.preventDefault();
-            const url = $(this).attr('href');
-            swal({
-                title: 'هل تريد حذف المشرف',
-                text: 'هذا سيقوم بحذف المشرف نهائياً!',
-                icon: 'warning',
-                buttons: ["إلغاء", "نعم"],
-            }).then(function (value) {
-                if (value) {
-                    window.location.href = url;
-                }
-            });
-        });
-        $('.promotion').on('click', function (event) {
-            event.preventDefault();
-            const url = $(this).attr('href');
-            swal({
-                title: 'هل تريد ترقية المدرس',
-                // text: 'هذا سيقوم بحذف المشرف نهائياً!',
-                icon: 'warning',
-                buttons: ["إلغاء", "نعم"],
-            }).then(function (value) {
-                if (value) {
-                    window.location.href = url;
-                }
-            });
-            $('.demotion').on('click', function (event) {
+            $('.delete-confirm').on('click', function (event) {
                 event.preventDefault();
                 const url = $(this).attr('href');
                 swal({
-                    title: 'هل تريد تخفيض المدرس',
-                    // text: 'هذا سيقوم بحذف المشرف نهائياً!',
+                    title: 'هل تريد حذف المشرف',
+                    text: 'هذا سيقوم بحذف المشرف نهائياً!',
                     icon: 'warning',
                     buttons: ["إلغاء", "نعم"],
                 }).then(function (value) {
@@ -143,6 +116,33 @@
                     }
                 });
             });
-        })
+            $('.promotion').on('click', function (event) {
+                event.preventDefault();
+                const url = $(this).attr('href');
+                swal({
+                    title: 'هل تريد ترقية المدرس',
+                    // text: 'هذا سيقوم بحذف المشرف نهائياً!',
+                    icon: 'warning',
+                    buttons: ["إلغاء", "نعم"],
+                }).then(function (value) {
+                    if (value) {
+                        window.location.href = url;
+                    }
+                });
+                $('.demotion').on('click', function (event) {
+                    event.preventDefault();
+                    const url = $(this).attr('href');
+                    swal({
+                        title: 'هل تريد تخفيض المدرس',
+                        // text: 'هذا سيقوم بحذف المشرف نهائياً!',
+                        icon: 'warning',
+                        buttons: ["إلغاء", "نعم"],
+                    }).then(function (value) {
+                        if (value) {
+                            window.location.href = url;
+                        }
+                    });
+                });
+            })
     </script>
 @endpush

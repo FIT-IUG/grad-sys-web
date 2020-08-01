@@ -10,17 +10,17 @@ class SendCreatePassword extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private String $token;
+//    private string $token;
 
     /**
      * Create a new message instance.
      *
      * @param $token
      */
-    public function __construct($token)
-    {
-        $this->token = $token;
-    }
+//    public function __construct($token)
+//    {
+//        $this->token = $token;
+//    }
 
     /**
      * Build the message.
@@ -29,11 +29,12 @@ class SendCreatePassword extends Mailable
      */
     public function build()
     {
-        $link = 'https://fit-grad-sys.herokuapp.com/user/create/password/' . $this->token;
+//        $link = 'https://fit-grad-sys.herokuapp.com/user/create/password/' . $this->token;
 //        $link = 'http://localhost:8000/user/create/password/' . $this->token;
 
-        return $this->view('mails.student.createPassword')
-            ->subject('إنشاء كلمة مرور للحساب')
-            ->with(['link' => $link]);
+        return $this->from('osmaka1997@gmail.com')->view('mails.hi');
+//            ->subject('إنشاء كلمة مرور للحساب')
+
+//            ->with(['link' => $link]);
     }
 }

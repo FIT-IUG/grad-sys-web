@@ -10,12 +10,12 @@
             <table id="data-table" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>الرقم الجامعي</th>
+                    <th style="width: 60px">الرقم الجامعي</th>
                     <th>الاسم</th>
                     <th>البريد الإلكتروني</th>
-                    <th>رقم الموبايل</th>
-                    <th>التخصص</th>
-                    <th>الإعدادات</th>
+                    <th style="width: 68px">رقم الموبايل</th>
+                    <th style="width: 113px">التخصص</th>
+                    <th style="width: 111px">الإعدادات</th>
                 </tr>
                 </thead>
                 <tbody>

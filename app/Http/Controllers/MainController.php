@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 
+use App\Events\TestEvent;
+use App\Mail\SendCreatePassword;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Kreait\Firebase\Exception\ApiException;
 use Kreait\Firebase\Exception\AuthException;
 use Kreait\Firebase\Exception\FirebaseException;
@@ -123,7 +127,6 @@ class MainController extends Controller
         }
 
     }
-
 
     protected function getGroupMembersData($members_std, $leader_id = 0)
     {
@@ -389,4 +392,11 @@ class MainController extends Controller
         return $result;
     }
 
+    public function test()
+    {
+
+//        $token = Str::random(60);
+        event(new TestEvent());
+        return 'mail send';
+    }
 }
