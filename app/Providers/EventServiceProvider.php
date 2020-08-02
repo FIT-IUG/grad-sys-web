@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Events\NewStudentHasCreateEvent;
 use App\Events\TestEvent;
 use App\Events\UploadUsersExcelFileEvent;
+use App\Listeners\CreateUserFromExcelListener;
 use App\Listeners\HelloMailListener;
 use App\Listeners\SendCreatePasswordEmailFromExcelListener;
 use App\Listeners\SendCreatePasswordEmailListener;
@@ -19,7 +20,7 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         UploadUsersExcelFileEvent::class => [
-//            CreateUserFromExcelListener::class,
+            CreateUserFromExcelListener::class,
             SendCreatePasswordEmailFromExcelListener::class,
         ],NewStudentHasCreateEvent::class=>[
             SendCreatePasswordEmailListener::class

@@ -28,6 +28,10 @@ class SendCreatePasswordEmailFromExcelListener implements ShouldQueue
             try {
 //                value 5 = email in excel file
                 $token = Str::random(60);
+                firebaseGetReference('emailedUsers')->push([
+                    'token' => $token,
+                    'user_id' => $value[0]
+                ]);
                 Mail::to($value[5])->send(new SendCreatePassword($token));
 
             } catch (ApiException $e) {
