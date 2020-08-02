@@ -5,12 +5,11 @@ namespace App\Listeners;
 use App\Mail\SendCreatePassword;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Kreait\Firebase\Exception\ApiException;
 
-class SendCreatePasswordEmailFromExcelListener
+class SendCreatePasswordEmailFromExcelListener implements ShouldQueue
 {
 
     /**

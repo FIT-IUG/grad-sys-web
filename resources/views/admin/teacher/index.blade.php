@@ -9,7 +9,7 @@
             <table id="data-table" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th style="width: 68px">رقم المدرس</th>
+                    <th style="width: 68px">الرقم الوظيفي</th>
                     <th style="width: 220px;">الاسم</th>
                     {{--                    <th>الإيميل</th>--}}
                     <th style="width: 70px;">رقم الجوال</th>

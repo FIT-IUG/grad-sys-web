@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Events\TestEvent;
-use App\Mail\SendCreatePassword;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Kreait\Firebase\Exception\ApiException;
 use Kreait\Firebase\Exception\AuthException;
@@ -52,9 +49,7 @@ class MainController extends Controller
                     }
                 }
             }
-//            dd($user_notifications);
             return $user_notifications;
-
         } catch (Exception $exception) {
             return null;
         } catch (\Kreait\Firebase\Exception\ApiException $e) {
@@ -356,20 +351,11 @@ class MainController extends Controller
 
         try {
             $students = getUserByRole('student');
-            $students_departments = [];
-            $index = 0;
             if ($students != null)
                 foreach ($students as $student) {
                     if (isset($student['department']) && $student['department'] != null)
                         $departments_to_send[$student['department']]++;
-
-//                    Arr::set($students_departments, $index++, $student['department']);
                 }
-//            foreach ($students_departments as $student_department)
-//                foreach ($departments as $department)
-//                    if ($department == $student_department)
-//                        $departments_to_send[$department]++;
-
             return $departments_to_send;
         } catch (ApiException $e) {
         }
@@ -394,9 +380,8 @@ class MainController extends Controller
 
     public function test()
     {
-
-//        $token = Str::random(60);
-        event(new TestEvent());
+        $token = Str::random(60);
+        event(new TestEvent($token));
         return 'mail send';
     }
 }

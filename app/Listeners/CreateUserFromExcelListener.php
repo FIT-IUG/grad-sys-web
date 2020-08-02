@@ -2,20 +2,16 @@
 
 namespace App\Listeners;
 
-use App\Mail\SendCreatePassword;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 use Kreait\Firebase\Exception\ApiException;
 
-class CreateUserFromExcelListener
+class CreateUserFromExcelListener implements ShouldQueue
 {
     /**
      * Handle the event.
      *
-     * @param  object  $event
+     * @param object $event
      * @return RedirectResponse
      */
     public function handle($event)
@@ -26,7 +22,7 @@ class CreateUserFromExcelListener
             if ($value[0] == 'id')
                 continue;
             try {
-                firebaseGetReference('users')->push([
+                firebaseGetReference('usersFromExcel')->push([
                     'user_id' => $value[0],
                     'name' => $value[1],
                     'role' => $value[2],

@@ -28,7 +28,6 @@ class DashboardController extends MainController
     public function index()
     {
 
-
         $tags = firebaseGetReference('tags')->getValue();
         $tags = $this->arrayToStringConverter($tags);
         $departments = firebaseGetReference('departments')->getValue();
@@ -144,32 +143,32 @@ class DashboardController extends MainController
     public function exportExcelFile(ExportExcelRequest $request)
     {
         $users = Excel::toArray(new StudentsImport(), $request->file('excelFile'));
-//        event(new UploadUsersExcelFileEvent($users));
-        foreach ($users[0] as $value) {
-            if ($value[0] == 'id')
-                continue;
-            try {
-                $key = firebaseGetReference('usersFromExcel')->push([
-                    'user_id' => $value[0],
-                    'name' => $value[1],
-                    'role' => $value[2],
-                    'department' => $value[3],
-                    'mobile_number' => $value[4],
-                    'email' => $value[5],
-                ])->getKey();
-
-                $token = Str::random(60);
-                firebaseGetReference('emailedUsers')->push([
-                    'user_id' => $key,
-                    'token' => $token
-                ]);
-                Mail::to($value[5])->send(new SendCreatePassword($token));
-
-
-            } catch (ApiException $e) {
-                return redirect()->back()->with('error', 'حدثت مشكلة أثناء رفع الملف.');
-            }
-        }
+        event(new UploadUsersExcelFileEvent($users));
+//        foreach ($users[0] as $value) {
+//            if ($value[0] == 'id')
+//                continue;
+//            try {
+//                $key = firebaseGetReference('usersFromExcel')->push([
+//                    'user_id' => $value[0],
+//                    'name' => $value[1],
+//                    'role' => $value[2],
+//                    'department' => $value[3],
+//                    'mobile_number' => $value[4],
+//                    'email' => $value[5],
+//                ])->getKey();
+//
+//                $token = Str::random(60);
+//                firebaseGetReference('emailedUsers')->push([
+//                    'user_id' => $key,
+//                    'token' => $token
+//                ]);
+//                Mail::to($value[5])->send(new SendCreatePassword($token));
+//
+//
+//            } catch (ApiException $e) {
+//                return redirect()->back()->with('error', 'حدثت مشكلة أثناء رفع الملف.');
+//            }
+//        }
         return redirect()->back()->with('success', 'تم رفع الملف بنجاح.');
     }
 
@@ -235,7 +234,6 @@ class DashboardController extends MainController
             return ['departments' => $departments_name, 'departments_data' => $departments_data];
         } catch (ApiException $e) {
         }
-
 
     }
 
