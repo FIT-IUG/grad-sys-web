@@ -35,7 +35,6 @@ class DashboardController extends MainController
         $number_of_students = sizeof(getUserByRole('student'));
         $teacher_groups = $this->groupsDataForTeacher(null);
         $teachers = getUserByRole('teacher');
-
         //Check if registered student is male(1) or female(2) by first number of there std
         $students = getStudentsStdWithoutGroup();
 
@@ -75,7 +74,7 @@ class DashboardController extends MainController
             'statistics' => $statistics,
             'students' => $students,
             'notifications' => $notifications,
-            'teacher_groups' => $teacher_groups
+            'teacher_groups' => $teacher_groups,
         ]);
     }
 
@@ -86,6 +85,7 @@ class DashboardController extends MainController
         try {
             $settings = firebaseGetReference('settings')->getValue();
             $tags = firebaseGetReference('tags')->getValue();
+            $departments = firebaseGetReference('departments')->getValue();
             $t_tags = $this->getTagsUse();
             $com_tags = [];
 
@@ -103,7 +103,8 @@ class DashboardController extends MainController
             return view('admin.settings')->with([
                 'notifications' => $notifications,
                 'settings' => $settings,
-                'tags' => $com_tags
+                'tags' => $com_tags,
+                'departments' => $departments
             ]);
         } catch (ApiException $e) {
         }
@@ -120,19 +121,19 @@ class DashboardController extends MainController
             $student = firebaseGetReference('users')->push($student);
 
             // send create password email, and store token and user_id in emailedUsers table
-//            event(new NewStudentHasCreateEvent($student));
+            event(new NewStudentHasCreateEvent($student));
 
-            $key = $student->getKey();
-            $email = $request->get('email');
+//            $key = $student->getKey();
+//            $email = $request->get('email');
 
             //Send Email
-            $token = Str::random(40);
-            firebaseGetReference('emailedUsers')->push([
-                'user_id' => $key,
-                'token' => $token
-            ]);
-
-            Mail::to($email)->send(new SendCreatePassword($token));
+//            $token = Str::random(60);
+//            firebaseGetReference('emailedUsers')->push([
+//                'user_id' => $key,
+//                'token' => $token
+//            ]);
+//
+//            Mail::to($email)->send(new SendCreatePassword($token));
 
             return redirect()->back()->with('success', 'تم تسجيل المستخدم بنجاح.');
         } catch (ApiException $e) {
@@ -217,8 +218,11 @@ class DashboardController extends MainController
             $firebase_departments = firebaseGetReference('departments')->getValue();
             $departments = [];
             $index = 1;
-            foreach ($firebase_departments as $department) {
-                Arr::set($departments, $index++, $department);
+            foreach ($firebase_departments as $department_key => $department) {
+                if (strtoupper($department) == '') {
+                    Arr::forget($departments, $department_key);
+                } else
+                    Arr::set($departments, $index++, $department);
             }
 
             $departments_name = "[";

@@ -1,7 +1,6 @@
 @extends('layout')
 @section('title', 'بيانات الطلبة')
 @section('content')
-
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">بيانات الطلبة</h3>
@@ -14,8 +13,9 @@
                     <th>الاسم</th>
                     <th>البريد الإلكتروني</th>
                     <th style="width: 68px">رقم الموبايل</th>
-                    <th style="width: 113px">التخصص</th>
-                    <th style="width: 111px">الإعدادات</th>
+                    <th style="width: 55px">التخصص</th>
+                    <th style="width: 1px">في مجموعة</th>
+                    <th style="width: 113px">الإعدادات</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -26,7 +26,7 @@
                             {{isset($student['user_id']) ? $student['user_id'] : '-'}}
                         </td>
                         <td class="delete-name" @if(!isset($student['name']))
-                            style="text-align: center" @endif>
+                        style="text-align: center" @endif>
                             {{isset($student['name']) ? $student['name'] : '-'}}
                         </td>
                         <td @if(!isset($student['email']))
@@ -40,13 +40,15 @@
                         <td style="text-align: center">
                             {{isset($student['department']) ? $student['department'] : '-'}}
                         </td>
+                        <td style="text-align: center">
+                            {{isset($student['in_group']) ? $student['in_group'] : '-'}}
+                        </td>
                         <td class="project-actions text-right">
                             <a class="btn btn-info btn-sm" href="{{route('admin.student.edit',['user_id'=>$key])}}">
                                 <i class="fa fa-pencil">
                                 </i>
                                 تعديل
                             </a>
-
                             <a class="btn btn-danger btn-sm delete-confirm"
                                href="{{route('admin.student.destroy',['user_id'=>$key])}}">
                                 <i class="fa fa-trash">
@@ -64,6 +66,7 @@
                     <th>البريد الإلكتروني</th>
                     <th>رقم الموبايل</th>
                     <th>التخصص</th>
+                    <th>في فريق</th>
                     <th>الإعدادات</th>
                 </tr>
                 </tfoot>

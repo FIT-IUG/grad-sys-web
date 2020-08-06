@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CheckUserDepartmentAsRoleRule;
+use App\Rules\CheckUserIDLengthRule;
 use App\Rules\UniqueStudentDataRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -28,8 +30,8 @@ class RegisterUserRequest extends FormRequest
             'name' => ['required:alpha', new UniqueStudentDataRule()],
             'email' => ['required', 'email', new UniqueStudentDataRule()],
             'mobile_number' => ['required', 'numeric', 'digits:10', new UniqueStudentDataRule],
-            'user_id' => ['required', 'numeric', 'digits:9', new UniqueStudentDataRule()],
-            'department' => 'required',
+            'user_id' => ['required', 'numeric', new UniqueStudentDataRule(), new CheckUserIDLengthRule()],
+            'department' => ['required', new CheckUserDepartmentAsRoleRule()],
             'role' => 'required'
         ];
     }

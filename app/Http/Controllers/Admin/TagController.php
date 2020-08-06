@@ -10,21 +10,6 @@ use Kreait\Firebase\Exception\ApiException;
 class TagController extends MainController
 {
 
-    public function store(TagRequest $tag)
-    {
-        try {
-            firebaseGetReference('tags')->push($tag_name);
-            return redirect()->route('admin.settings')->with('success', 'تم إضافة شكل المشروع: ' . $tag_name . ' بنجاح.');
-        } catch (ApiException $e) {
-            return redirect()->route('admin.settings')->with('error', 'حصلت مشكلة في إضافة شكل المشروع.');
-        }
-    }
-
-    public function edit($tag_key)
-    {
-
-    }
-
     public function update(TagRequest $tag)
     {
         $tag_name = $tag->get('tag');

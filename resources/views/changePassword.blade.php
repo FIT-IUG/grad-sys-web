@@ -10,11 +10,11 @@
     <div class="card">
         <div class="card-body login-card-body">
 
-            <form action="{{route('user.password.store',['token'=>request()->segment(4)])}}" method="post">
+            <form action="{{route('user.password.update',['token'=>request()->segment(4)])}}" method="post">
                 @csrf
                 <div class="input-group mb-3">
                     <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"
-                           placeholder="كلمة المرور" required>
+                           placeholder="كلمة المرور الجديدة" required>
                     <div class="input-group-append">
                         <span class="fa fa-lock input-group-text"></span>
                     </div>
@@ -39,7 +39,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-5">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">حفظ كلمة المرور</button>
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">تغيير كلمة المرور</button>
                     </div>
                 </div>
             </form>

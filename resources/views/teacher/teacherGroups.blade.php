@@ -59,7 +59,7 @@
                         <hr>
                         <div class="row" style="padding-top: 15px;">
 
-                            @if(getRole() != 'teacher')
+                            @if($group['teacher_data']['user_id'] != getUserId())
                                 <div class="col-6">
                                     <p class="lead">بيانات المشرف</p>
 

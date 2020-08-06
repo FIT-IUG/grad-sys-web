@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Arr;
 use Kreait\Firebase\Exception\ApiException;
 
-class UniqueTagRule implements Rule
+class UniqueDepartmentRule implements Rule
 {
     /**
      * Determine if the validation rule passes.
@@ -18,12 +18,12 @@ class UniqueTagRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        $tags = firebaseGetReference('tags')->getValue();
+        $departments = firebaseGetReference('departments')->getValue();
         if (request()->get('action') == 'update') {
-            Arr::forget($tags, request()->get('tag_key'));
+            Arr::forget($departments, request()->get('department_key'));
         }
-        foreach ($tags as $tag)
-            if (isset($tag) && $tag == $value)
+        foreach ($departments as $department)
+            if (isset($department) && $department == $value)
                 return false;
         return true;
     }
@@ -35,6 +35,6 @@ class UniqueTagRule implements Rule
      */
     public function message()
     {
-        return 'شكل المشروع هذا موجود مسبقا.';
+        return 'التخصص هذا موجود مسبقا.';
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateStudentRequest;
+use Illuminate\Support\Arr;
 use Kreait\Firebase\Exception\ApiException;
 
 class StudentController extends Controller
@@ -17,8 +18,26 @@ class StudentController extends Controller
     public function index()
     {
         $students = getUserByRole('student');
-
-        return view('admin.student.index', ['students' => $students]);
+        $available_students_std = getStudentsStdWithoutGroup();
+        $checked_students = [];
+        $in_group = true;
+        foreach ($students as $student_key => $student) {
+            foreach ($available_students_std as $key => $std) {
+                if ($student['user_id'] == $std) {
+                    $data = Arr::collapse([$student, ['in_group' => 'لا']]);
+                    Arr::set($checked_students, $student_key, $data);
+                    Arr::forget($available_students_std, $key);
+                    $in_group = false;
+                    break;
+                }
+            }
+            if ($in_group) {
+                $data = Arr::collapse([$student, ['in_group' => 'نعم']]);
+                Arr::set($checked_students, $student_key, $data);
+            }
+            $in_group = true;
+        }
+        return view('admin.student.index', ['students' => $checked_students]);
     }
 
     public function edit($user_id)
@@ -71,4 +90,5 @@ class StudentController extends Controller
         }
 
     }
+
 }

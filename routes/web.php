@@ -33,7 +33,12 @@ Route::get('/', function () {
 Route::get('create', 'MainController@create');
 
 Route::get('user/create/password/{token}', 'PasswordController@create');
-Route::post('user/store/password', 'PasswordController@store')->name('store.user.password');
+Route::get('user/edit/password/{token}', 'PasswordController@edit');
+Route::get('user/update/password/{token}', 'PasswordController@update');
+Route::post('user/store/password', 'PasswordController@store')->name('user.password.store');
+Route::get('user/restore/password/', 'PasswordController@restore')->name('user.password.restore');
+Route::post('user/send/password', 'PasswordController@send')->name('user.password.send');
+Route::post('user/update/password', 'PasswordController@update')->name('user.password.update');
 
 Route::get('تسجيل_الدخول', 'AuthController@login')->name('login');
 Route::get('login', 'AuthController@login')->name('login');
@@ -60,6 +65,8 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
         Route::get('tag/edit/{tag_key}', 'TagController@edit')->name('admin.tag.edit');
         Route::post('tag/update', 'TagController@update')->name('admin.tag.update');
         Route::get('tag/destroy/{tag_key}', 'TagController@destroy')->name('admin.tag.destroy');
+        Route::post('department/update', 'DepartmentController@update')->name('admin.department.update');
+        Route::get('department/destroy/{department_key}', 'DepartmentController@destroy')->name('admin.department.destroy');
         Route::post('uploadExcelFile', 'DashboardController@exportExcelFile')->name('admin.exportExcelFile');
         Route::post('user/store', 'DashboardController@storeUser')->name('user.store');
         Route::get('students', 'StudentController@index')->name('admin.student.index');

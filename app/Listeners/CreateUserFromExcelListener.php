@@ -2,11 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Mail\SendCreatePassword;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 use Kreait\Firebase\Exception\ApiException;
 
 class CreateUserFromExcelListener implements ShouldQueue
@@ -33,19 +30,9 @@ class CreateUserFromExcelListener implements ShouldQueue
                     'mobile_number' => $value[4],
                     'email' => $value[5],
                 ]);
-
-//                $token = Str::random(60);
-//                firebaseGetReference('emailedUsers')->push([
-//                    'token' => $token,
-//                    'user_id' => $value[0]
-//                ]);
-//                Mail::to($value[5])->send(new SendCreatePassword($token));
-
-
             } catch (ApiException $e) {
                 return redirect()->back()->with('error', 'حدثت مشكلة أثناء رفع الملف.');
             }
         }
-        return 'done';
     }
 }

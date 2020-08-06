@@ -10,9 +10,10 @@
     </div>
     <div class="card">
         <div class="card-body login-card-body">
-            <form action="{{route('login.check')}}" method="post">
+            <p class="login-box-msg">أدخل بريدك الإلكتروني لتصلك رسالة تغيير كلمة السر</p>
+            <form action="{{route('user.password.send')}}" method="post">
                 @csrf
-                <div class="input-group mb-3">{{-- style="direction: ltr;"--}}
+                <div class="input-group mb-3">
                     <input type="text" class="form-control @error('email') is-invalid @enderror" name="email"
                            placeholder="البريد الإلكتروني" value="{{old('email')}}" required>
                     <div class="input-group-append">
@@ -24,27 +25,12 @@
                     </div>
                     @enderror
                 </div>
-                <div class="input-group mb-3">
-                    <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"
-                           placeholder="كلمة المرور" required>
-                    <div class="input-group-append">
-                        <span class="fa fa-lock input-group-text"></span>
-                    </div>
-                    @error('password')
-                    <div class="invalid-feedback">
-                        <strong>{{ $message }}</strong>
-                    </div>
-                    @enderror
-                </div>
                 <div class="row">
                     <div class="col-lg-5">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">تسجيل الدخول</button>
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">إرسال</button>
                     </div>
                 </div>
             </form>
-            <p class="mb-1">
-                <a href="{{route('user.password.restore')}}">نسيت كلمة السر</a>
-            </p>
         </div>
     </div>
 </div>

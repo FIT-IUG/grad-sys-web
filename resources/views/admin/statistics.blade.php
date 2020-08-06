@@ -17,7 +17,7 @@
             <div class="card-header">
                 <h3 class="card-title">
                     <i class="fa fa-bar-chart"></i>
-                    إحصائيات شكل المشروع
+                    إحصائيات نوع المشروع
                 </h3>
             </div>
             <div class="card-body">

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\RestorePasswordEvent;
+use App\Http\Requests\RestorePasswordRequest;
 use App\Http\Requests\StudentPasswordRequest;
 use Kreait\Firebase\Exception\ApiException;
 use Kreait\Firebase\Exception\AuthException;
@@ -44,7 +46,6 @@ class PasswordController extends Controller
                         return redirect()->back()->with('error', 'بيانات هذا الحساب موجودة مسبق.');
 //                  check if emailed user has data that mean it is find user in usersFromExcel table
                     } elseif ($emailed_user != null) {
-                        dd('yes');
                         $email = $emailed_user['email'];
                         $password = $request->get('password');
                         $uid = firebaseAuth()->createUserWithEmailAndPassword($email, $password)->uid;
@@ -71,6 +72,52 @@ class PasswordController extends Controller
         } catch (AuthException $e) {
             return redirect()->route('home')->with('error', 'المستخدم موجود مسبقًا.');
         } catch (FirebaseException $e) {
+            return redirect()->route('home')->with('error', 'المستخدم موجود مسبقًا.');
+        }
+    }
+
+    public function restore()
+    {
+        return view('restorePassword');
+    }
+
+    public function send(RestorePasswordRequest $request)
+    {
+        $email = $request->get('email');
+        event(new RestorePasswordEvent($email));
+        return redirect()->route('login')->with('success', 'تم أرسال رسالة إلى بريدك الجامعي, الرجاء التحقق من ذلك لتغيير كلمة المرور.');
+    }
+
+    public function edit()
+    {
+        try {
+            $token = request()->segment(4);
+            $emailed_users = firebaseGetReference('emailedUsers')->getValue();
+            foreach ($emailed_users as $user)
+                if ($user['token'] == $token)
+                    return view('changePassword');
+        } catch (ApiException $e) {
+        }
+        return redirect()->route('home')->with('error', 'ليس لديك صلاحية لفعل ذلك.');
+    }
+
+    public function update(StudentPasswordRequest $request)
+    {
+        try {
+            $emailed_users = firebaseGetReference('emailedUsers')->getValue();
+            $token = $request->get('token');
+            $new_password = $request->get('password');
+            foreach ($emailed_users as $emailed_user)
+                if ($emailed_user['token'] == $token) {
+                    $uid = $emailed_user['user_id'];
+                    firebaseAuth()->changeUserPassword($uid, $new_password);
+                    return redirect()->route('login')->with('success', 'تم تغيير كلمة السر بنجاح.');
+                }
+            return redirect()->route('login')->with('error', 'حصلت مشكلة في تغيير كلمة السر.');
+        } catch (AuthException $e) {
+            return redirect()->route('login')->with('error', 'حصلت مشكلة في تغيير كلمة السر.');
+        } catch (FirebaseException $e) {
+            return redirect()->route('login')->with('error', 'حصلت مشكلة في تغيير كلمة السر.');
         }
     }
 

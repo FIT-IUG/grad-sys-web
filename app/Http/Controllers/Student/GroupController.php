@@ -215,7 +215,7 @@ class GroupController extends Controller
             'from' => $leader_id,
             'from_name' => $leader_name,
             'to' => $request->get('teacher'),
-            'message' => 'لقد طلب منك الطالب ' . $leader_name . 'أن تكون مشرفَ مشروع التخرّج لفريقه.',
+            'message' => 'لقد طلب منك الطالب ' . $leader_name . ' أن تكون مشرفَ مشروع التخرّج لفريقه.',
             'project_initial_title' => $request->get('initial_title'),
             'type' => 'to_be_supervisor',
             'status' => 'wait',

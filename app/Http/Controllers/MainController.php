@@ -346,8 +346,11 @@ class MainController extends Controller
     {
         $departments = firebaseGetReference('departments')->getValue();
         $departments_to_send = [];
-        foreach ($departments as $department)
-            Arr::set($departments_to_send, $department, 0);
+        foreach ($departments as $department_key => $department)
+            if (strtoupper($department) == 'FIT')
+                Arr::forget($departments, $department_key);
+            else
+                Arr::set($departments_to_send, $department, 0);
 
         try {
             $students = getUserByRole('student');
