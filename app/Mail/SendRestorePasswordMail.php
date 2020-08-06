@@ -30,8 +30,8 @@ class SendRestorePasswordMail extends Mailable
      */
     public function build()
     {
-//        $link = 'https://fit-grad-sys.herokuapp.com/user/edit/password/' . $this->token;
-        $link = 'http://localhost:8000/user/edit/password/' . $this->token;
+        $link = 'https://fit-grad-sys.herokuapp.com/user/edit/password/' . $this->token;
+//        $link = 'http://localhost:8000/user/edit/password/' . $this->token;
 
         return $this->view('mails.student.restorePassword')
             ->subject('تغيير كلمة المرور')
