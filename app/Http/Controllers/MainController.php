@@ -208,7 +208,6 @@ class MainController extends Controller
 
     public function replayToBeSupervisorRequest(Request $request)
     {
-
         try {
             $reply = $request->get('reply');
             $student_std = $request->get('from');
@@ -230,12 +229,10 @@ class MainController extends Controller
 
                 firebaseGetReference('groups/' . $group_key)
                     ->update(['teacher' => $teacher_id, 'status' => 'group_complete']);
-
                 return redirect()->route(getRole() . '.index')->with('success', 'تم قبول الطلب بنجاح.');
             } elseif ($reply == 'reject') {
                 firebaseGetReference('notifications/' . $key)->update(['status' => 'reject']);
                 firebaseGetReference('groups/' . $group_key)->update(['status' => 'teacher_reject']);
-
                 return redirect()->route(getRole() . '.index')->with('success', 'تم رفض الطلب بنجاح.');
             } else
                 return redirect()->route(getRole() . '.index')->with('error', 'حصلت مشكلة في الطلب.');

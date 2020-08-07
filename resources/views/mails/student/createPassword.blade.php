@@ -374,7 +374,7 @@
                                 <div class="text" style="padding: 0 2.5em; text-align: center;">
                                     <h2>الرجاء تعيين كلمة مرور خاصة بنظام متابعة مشاريع التخرج</h2>
                                     <h3>بعد ذلك يمكنك الدخول للنظام، لإضافة كلمة مرور اضغط على الحقل أدناه.</h3>
-                                    <p><a href="{{$link}}" class="btn btn-primary">Yes! Subscribe Me</a></p>
+                                    <p><a href="{{$link}}" class="btn btn-primary">إنشاء كلمة السر</a></p>
                                 </div>
                             </td>
                         </tr>

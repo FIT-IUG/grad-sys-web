@@ -209,6 +209,12 @@ class DashboardController extends MainController
     public function replayToBeSupervisor(Request $request)
     {
         $this->replayToBeSupervisorRequest($request);
+        $reply = $request->get('reply');
+
+        if ($reply == 'success')
+            return redirect()->route(getRole() . '.index')->with('success', 'تم قبول الطلب بنجاح.');
+        elseif ($reply = 'reject')
+            return redirect()->route(getRole() . '.index')->with('success', 'تم رفض الطلب.');
     }
 
     private function getDepartmentsStatistic()

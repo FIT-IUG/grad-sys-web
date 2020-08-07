@@ -64,7 +64,7 @@ class Handler extends ExceptionHandler
             } elseif ($exception instanceof ServiceException) {
                 return redirect()->route(getRole() . '.index')->with('error', 'حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
             } elseif ($exception instanceof ErrorException) {
-                return redirect()->route(getRole() . '.index')->with('error', 'حاول أحدهم الدخول إلى حسابك.');
+                return redirect()->route(getRole() . '.index')->with('error', 'حدثت مشكلة في النظام الرجاء المحاولة مرة أخرى.');
             } elseif ($exception instanceof InvalidArgumentException) {
                 return redirect()->route(getRole() . '.index')->with('error', 'حصلت مشكلة بالنظام.');
             }
