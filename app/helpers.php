@@ -82,7 +82,6 @@ function getStudentsStdWithoutGroup()
     }
 }
 
-
 function getUserId()
 {
     try {
@@ -91,7 +90,6 @@ function getUserId()
         return redirect()->back()->with('error', 'حلصت مشكلة بالنظام.');
     }
 }
-
 
 function createUsers()
 {

@@ -9,11 +9,8 @@ use App\Http\Requests\ExportExcelRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\SettingsRequest;
 use App\Imports\StudentsImport;
-use App\Mail\SendCreatePassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 use Kreait\Firebase\Exception\ApiException;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -208,6 +205,7 @@ class DashboardController extends MainController
 
     public function replayToBeSupervisor(Request $request)
     {
+        dd('hh');
         $this->replayToBeSupervisorRequest($request);
         $reply = $request->get('reply');
 

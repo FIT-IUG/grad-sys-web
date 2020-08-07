@@ -84,11 +84,12 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
         Route::get('groups/edit/{group_key}', 'GroupController@edit')->name('admin.group.edit');
         Route::post('groups/update/{group_key}', 'GroupController@update')->name('admin.group.update');
         Route::post('groups/update/teacher/{group_key}', 'GroupController@updateTeacher')->name('admin.group.update.teacher');
-        Route::post('replyJoinGroupRequest', 'DashboardController@replayToBeSupervisor')->name('admin.group.replyRequest');
+//        Route::post('replyJoinGroupRequest', 'DashboardController@replayToBeSupervisor')->name('admin.group.replyRequest');
     });
 
     Route::get('teacher', 'TeacherController@index')->name('teacher.index');
     Route::post('storeGroupMembers', 'StudentController@storeGroupMembers')->name('group.members.store');
     Route::post('storeGroupSupervisor', 'StudentController@storeGroupSupervisor')->name('group.teacher.store');
     Route::post('teacher/replyJoinGroupRequest', 'MainController@replayToBeSupervisorRequest')->name('teacher.group.replyRequest');
+    Route::post('admin/replyJoinGroupRequest', 'MainController@replayToBeSupervisorRequest')->name('admin.group.replyRequest');
 });
