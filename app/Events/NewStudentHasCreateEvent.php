@@ -10,16 +10,19 @@ class NewStudentHasCreateEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $student;
+    public $student_email;
+    public $key;
 
     /**
      * Create a new event instance.
      *
-     * @param $student
+     * @param $student_email
+     * @param $key
      */
-    public function __construct($student)
+    public function __construct($student_email, $key)
     {
-        $this->student = $student;
+        $this->student_email = $student_email;
+        $this->key = $key;
     }
 
 }

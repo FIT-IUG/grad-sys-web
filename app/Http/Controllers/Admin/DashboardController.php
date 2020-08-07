@@ -115,24 +115,12 @@ class DashboardController extends MainController
 
         try {
             // store in users table at first
-            $student = firebaseGetReference('users')->push($student);
+            $key = firebaseGetReference('users')->push($student)->getKey();
 
             // send create password email, and store token and user_id in emailedUsers table
-            event(new NewStudentHasCreateEvent($student));
+            event(new NewStudentHasCreateEvent($student['email'], $key));
 
-//            $key = $student->getKey();
-//            $email = $request->get('email');
-
-            //Send Email
-//            $token = Str::random(60);
-//            firebaseGetReference('emailedUsers')->push([
-//                'user_id' => $key,
-//                'token' => $token
-//            ]);
-//
-//            Mail::to($email)->send(new SendCreatePassword($token));
-
-            return redirect()->back()->with('success', 'تم تسجيل المستخدم بنجاح.');
+            return redirect()->route('admin.index')->with('success', 'تم تسجيل المستخدم بنجاح.');
         } catch (ApiException $e) {
             return redirect()->back()->with('error', 'حدثت مشكلة أثناء تسجيل المستخدم.');
         }
@@ -141,32 +129,9 @@ class DashboardController extends MainController
     public function exportExcelFile(ExportExcelRequest $request)
     {
         $users = Excel::toArray(new StudentsImport(), $request->file('excelFile'));
+
         event(new UploadUsersExcelFileEvent($users));
-//        foreach ($users[0] as $value) {
-//            if ($value[0] == 'id')
-//                continue;
-//            try {
-//                $key = firebaseGetReference('usersFromExcel')->push([
-//                    'user_id' => $value[0],
-//                    'name' => $value[1],
-//                    'role' => $value[2],
-//                    'department' => $value[3],
-//                    'mobile_number' => $value[4],
-//                    'email' => $value[5],
-//                ])->getKey();
-//
-//                $token = Str::random(60);
-//                firebaseGetReference('emailedUsers')->push([
-//                    'user_id' => $key,
-//                    'token' => $token
-//                ]);
-//                Mail::to($value[5])->send(new SendCreatePassword($token));
-//
-//
-//            } catch (ApiException $e) {
-//                return redirect()->back()->with('error', 'حدثت مشكلة أثناء رفع الملف.');
-//            }
-//        }
+
         return redirect()->back()->with('success', 'تم رفع الملف بنجاح.');
     }
 

@@ -19,13 +19,11 @@ class SendCreatePasswordEmailListener implements ShouldQueue
      */
     public function handle($event)
     {
-
-        $key = $event->student->getKey();
-        $email = $event->student['email'];
-
+        $key = $event->key;
+        $email = $event->student_email;
         //Send Email
         $token = Str::random(60);
-        firebaseGetReference('emailed_users')->push([
+        firebaseGetReference('emailedUsers')->push([
             'user_id' => $key,
             'token' => $token
         ]);
