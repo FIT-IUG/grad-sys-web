@@ -21,6 +21,12 @@ class CheckUserDepartmentAsRoleRule implements Rule
                 return false;
             else
                 return true;
+        else
+            if (strtoupper($value) != 'FIT')
+                return false;
+            else
+                return true;
+
     }
 
     /**
@@ -30,6 +36,13 @@ class CheckUserDepartmentAsRoleRule implements Rule
      */
     public function message()
     {
-        return 'لا يمكن إختيار هذا التخصص للطالب.';
+        $role = request()->get('role');
+        if ($role == 'student')
+            return 'لا يمكن إختيار هذا التخصص للطالب.';
+        else if ($role == 'teacher')
+            return 'لا يمكن إختيار هذا التخصص للمدرس.';
+        else
+            return 'لا يمكن إختيار هذا التخصص للأدمن.';
+
     }
 }

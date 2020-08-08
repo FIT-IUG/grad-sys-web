@@ -3,7 +3,6 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Validation\ValidationData;
 
 class CheckUserIDLengthRule implements Rule
 {
@@ -32,7 +31,8 @@ class CheckUserIDLengthRule implements Rule
                 return true;
             else
                 return false;
-
+        else
+            return true;
 
     }
 

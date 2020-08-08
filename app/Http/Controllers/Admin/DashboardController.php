@@ -31,7 +31,7 @@ class DashboardController extends MainController
         $notifications = $this->getNotifications();
         $number_of_students = sizeof(getUserByRole('student'));
         $teacher_groups = $this->groupsDataForTeacher(null);
-        $teachers = getUserByRole('teacher');
+        $teachers = $this->getTeachersCanBeSupervisor();
         //Check if registered student is male(1) or female(2) by first number of there std
         $students = getStudentsStdWithoutGroup();
 
@@ -48,7 +48,6 @@ class DashboardController extends MainController
             }
         else
             $number_of_teamed_students = '0';
-
         $tags_data = $this->getTagsUse();
         $tags_data = $this->arrayToStringConverter($tags_data);
 
@@ -111,14 +110,13 @@ class DashboardController extends MainController
 
     public function storeUser(RegisterUserRequest $request)
     {
-        $student = $request->validated();
-
+        $user = $request->validated();
         try {
             // store in users table at first
-            $key = firebaseGetReference('users')->push($student)->getKey();
+            $key = firebaseGetReference('users')->push($user)->getKey();
 
             // send create password email, and store token and user_id in emailedUsers table
-            event(new NewStudentHasCreateEvent($student['email'], $key));
+            event(new NewStudentHasCreateEvent($user['email'], $key));
 
             return redirect()->route('admin.index')->with('success', 'تم تسجيل المستخدم بنجاح.');
         } catch (ApiException $e) {

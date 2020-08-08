@@ -36,9 +36,9 @@
                 <div class="form-group col-md-4">
                     <label>الدور</label>
                     <select class="form-control @error('role') is-invalid  @enderror" name="role">
-                        <option value="student" selected>طالب</option>
-                        <option value="teacher">مدرس</option>
-                        <option value="admin">آدمن</option>
+                        <option value="student" @if(old('role') == 'student') selected @endif>طالب</option>
+                        <option value="teacher" @if(old('role') == 'teacher') selected @endif>مدرس</option>
+                        <option value="admin" @if(old('role') == 'admin') selected @endif>آدمن</option>
                     </select>
                     @error('role')
                     <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
