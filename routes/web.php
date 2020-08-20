@@ -68,6 +68,7 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
         Route::post('department/update', 'DepartmentController@update')->name('admin.department.update');
         Route::get('department/destroy/{department_key}', 'DepartmentController@destroy')->name('admin.department.destroy');
         Route::post('uploadExcelFile', 'DashboardController@exportExcelFile')->name('admin.exportExcelFile');
+        Route::get('import/studentNoInGroup', 'DashboardController@importStudentNotInGroup')->name('admin.import.studentNotInGroup');
         Route::post('user/store', 'DashboardController@storeUser')->name('user.store');
         Route::get('students', 'StudentController@index')->name('admin.student.index');
         Route::get('student/edit/{user_id}', 'StudentController@edit')->name('admin.student.edit');
@@ -84,6 +85,10 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
         Route::get('groups/edit/{group_key}', 'GroupController@edit')->name('admin.group.edit');
         Route::post('groups/update/{group_key}', 'GroupController@update')->name('admin.group.update');
         Route::post('groups/update/teacher/{group_key}', 'GroupController@updateTeacher')->name('admin.group.update.teacher');
+        Route::get('groups/{group_key}/leader/update', 'GroupController@updateLeader')->name('admin.group.update.leader');
+        Route::get('groups/{group_key}/student/destroy/{member_key}', 'GroupController@destroyMember')->name('admin.group.destroy.member');
+        Route::post('groups/{group_key}/update/project', 'GroupController@updateGroupData')->name('admin.group.update.project');
+        Route::post('groups/{group_key}/change/leader/{old_leader_key}', 'GroupController@changeLeader')->name('admin.group.change.leader');
 //        Route::post('replyJoinGroupRequest', 'DashboardController@replayToBeSupervisor')->name('admin.group.replyRequest');
     });
 

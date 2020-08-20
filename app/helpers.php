@@ -41,12 +41,14 @@ function getRole()
 
 function getStudentsStdInGroups()
 {
+//    120160343
     try {
         $groups = firebaseGetReference('groups')->getValue();
         if ($groups != null) {
             $leadersStd = Arr::pluck($groups, 'leaderStudentStd');
             $members_std = Arr::pluck($groups, 'membersStd');
             $members_std = Arr::flatten($members_std);
+            $h = Arr::collapse([$leadersStd, $members_std]);
             return Arr::collapse([$leadersStd, $members_std]);
         }
         return [];
@@ -91,7 +93,7 @@ function getUserId()
     }
 }
 
-function createUsers()
+function createAdmin()
 {
     try {
         $uid = firebaseAuth()->createUserWithEmailAndPassword('admin@example.com', 'admin123')->uid;

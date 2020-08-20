@@ -33,6 +33,8 @@
 {{--<script src="{{asset('assets/plugins/slimScroll/jquery.slimscroll.min.js')}}"></script>--}}
 <!-- FastClick -->
 {{--<script src="{{asset('assets/plugins/fastclick/fastclick.js')}}"></script>--}}
+<!-- bs-custom-file-input -->
+<script src="https://adminlte.io/themes/dev/AdminLTE/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 <!-- SweetAlert -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- DataTables -->

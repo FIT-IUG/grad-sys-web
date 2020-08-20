@@ -1,5 +1,5 @@
 {{-- exports --}}
-<div class="row">
+{{--<div class="row">--}}
     {{-- export users from excel file --}}
     <div class="col-md-6">
         <div class="card card-primary">
@@ -14,9 +14,9 @@
                         <label for="exampleInputFile"> اختر ملف</label>
                         <div class="input-group">
                             <div class="custom-file">
-                                <input type="file" multiple=""
-                                       class="custom-file-input inputFileHidden @error('excelFile') is-invalid @enderror"
-                                       id="exampleInputFile" name="excelFile" required>
+                                <input type="file"
+                                       class="custom-file-input @error('excelFile') is-invalid @enderror"
+                                       name="excelFile" required>
                                 <label class="custom-file-label" for="exampleInputFile">اختر الملف</label>
                             </div>
                         </div>
@@ -31,4 +31,4 @@
             </form>
         </div>
     </div>
-</div>
+{{--</div>--}}

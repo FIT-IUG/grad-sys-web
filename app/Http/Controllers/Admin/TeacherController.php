@@ -23,9 +23,7 @@ class TeacherController extends MainController
         $teachers = Arr::collapse([$teachers, $admins]);
         $groups_counter = 0;
         $teachers_info = [];
-//        $group_access = 0;
         try {
-//            $max_groups_number = firebaseGetReference('settings/max_teacher_groups')->getValue();
             $groups = firebaseGetReference('groups')->getValue();
             if ($groups != null)
                 foreach ($teachers as $teacher_key => $teacher) {
@@ -34,8 +32,6 @@ class TeacherController extends MainController
                             Arr::forget($groups, $key);
                             $groups_counter++;
                         }
-//                        if ($groups_counter == $max_groups_number)
-//                            break;
                     }
                     Arr::set($groups_number, 'groups_number', $groups_counter);
                     $teacher = Arr::except($teacher, ['remember_token']);
@@ -57,15 +53,14 @@ class TeacherController extends MainController
             $teacher = firebaseGetReference('users/' . $user_key)->getSnapshot();
             $key = $teacher->getKey();
             $teacher = $teacher->getValue();
-//            $departments = ['تطوير البرمجيات', 'علم الحاسوب', 'نظم المعلومات', 'مالتيميديا', 'موبايل', 'تكنولوجيا المعلومات'];
-
+            $departments = firebaseGetReference('departments')->getValue();
             if ($teacher == null)
                 return redirect()->back()->with('error', 'حدثت مشكلة أثناء جلب بيانات المشرف.');
 
             return view('admin.teacher.edit')->with([
                 'key' => $key,
                 'teacher' => $teacher,
-//                'departments' => $departments
+                'departments' => $departments
             ]);
         } catch (ApiException $e) {
             return redirect()->back()->with('error', 'حدثت مشكلة أثناء جلب بيانات المشرف.');
@@ -79,13 +74,11 @@ class TeacherController extends MainController
         try {
             $key = $teacher->segment(5);
             firebaseGetReference('users/' . $key)->update($teacher->validated());
-            return redirect()->route('admin.teacher.index')->with('success', 'تم تحديث بيانات المشرف بنجاح.');
 
+            return redirect()->route('admin.teacher.index')->with('success', 'تم تحديث بيانات المشرف بنجاح.');
         } catch (ApiException $e) {
             return redirect()->route('admin.teacher.index')->with('error', 'حدثت مشكلة أثناء تعديل بيانات المشرف.');
-
         }
-
     }
 
     public function show($teacher_key)
@@ -126,13 +119,13 @@ class TeacherController extends MainController
         }
     }
 
-
     public function destroy($teacher_key)
     {
         try {
             $teacher = firebaseGetReference('users/' . $teacher_key);
             if ($teacher->getValue() != null) {
                 $teacher->remove();
+
                 return redirect()->route('admin.teacher.index')->with('success', 'تم حذف المشرف بنجاح.');
             }
             return redirect()->route('admin.teacher.index')->with('error', 'لم يتم حذف المشرف.');
@@ -140,38 +133,5 @@ class TeacherController extends MainController
             return redirect()->route('admin.teacher.index')->with('error', 'حدثت مشكلة أثناء حذف المشرف.');
         }
     }
-
-//    private function groupsData($id)
-//    {
-//        $teacher_id = $id;
-//        $groups = firebaseGetReference('groups')->getValue();
-//        $students = getUserByRole('student');
-//        $groups_data = [];
-//        $students_data = [];
-//        $index = 0;
-//        $groups_counter = 0;
-//
-//        foreach ($groups as $leader) {
-//            if (isset($leader['teacher']) && $leader['teacher'] == $teacher_id) {
-//                $group_students_std = Arr::flatten([$leader['leaderStudentStd'], $leader['membersStd']]);
-//                foreach ($students as $student)
-//                    foreach ($group_students_std as $std)
-//                        if ($student['user_id'] == $std) {
-//                            $student = Arr::except($student, ['remember_token', 'role']);
-//                            if ($leader['leaderStudentStd'] == $student['user_id']) {
-//                                $student = Arr::collapse([$student, ['isLeader' => true]]);
-//                            } else
-//                                $student = Arr::collapse([$student, ['isLeader' => false]]);
-//                            Arr::set($students_data, $index++, $student);
-//                        }
-//                $group_data = Arr::collapse([$leader, ['students_data' => $students_data]]);
-//                $students_data = [];
-//                $index = 0;
-//                Arr::set($groups_data, $groups_counter++, $group_data);
-//            }
-//        }
-//        return $groups_data;
-//    }
-
 
 }

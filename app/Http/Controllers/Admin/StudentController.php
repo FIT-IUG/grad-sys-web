@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\MainController;
 use App\Http\Requests\UpdateStudentRequest;
 use Illuminate\Support\Arr;
 use Kreait\Firebase\Exception\ApiException;
 
-class StudentController extends Controller
+class StudentController extends MainController
 {
 
     public function __construct()
@@ -18,7 +18,7 @@ class StudentController extends Controller
     public function index()
     {
         $students = getUserByRole('student');
-        $available_students_std = getStudentsStdWithoutGroup();
+        $available_students_std = $this->getStudentsNotInGroup();
         $checked_students = [];
         $in_group = true;
         foreach ($students as $student_key => $student) {

@@ -105,7 +105,7 @@
                                             <td>{{(isset($group['project_data']['graduateInFirstSemester']) ? $group['project_data']['graduateInFirstSemester'] : '-') == 0 ? 'لا' : 'نعم'}}</td>
                                         </tr>
                                         <tr>
-                                            <th>شكل المشروع:</th>
+                                            <th>نوع المشروع:</th>
                                             <td>@if(isset($group['project_data']['tags']))
                                                     @foreach($group['project_data']['tags'] as $tag)
                                                         @if($loop->last) {{$tag}}.

@@ -60,17 +60,17 @@
                     <table class="table table-sm">
                         <thead>
                         <tr>
-                            <th style="width: 10px">#</th>
+                            <th style="width: 10px;padding-right: 10px">#</th>
                             <th style="width: 150px;">اسم</th>
                             <th style="width: 125px;">الاستخدام</th>
-                            <th>إعدادات</th>
+                            <th style="width: 145px;">إعدادات</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($tags as $key => $tag)
                             <tr>
                                 <td style="display: none" class="tag-key">{{$key}}</td>
-                                <td>{{$loop->iteration}}</td>
+                                <td style="padding-right: 10px">{{$loop->iteration}}</td>
                                 <td class="tag-name">{{$tag['name']}}</td>
                                 <td>{{$tag['frequency_use']}}</td>
                                 <td>
@@ -125,16 +125,16 @@
                     <table class="table table-sm">
                         <thead>
                         <tr>
-                            <th style="width: 10px">#</th>
+                            <th style="width: 10px;padding-right: 10px">#</th>
                             <th style="width: 150px;">اسم</th>
-                            <th>إعدادات</th>
+                            <th style="width: 158px;">إعدادات</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($departments as $department_key => $department)
                             <tr>
                                 <td style="display: none" class="department-key">{{$department_key}}</td>
-                                <td>{{$loop->iteration}}</td>
+                                <td style="padding-right: 10px">{{$loop->iteration}}</td>
                                 <td class="department-name" style="width: 300px">{{$department}}</td>
                                 <td>
                                     <a class="btn btn-info btn-sm department-update-click" style="color: white;">
@@ -181,6 +181,27 @@
                 </form>
             </div>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">استيراد الطلبة الغير متواجدين في فريق</h3>
+                </div>
+                <form role="form" method="GET" action="{{route('admin.import.studentNotInGroup')}}"
+                      enctype="multipart/form-data" style="margin-bottom: 0;">
+                    @csrf
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="exampleInputFile">سيتم استيراد الملف على شكل Excel file</label>
+                            <button type="submit" class="btn btn-primary">تحميل</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        @includeIf('admin.exports_form')
+
     </div>
 @endsection
 @push('script')

@@ -37,6 +37,7 @@
                             style="text-align: center" @endif>
                             @if(isset($group['project_data']['tags']) && $group['project_data']['tags']  != null)
                                 @foreach($group['project_data']['tags'] as $tag)
+                                    {{dd($tag)}}
                                     @if($loop->last) {{$tag}}.
                                     @else {{$tag}},
                                     @endif
@@ -77,18 +78,20 @@
 @endsection
 @push('script')
     <script>
-        $('.delete-confirm').on('click', function (event) {
-            event.preventDefault();
-            const url = $(this).attr('href');
-            swal({
-                title: 'هل تريد حذف المجموعة حقًا؟',
-                text: 'هذا سيقوم بحذف المجموعة نهائيًا!',
-                icon: 'warning',
-                buttons: ["إلغاء", "نعم"],
-            }).then(function (value) {
-                if (value) {
-                    window.location.href = url;
-                }
+        $(function () {
+            $('.delete-confirm').on('click', function (event) {
+                event.preventDefault();
+                const url = $(this).attr('href');
+                swal({
+                    title: 'هل تريد حذف المجموعة حقًا؟',
+                    text: 'هذا سيقوم بحذف المجموعة نهائيًا!',
+                    icon: 'warning',
+                    buttons: ["إلغاء", "نعم"],
+                }).then(function (value) {
+                    if (value) {
+                        window.location.href = url;
+                    }
+                });
             });
         });
     </script>

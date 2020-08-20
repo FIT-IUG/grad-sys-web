@@ -14,34 +14,37 @@
                             <input type="hidden" name="notification_key[{{$loop->index}}]" value="{{$key}}">
                         @endforeach
                     @endif
-                    <div class="form-group">
-                        <label>مشرف المجموعة</label>
-                        <select class="form-control select2 select2-hidden-accessible" style="width: 100%;"
-                                tabindex="-1" aria-hidden="true" dir="rtl" name="teacher">
-                            <option value=""></option>
-                            @if(isset($teachers) && $teachers != null)
-                                @foreach($teachers as $teacher)
-                                    <option value="{{$teacher['user_id']}}"
-                                            @if(old('teacher') == $teacher['user_id']) selected @endif>{{$teacher['name']}}
-                                    </option>
-                                @endforeach
-                            @else
-                                <option value="" disabled>لا يوجد مشرفين متاحين</option>
-                            @endif
-                        </select>
-                        @error('teacher')
-                        <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <div class="form-group">
-                            <label for="">العنوان المبدئي للمشروع</label>
-                            <input type="text" class="form-control @error('initialProjectTitle') is-invalid @enderror"
-                                    name="initialProjectTitle"
-                                   value="{{old('initialProjectTitle')}}">
-                            @error('initialProjectTitle')
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label>مشرف المجموعة</label>
+                            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;"
+                                    tabindex="-1" aria-hidden="true" dir="rtl" name="teacher">
+                                <option value=""></option>
+                                @if(isset($teachers) && $teachers != null)
+                                    @foreach($teachers as $teacher)
+                                        <option value="{{$teacher['user_id']}}"
+                                                @if(old('teacher') == $teacher['user_id']) selected @endif>{{$teacher['name']}}
+                                        </option>
+                                    @endforeach
+                                @else
+                                    <option value="" disabled>لا يوجد مشرفين متاحين</option>
+                                @endif
+                            </select>
+                            @error('teacher')
                             <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
                             @enderror
+                        </div>
+                        <div class="form-group col-md-6">
+                            <div class="form-group">
+                                <label for="">العنوان المبدئي للمشروع</label>
+                                <input type="text"
+                                       class="form-control @error('initialProjectTitle') is-invalid @enderror"
+                                       name="initialProjectTitle" style="border-color: #aaa;padding: 8px;"
+                                       value="{{old('initialProjectTitle')}}">
+                                @error('initialProjectTitle')
+                                <div class="alert alert-danger" style="margin-top: 10px">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
                     </div>
                     <div class="row">

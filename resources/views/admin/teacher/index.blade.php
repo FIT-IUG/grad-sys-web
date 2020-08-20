@@ -103,10 +103,13 @@
     <script>
         $(function () {
             $('.delete-confirm').on('click', function (event) {
+                //get teacher name and put it in confirm alert
+                var currentRow = $(this).closest("tr");
+                var teacher_name = currentRow.find("td:eq(1)").text(); // get teacher name
                 event.preventDefault();
                 const url = $(this).attr('href');
                 swal({
-                    title: 'هل تريد حذف المشرف',
+                    title: 'هل تريد حذف ' + teacher_name + '?',
                     text: 'هذا سيقوم بحذف المشرف نهائياً!',
                     icon: 'warning',
                     buttons: ["إلغاء", "نعم"],
@@ -117,11 +120,13 @@
                 });
             });
             $('.promotion').on('click', function (event) {
+                //get teacher name and put it in confirm alert
+                var currentRow = $(this).closest("tr");
+                var teacher_name = currentRow.find("td:eq(1)").text(); // get teacher name
                 event.preventDefault();
                 const url = $(this).attr('href');
                 swal({
-                    title: 'هل تريد ترقية المدرس',
-                    // text: 'هذا سيقوم بحذف المشرف نهائياً!',
+                    title: 'هل تريد ترقية ' + teacher_name + '?',
                     icon: 'warning',
                     buttons: ["إلغاء", "نعم"],
                 }).then(function (value) {
@@ -130,11 +135,13 @@
                     }
                 });
                 $('.demotion').on('click', function (event) {
+                    //get teacher name and put it in confirm alert
+                    var currentRow = $(this).closest("tr");
+                    var teacher_name = currentRow.find("td:eq(1)").text(); // get teacher name
                     event.preventDefault();
                     const url = $(this).attr('href');
                     swal({
-                        title: 'هل تريد تخفيض المدرس',
-                        // text: 'هذا سيقوم بحذف المشرف نهائياً!',
+                        title: 'هل تريد تخفيض ' + teacher_name + '?',
                         icon: 'warning',
                         buttons: ["إلغاء", "نعم"],
                     }).then(function (value) {
@@ -144,5 +151,6 @@
                     });
                 });
             })
+        });
     </script>
 @endpush

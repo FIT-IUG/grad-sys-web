@@ -75,21 +75,26 @@ class MainController extends Controller
 //            firebaseAuth()->deleteUser($uid);
 //        }
 
-//        createUsers();
+        createAdmin();
 //        dd('leader created');
-        $role = 'teacher';
+        $role = 'student';
         $password = $role . '123';
         $departments = firebaseGetReference('departments')->getValue();
+        foreach ($departments as $key => $department)
+            if (strtoupper($department) == 'FIT') {
+                Arr::forget($departments, $key);
+                break;
+            }
         try {
-            for ($index = 0; $index <= 50; $index++) {
+            for ($index = 0; $index <= 25; $index++) {
                 $uid = firebaseAuth()->createUserWithEmailAndPassword($role . '' . $index . '@example.com', $password)->uid;
                 firebaseGetReference('users/' . $uid)->set([
                     'email' => $role . '' . $index . '@example.com',
-                    'name' => 'teacher' . $index,
+                    'name' => $role . $index,
                     'role' => $role,
                     'mobile_number' => '059' . $this->generateRandomNumber(7),
                     'user_id' => '12016' . $this->generateRandomNumber(),
-                    'department' => 'FIT'
+                    'department' => Arr::random($departments)
                 ]);
             }
             return 'users created successfully';
@@ -384,4 +389,26 @@ class MainController extends Controller
         event(new TestEvent($token));
         return 'mail send';
     }
+
+
+    public function getStudentsNotInGroup($leader_std = 0)
+    {
+        $students = getUserByRole('student');
+        $student_gender = Str::substr($leader_std, 0, 1);
+        $studentsStdInGroup = getStudentsStdInGroups();
+        $students_std = [];
+        if ($leader_std != 0) {
+            foreach ($students as $key => $student)
+                if (Str::startsWith($student['user_id'], $student_gender))
+                    Arr::set($students_std, $key, $student['user_id'] . '');
+        } else {
+            foreach ($students as $key => $student) {
+                Arr::set($students_std, $key, $student['user_id'] . '');
+            }
+        }
+
+
+        return array_diff($students_std, $studentsStdInGroup);
+    }
+
 }

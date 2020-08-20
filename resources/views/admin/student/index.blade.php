@@ -77,12 +77,13 @@
 @push('script')
     <script>
         $('.delete-confirm').on('click', function (event) {
+            //get student name and put it in confirm alert
+            var currentRow = $(this).closest("tr");
+            var student_name = currentRow.find("td:eq(1)").text();
             event.preventDefault();
-            var name = document.getElementsByClassName('delete-name');
-
             const url = $(this).attr('href');
             swal({
-                title: 'هل تريد حذف الطالب حقًا؟',
+                title: 'هل تريد حذف الطالب '+ student_name +' ؟',
                 text: 'هذا سيقوم بحذف الطالب نهائيًا!',
                 icon: 'warning',
                 buttons: ["إلغاء", "نعم"],

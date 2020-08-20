@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Events\NewStudentHasCreateEvent;
 use App\Events\UploadUsersExcelFileEvent;
+use App\Exports\StudentsNotInGroupExport;
 use App\Http\Controllers\MainController;
 use App\Http\Requests\ExportExcelRequest;
 use App\Http\Requests\RegisterUserRequest;
@@ -224,5 +225,11 @@ class DashboardController extends MainController
                 }
         }
         return $tags_data;
+    }
+
+    public function importStudentNotInGroup()
+    {
+        return Excel::download(new StudentsNotInGroupExport, 'students.xlsx');
+
     }
 }

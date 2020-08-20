@@ -28,7 +28,7 @@ class UpdateTeacherRequest extends FormRequest
             'name' => ['required:alpha', new UpdateUserRule()],
             'email' => ['required', new UpdateUserRule()],
             'mobile_number' => ['required', 'numeric', 'digits:10', new UpdateUserRule()],
-            'user_id' => ['required', 'numeric', 'digits:9', new UpdateUserRule()],
+            'user_id' => ['required', 'numeric'],
             'department' => 'required',
         ];
     }
