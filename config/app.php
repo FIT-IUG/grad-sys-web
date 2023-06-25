@@ -165,14 +165,9 @@ return [
         /*
          * Package Service Providers...
          */
-<<<<<<< HEAD
-//        Kreait\Laravel\Firebase\ServiceProvider::class,
-        Maatwebsite\Excel\ExcelServiceProvider::class,
-=======
         Kreait\Laravel\Firebase\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
->>>>>>> osama
         /*
          * Application Service Providers...
          */
@@ -234,10 +229,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
-<<<<<<< HEAD
-=======
-
->>>>>>> osama
     ],
 
 ];

@@ -11,22 +11,17 @@
 |
 */
 
-<<<<<<< HEAD
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Mail\StudentMakePasswordMail;
 
 
 Auth::routes();
-=======
-use Illuminate\Support\Facades\Route;
->>>>>>> osama
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-<<<<<<< HEAD
 Route::get('/email', function () {
     return new StudentMakePasswordMail();
 });
@@ -47,7 +42,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-=======
 Route::get('تسجيل-الدخول', 'AuthController@login')->name('login');
 Route::post('login', 'AuthController@check')->name('login.check');
 Route::get('logout', 'AuthController@logout')->name('logout');
@@ -74,4 +68,3 @@ Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
 //    return 'done';
 //})->name('test');
  Route::get('test','AdminController@test');
->>>>>>> osama

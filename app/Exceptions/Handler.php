@@ -3,11 +3,8 @@
 namespace App\Exceptions;
 
 use Exception;
-<<<<<<< HEAD
-=======
 use Google\Cloud\Core\Exception\ServiceException;
 use GuzzleHttp\Exception\ConnectException;
->>>>>>> osama
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -41,10 +38,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-<<<<<<< HEAD
-=======
         if ($exception instanceof ConnectException){}
->>>>>>> osama
         parent::report($exception);
     }
 
@@ -59,15 +53,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-<<<<<<< HEAD
-=======
         if ($exception instanceof ConnectException){
             return redirect()->back()->with('error','حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
         }elseif ($exception instanceof  ServiceException){
             return redirect()->back()->with('error','حدثت مشكلة في الاتصال الرجاء المحاولة مرة أخرى.');
         }
 
->>>>>>> osama
         return parent::render($request, $exception);
     }
 }

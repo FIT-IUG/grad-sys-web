@@ -1,10 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Inspiring;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\Artisan;
-=======
->>>>>>> osama
 
 /*
 |--------------------------------------------------------------------------

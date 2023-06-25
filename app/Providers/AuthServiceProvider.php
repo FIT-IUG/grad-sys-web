@@ -2,11 +2,8 @@
 
 namespace App\Providers;
 
-<<<<<<< HEAD
-=======
 use App\Policies\SystemPolicy;
 use App\User;
->>>>>>> osama
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -19,10 +16,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Model' => 'App\Policies\ModelPolicy',
-<<<<<<< HEAD
-=======
         User::class => SystemPolicy::class,
->>>>>>> osama
     ];
 
     /**
@@ -34,9 +28,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-<<<<<<< HEAD
-        //
-=======
         Gate::define('isAdmin', function () {
 //            $role = firebaseCreateData()->getReference('users/' . session()->get('userId') . '/role')->getValue();
             return true;
@@ -45,6 +36,5 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('edit-settings', function ($user) {
             return true;
         });
->>>>>>> osama
     }
 }

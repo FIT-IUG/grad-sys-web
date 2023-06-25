@@ -6,16 +6,11 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
-<<<<<<< HEAD
-=======
 use Illuminate\Support\Arr;
->>>>>>> osama
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-<<<<<<< HEAD
-=======
 
     public function getStudentsWithoutTeam()
     {
@@ -33,5 +28,4 @@ class Controller extends BaseController
         return array_diff($students, $registered_groups_std);
 
     }
->>>>>>> osama
 }

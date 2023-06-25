@@ -30,7 +30,6 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-<<<<<<< HEAD
     'firebase' => [
         'database_url' => env('FIREBASE_DATABASE_URL', ''),
         'project_id' => env('FIREBASE_PROJECT_ID', ''),
@@ -41,6 +40,4 @@ return [
         'client_id' => env('FIREBASE_CLIENT_ID', ''),
         'client_x509_cert_url' => env('FIREBASE_CLIENT_x509_CERT_URL', ''),
     ],
-=======
->>>>>>> osama
 ];

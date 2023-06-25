@@ -175,10 +175,6 @@ return [
         'time'                  => 'الوقت',
         'available'             => 'مُتاح',
         'size'                  => 'الحجم',
-<<<<<<< HEAD
-        'mobile_number'         =>'رقم الهاتف',
-        'std'                   =>'الرقم الجامعي',
-=======
         'mobile_number'         => 'رقم الجوال',
         'std'                   => 'الرقم الجامعي',
         'sid'                   => 'الرقم الجامعي',
@@ -195,6 +191,5 @@ return [
         'graduateInFirstSemester' => 'خريج الفصل الأول',
         'initialProjectTitle' => 'العنوان المبدئي للمشروع',
         '' => '',
->>>>>>> osama
     ],
 ];
