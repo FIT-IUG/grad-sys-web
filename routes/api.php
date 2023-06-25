@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Http\Request;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\Route;
+=======
+>>>>>>> osama
 
 /*
 |--------------------------------------------------------------------------

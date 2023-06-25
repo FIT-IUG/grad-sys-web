@@ -11,17 +11,22 @@
 |
 */
 
+<<<<<<< HEAD
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Mail\StudentMakePasswordMail;
 
 
 Auth::routes();
+=======
+use Illuminate\Support\Facades\Route;
+>>>>>>> osama
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+<<<<<<< HEAD
 Route::get('/email', function () {
     return new StudentMakePasswordMail();
 });
@@ -42,3 +47,31 @@ Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+=======
+Route::get('تسجيل-الدخول', 'AuthController@login')->name('login');
+Route::post('login', 'AuthController@check')->name('login.check');
+Route::get('logout', 'AuthController@logout')->name('logout');
+
+
+Route::prefix('dashboard')->middleware('verifyUser')->group(function () {
+    Route::get('/', 'DashboardController@index')->name('dashboard');
+    Route::get('/الإعدادات', 'Admincontroller@settings')->name('admin.settings');
+    Route::post('/settings', 'Admincontroller@updateSettings')->name('admin.settings.update');
+//    Route::get('home', 'DashboardController@index')->name('home');
+    Route::post('uploadStudentFile', 'AdminController@exportStudentsExcel')->name('exportStudents');
+    Route::post('uploadTeachersFile', 'AdminController@exportTeachersExcel')->name('exportTeachers');
+    Route::post('storeStudent', 'AdminController@storeStudent')->name('student.store');
+    Route::post('storeGroupMembers', 'StudentController@storeGroupMembers')->name('group.members.store');
+    Route::post('storeGroupSupervisor', 'StudentController@storeGroupSupervisor')->name('group.supervisor.store');
+    Route::post('acceptTeamJoinRequest', 'StudentController@acceptTeamJoinRequest')->name('acceptTeamJoinRequest');
+    // Route::resource('group', 'StudentController')->except(['destroy']);
+    Route::post('replyJoinGroupRequest', 'SupervisorController@replayToBeSupervisorRequest')->name('group.supervisor.replyRequest');
+});
+
+//Route::view('test', 'test');
+//Route::get('test', function () {
+//    teacherGenerator(10);
+//    return 'done';
+//})->name('test');
+ Route::get('test','AdminController@test');
+>>>>>>> osama

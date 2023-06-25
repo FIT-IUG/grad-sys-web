@@ -36,4 +36,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+<<<<<<< HEAD
+=======
+
+    public function hasRole($roleToCheck){
+        $role = firebaseCreateData()->getReference('users/'.session()->get('userId').'/role')->getValue();
+        if($roleToCheck == $role){
+            return true;
+        }
+        return false;
+    }
+>>>>>>> osama
 }

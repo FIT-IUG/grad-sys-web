@@ -4,9 +4,66 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "94f15940bf06dfd04b2de3f8f6c1fc32",
     "packages": [
         {
+=======
+    "content-hash": "87090283882c2bdb8b4a79ebfa110683",
+    "packages": [
+        {
+            "name": "ahsankhatri/firestore-php",
+            "version": "v2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ahsankhatri/firestore-php.git",
+                "reference": "d231e1b7b0560a3b7331d95f6456b6a7437cf1df"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ahsankhatri/firestore-php/zipball/d231e1b7b0560a3b7331d95f6456b6a7437cf1df",
+                "reference": "d231e1b7b0560a3b7331d95f6456b6a7437cf1df",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "~6.0|~5.0|~4.0",
+                "php": ">=5.6.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MrShan0\\PHPFirestore\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ahsaan Muhammad Yousuf",
+                    "email": "ahsankhatri1992@gmail.com",
+                    "homepage": "https://ahsaan.me",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Firestore PHP Client",
+            "homepage": "https://github.com/ahsankhatri/firestore-php",
+            "keywords": [
+                "firebase",
+                "firestore",
+                "google",
+                "php"
+            ],
+            "time": "2019-09-18T08:58:26+00:00"
+        },
+        {
+>>>>>>> osama
             "name": "dnoegel/php-xdg-base-dir",
             "version": "v0.1.1",
             "source": {
@@ -224,6 +281,7 @@
         },
         {
             "name": "egulias/email-validator",
+<<<<<<< HEAD
             "version": "2.1.16",
             "source": {
                 "type": "git",
@@ -234,6 +292,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/5065fafc8c29d229ff207f2a89b02175f479a909",
                 "reference": "5065fafc8c29d229ff207f2a89b02175f479a909",
+=======
+            "version": "2.1.17",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/egulias/EmailValidator.git",
+                "reference": "ade6887fd9bd74177769645ab5c474824f8a418a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/ade6887fd9bd74177769645ab5c474824f8a418a",
+                "reference": "ade6887fd9bd74177769645ab5c474824f8a418a",
+>>>>>>> osama
                 "shasum": ""
             },
             "require": {
@@ -278,7 +348,11 @@
                 "validation",
                 "validator"
             ],
+<<<<<<< HEAD
             "time": "2020-02-12T22:28:28+00:00"
+=======
+            "time": "2020-02-13T22:36:52+00:00"
+>>>>>>> osama
         },
         {
             "name": "fideloper/proxy",
@@ -388,6 +462,7 @@
         },
         {
             "name": "firebase/php-jwt",
+<<<<<<< HEAD
             "version": "v5.0.0",
             "source": {
                 "type": "git",
@@ -398,13 +473,29 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/firebase/php-jwt/zipball/9984a4d3a32ae7673d6971ea00bae9d0a1abba0e",
                 "reference": "9984a4d3a32ae7673d6971ea00bae9d0a1abba0e",
+=======
+            "version": "v5.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/firebase/php-jwt.git",
+                "reference": "4566062c68f76f43d44f1643f4970fe89757d4c6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/4566062c68f76f43d44f1643f4970fe89757d4c6",
+                "reference": "4566062c68f76f43d44f1643f4970fe89757d4c6",
+>>>>>>> osama
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
             "require-dev": {
+<<<<<<< HEAD
                 "phpunit/phpunit": " 4.8.35"
+=======
+                "phpunit/phpunit": "^4.8|^5"
+>>>>>>> osama
             },
             "type": "library",
             "autoload": {
@@ -430,6 +521,7 @@
             ],
             "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
             "homepage": "https://github.com/firebase/php-jwt",
+<<<<<<< HEAD
             "time": "2017-06-27T22:17:23+00:00"
         },
         {
@@ -444,6 +536,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/d429c468fdc8d7b68aefc6f5a2cb7fee0cc26ee9",
                 "reference": "d429c468fdc8d7b68aefc6f5a2cb7fee0cc26ee9",
+=======
+            "time": "2020-02-24T23:15:03+00:00"
+        },
+        {
+            "name": "giggsey/libphonenumber-for-php",
+            "version": "8.11.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/giggsey/libphonenumber-for-php.git",
+                "reference": "095dc721e8a090124b69005b14c1aeec93141c86"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/095dc721e8a090124b69005b14c1aeec93141c86",
+                "reference": "095dc721e8a090124b69005b14c1aeec93141c86",
+>>>>>>> osama
                 "shasum": ""
             },
             "require": {
@@ -498,7 +606,11 @@
                 "phonenumber",
                 "validation"
             ],
+<<<<<<< HEAD
             "time": "2020-02-12T11:21:37+00:00"
+=======
+            "time": "2020-03-02T09:12:35+00:00"
+>>>>>>> osama
         },
         {
             "name": "giggsey/locale",
@@ -602,6 +714,7 @@
             "time": "2020-02-12T20:54:50+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "google/cloud-core",
             "version": "v1.35.0",
             "source": {
@@ -613,16 +726,37 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/e24a49fb1df51d6cff38c97450feffae82661c2d",
                 "reference": "e24a49fb1df51d6cff38c97450feffae82661c2d",
+=======
+            "name": "google/cloud",
+            "version": "v0.128.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/googleapis/google-cloud-php.git",
+                "reference": "cfce1287fe02a2d45ba35a8b359de64a2ffc1aee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php/zipball/cfce1287fe02a2d45ba35a8b359de64a2ffc1aee",
+                "reference": "cfce1287fe02a2d45ba35a8b359de64a2ffc1aee",
+>>>>>>> osama
                 "shasum": ""
             },
             "require": {
                 "google/auth": "^1.6",
+<<<<<<< HEAD
                 "guzzlehttp/guzzle": "^5.3|^6.0",
                 "guzzlehttp/promises": "^1.3",
+=======
+                "google/common-protos": "^1.0",
+                "google/crc32": "^0.1.0",
+                "google/gax": "^1.1",
+                "guzzlehttp/guzzle": "^5.3|^6.0",
+>>>>>>> osama
                 "guzzlehttp/psr7": "^1.2",
                 "monolog/monolog": "^1.1|^2.0",
                 "php": ">=5.5",
                 "psr/http-message": "1.0.*",
+<<<<<<< HEAD
                 "rize/uri-template": "~0.3"
             },
             "require-dev": {
@@ -699,19 +833,264 @@
                     "target": "googleapis/google-cloud-php-storage.git",
                     "path": "Storage",
                     "entry": "src/StorageClient.php"
+=======
+                "ramsey/uuid": "~3",
+                "rize/uri-template": "~0.3"
+            },
+            "replace": {
+                "google/cloud-asset": "0.6.1",
+                "google/cloud-automl": "0.10.0",
+                "google/cloud-bigquery": "1.13.0",
+                "google/cloud-bigquerydatatransfer": "0.17.1",
+                "google/cloud-bigtable": "1.2.2",
+                "google/cloud-billing": "0.1.0",
+                "google/cloud-common-protos": "0.2.0",
+                "google/cloud-container": "0.12.1",
+                "google/cloud-core": "1.35.0",
+                "google/cloud-dataproc": "0.18.1",
+                "google/cloud-datastore": "1.11.1",
+                "google/cloud-debugger": "0.21.1",
+                "google/cloud-dialogflow": "0.13.1",
+                "google/cloud-dlp": "0.25.1",
+                "google/cloud-error-reporting": "0.16.1",
+                "google/cloud-firestore": "1.11.1",
+                "google/cloud-iot": "0.11.1",
+                "google/cloud-kms": "1.9.2",
+                "google/cloud-language": "0.22.1",
+                "google/cloud-logging": "1.19.1",
+                "google/cloud-monitoring": "0.20.2",
+                "google/cloud-oslogin": "0.11.1",
+                "google/cloud-pubsub": "1.21.1",
+                "google/cloud-recommender": "0.2.1",
+                "google/cloud-redis": "0.12.2",
+                "google/cloud-scheduler": "1.2.1",
+                "google/cloud-secret-manager": "0.3.0",
+                "google/cloud-security-center": "0.5.0",
+                "google/cloud-spanner": "1.26.0",
+                "google/cloud-speech": "0.31.1",
+                "google/cloud-storage": "1.18.0",
+                "google/cloud-talent": "0.9.1",
+                "google/cloud-tasks": "1.6.0",
+                "google/cloud-text-to-speech": "0.6.1",
+                "google/cloud-trace": "0.17.1",
+                "google/cloud-translate": "1.7.1",
+                "google/cloud-videointelligence": "1.9.0",
+                "google/cloud-vision": "0.25.1",
+                "google/cloud-web-risk": "0.4.1",
+                "google/cloud-web-security-scanner": "0.4.1"
+            },
+            "require-dev": {
+                "erusev/parsedown": "^1.6",
+                "google/cloud-tools": "^0.9.0",
+                "opis/closure": "^3.0",
+                "phpdocumentor/reflection": "^3.0",
+                "phpseclib/phpseclib": "^2",
+                "phpunit/phpunit": "^4.8|^5.0",
+                "squizlabs/php_codesniffer": "2.*",
+                "swaggest/json-schema": "^0.12.0",
+                "symfony/console": "^3.0",
+                "symfony/lock": "3.3.x-dev#1ba6ac9",
+                "vierbergenlars/php-semver": "^3.0"
+            },
+            "suggest": {
+                "opis/closure": "May be used to serialize closures to process jobs in the batch daemon. Please require version ^3.",
+                "phpseclib/phpseclib": "May be used in place of OpenSSL for creating signed Cloud Storage URLs. Please require version ^2."
+            },
+            "bin": [
+                "Core/bin/google-cloud-batch",
+                "Debugger/bin/google-cloud-debugger"
+            ],
+            "type": "library",
+            "extra": {
+                "component": {
+                    "id": "google-cloud",
+                    "target": "googleapis/google-cloud-php.git",
+                    "path": "src",
+                    "entry": [
+                        "Version.php",
+                        "ServiceBuilder.php"
+                    ]
+>>>>>>> osama
                 }
             },
             "autoload": {
                 "psr-4": {
+<<<<<<< HEAD
                     "Google\\Cloud\\Storage\\": "src"
+=======
+                    "GPBMetadata\\Google\\": "CommonProtos/metadata",
+                    "GPBMetadata\\Google\\Bigtable\\": "Bigtable/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Asset\\": "Asset/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Automl\\": "AutoMl/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Bigquery\\Datatransfer\\": "BigQueryDataTransfer/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Billing\\": "Billing/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Dataproc\\": "Dataproc/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Dialogflow\\": "Dialogflow/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Iot\\": "Iot/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Kms\\": "Kms/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Language\\": "Language/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Oslogin\\": "OsLogin/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Recommender\\": "Recommender/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Redis\\": "Redis/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Scheduler\\": "Scheduler/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Secrets\\": "SecretManager/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Secretmanager\\": "SecretManager/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Securitycenter\\": "SecurityCenter/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Speech\\": "Speech/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Talent\\": "Talent/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Tasks\\": "Tasks/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Texttospeech\\": "TextToSpeech/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Translate\\": "Translate/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Videointelligence\\": "VideoIntelligence/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Vision\\": "Vision/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Webrisk\\": "WebRisk/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Websecurityscanner\\": "WebSecurityScanner/metadata",
+                    "GPBMetadata\\Google\\Container\\": "Container/metadata",
+                    "GPBMetadata\\Google\\Datastore\\": "Datastore/metadata",
+                    "GPBMetadata\\Google\\Devtools\\Clouddebugger\\": "Debugger/metadata",
+                    "GPBMetadata\\Google\\Devtools\\Clouderrorreporting\\": "ErrorReporting/metadata",
+                    "GPBMetadata\\Google\\Devtools\\Cloudtrace\\": "Trace/metadata",
+                    "GPBMetadata\\Google\\Firestore\\": "Firestore/metadata",
+                    "GPBMetadata\\Google\\Logging\\": "Logging/metadata",
+                    "GPBMetadata\\Google\\Monitoring\\": "Monitoring/metadata",
+                    "GPBMetadata\\Google\\Privacy\\Dlp\\": "Dlp/metadata",
+                    "GPBMetadata\\Google\\Pubsub\\": "PubSub/metadata",
+                    "GPBMetadata\\Google\\Spanner\\": "Spanner/metadata",
+                    "Google\\Cloud\\": [
+                        "src",
+                        "CommonProtos/src"
+                    ],
+                    "Google\\Cloud\\Asset\\": "Asset/src",
+                    "Google\\Cloud\\AutoMl\\": "AutoMl/src",
+                    "Google\\Cloud\\BigQuery\\": "BigQuery/src",
+                    "Google\\Cloud\\BigQuery\\DataTransfer\\": "BigQueryDataTransfer/src",
+                    "Google\\Cloud\\Bigtable\\": "Bigtable/src",
+                    "Google\\Cloud\\Billing\\": "Billing/src",
+                    "Google\\Cloud\\Container\\": "Container/src",
+                    "Google\\Cloud\\Core\\": "Core/src",
+                    "Google\\Cloud\\Dataproc\\": "Dataproc/src",
+                    "Google\\Cloud\\Datastore\\": "Datastore/src",
+                    "Google\\Cloud\\Debugger\\": "Debugger/src",
+                    "Google\\Cloud\\Dialogflow\\": "Dialogflow/src",
+                    "Google\\Cloud\\Dlp\\": "Dlp/src",
+                    "Google\\Cloud\\ErrorReporting\\": "ErrorReporting/src",
+                    "Google\\Cloud\\Firestore\\": "Firestore/src",
+                    "Google\\Cloud\\Iot\\": "Iot/src",
+                    "Google\\Cloud\\Kms\\": "Kms/src",
+                    "Google\\Cloud\\Language\\": "Language/src",
+                    "Google\\Cloud\\Logging\\": "Logging/src",
+                    "Google\\Cloud\\Monitoring\\": "Monitoring/src",
+                    "Google\\Cloud\\OsLogin\\": "OsLogin/src",
+                    "Google\\Cloud\\PubSub\\": "PubSub/src",
+                    "Google\\Cloud\\Recommender\\": "Recommender/src",
+                    "Google\\Cloud\\Redis\\": "Redis/src",
+                    "Google\\Cloud\\Scheduler\\": "Scheduler/src",
+                    "Google\\Cloud\\SecretManager\\": "SecretManager/src",
+                    "Google\\Cloud\\SecurityCenter\\": "SecurityCenter/src",
+                    "Google\\Cloud\\Spanner\\": "Spanner/src",
+                    "Google\\Cloud\\Speech\\": "Speech/src",
+                    "Google\\Cloud\\Storage\\": "Storage/src",
+                    "Google\\Cloud\\Talent\\": "Talent/src",
+                    "Google\\Cloud\\Tasks\\": "Tasks/src",
+                    "Google\\Cloud\\TextToSpeech\\": "TextToSpeech/src",
+                    "Google\\Cloud\\Trace\\": "Trace/src",
+                    "Google\\Cloud\\Translate\\": "Translate/src",
+                    "Google\\Cloud\\VideoIntelligence\\": "VideoIntelligence/src",
+                    "Google\\Cloud\\Vision\\": "Vision/src",
+                    "Google\\Cloud\\WebRisk\\": "WebRisk/src",
+                    "Google\\Cloud\\WebSecurityScanner\\": "WebSecurityScanner/src"
+>>>>>>> osama
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
+<<<<<<< HEAD
             "description": "Cloud Storage Client for PHP",
             "time": "2020-02-11T23:07:13+00:00"
+=======
+            "authors": [
+                {
+                    "name": "Dave Supplee",
+                    "email": "dwsupplee@gmail.com"
+                },
+                {
+                    "name": "John Pedrie",
+                    "email": "john@pedrie.com"
+                }
+            ],
+            "description": "Google Cloud Client Library",
+            "homepage": "http://github.com/googleapis/google-cloud-php",
+            "keywords": [
+                "Tasks",
+                "big query",
+                "bigquery",
+                "bigtable",
+                "cloud",
+                "datastore",
+                "gcs",
+                "google",
+                "google api",
+                "google api client",
+                "google apis",
+                "google apis client",
+                "google cloud",
+                "google cloud platform",
+                "kms",
+                "language",
+                "natural language",
+                "pub sub",
+                "pubsub",
+                "spanner",
+                "speech",
+                "stackdriver logging",
+                "storage",
+                "translate",
+                "translation",
+                "vision"
+            ],
+            "time": "2020-03-14T04:46:15+00:00"
+        },
+        {
+            "name": "google/common-protos",
+            "version": "1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/googleapis/common-protos-php.git",
+                "reference": "e730d3567c8bfd94e06b538aa291270269ee3896"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/googleapis/common-protos-php/zipball/e730d3567c8bfd94e06b538aa291270269ee3896",
+                "reference": "e730d3567c8bfd94e06b538aa291270269ee3896",
+                "shasum": ""
+            },
+            "require": {
+                "google/protobuf": "^3.6.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.36",
+                "sami/sami": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Google\\": "src",
+                    "GPBMetadata\\Google\\": "metadata"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Google API Common Protos for PHP",
+            "homepage": "https://github.com/googleapis/common-protos-php",
+            "keywords": [
+                "google"
+            ],
+            "time": "2020-02-11T20:39:50+00:00"
+>>>>>>> osama
         },
         {
             "name": "google/crc32",
@@ -756,6 +1135,180 @@
             "time": "2019-05-09T06:24:58+00:00"
         },
         {
+<<<<<<< HEAD
+=======
+            "name": "google/gax",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/googleapis/gax-php.git",
+                "reference": "fa64abad3c748beca3b9564903c5ca1afe97bf02"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/fa64abad3c748beca3b9564903c5ca1afe97bf02",
+                "reference": "fa64abad3c748beca3b9564903c5ca1afe97bf02",
+                "shasum": ""
+            },
+            "require": {
+                "google/auth": "^1.2.0",
+                "google/common-protos": "^1.0",
+                "google/grpc-gcp": "^0.1.0",
+                "google/protobuf": "^3.7.1",
+                "grpc/grpc": "^1.13",
+                "guzzlehttp/promises": "^1.3",
+                "guzzlehttp/psr7": "^1.2",
+                "php": ">=5.5"
+            },
+            "conflict": {
+                "ext-protobuf": "<3.7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.36",
+                "sami/sami": "*",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Google\\ApiCore\\": "src",
+                    "GPBMetadata\\Google\\": "metadata"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Google API Core for PHP",
+            "homepage": "https://github.com/googleapis/gax-php",
+            "keywords": [
+                "google"
+            ],
+            "time": "2020-02-11T23:37:35+00:00"
+        },
+        {
+            "name": "google/grpc-gcp",
+            "version": "0.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GoogleCloudPlatform/grpc-gcp-php.git",
+                "reference": "e1ec44c0c39bd204868e2a2ed3cc87ed9006984e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GoogleCloudPlatform/grpc-gcp-php/zipball/e1ec44c0c39bd204868e2a2ed3cc87ed9006984e",
+                "reference": "e1ec44c0c39bd204868e2a2ed3cc87ed9006984e",
+                "shasum": ""
+            },
+            "require": {
+                "google/auth": "^1.3",
+                "google/protobuf": "^v3.3.0",
+                "grpc/grpc": "^v1.13.0",
+                "php": ">=5.5.0",
+                "psr/cache": "^1.0.1"
+            },
+            "require-dev": {
+                "google/cloud-spanner": "^1.7",
+                "phpunit/phpunit": "4.8.36"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Grpc\\Gcp\\": "src/",
+                    "": "src/generated/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "gRPC GCP library for channel management",
+            "time": "2019-02-14T02:21:15+00:00"
+        },
+        {
+            "name": "google/protobuf",
+            "version": "v3.11.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/protocolbuffers/protobuf-php.git",
+                "reference": "a5001eb559dcaac0bf6d8c7edc52b3828c618185"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/a5001eb559dcaac0bf6d8c7edc52b3828c618185",
+                "reference": "a5001eb559dcaac0bf6d8c7edc52b3828c618185",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=4.8.0"
+            },
+            "suggest": {
+                "ext-bcmath": "Need to support JSON deserialization"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Google\\Protobuf\\": "src/Google/Protobuf",
+                    "GPBMetadata\\Google\\Protobuf\\": "src/GPBMetadata/Google/Protobuf"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "proto library for PHP",
+            "homepage": "https://developers.google.com/protocol-buffers/",
+            "keywords": [
+                "proto"
+            ],
+            "time": "2020-02-14T22:17:05+00:00"
+        },
+        {
+            "name": "grpc/grpc",
+            "version": "1.27.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/grpc/grpc-php.git",
+                "reference": "a461cb1a975dde305c73168aa4494b90c3801c62"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/grpc/grpc-php/zipball/a461cb1a975dde305c73168aa4494b90c3801c62",
+                "reference": "a461cb1a975dde305c73168aa4494b90c3801c62",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "google/auth": "^v1.3.0"
+            },
+            "suggest": {
+                "ext-protobuf": "For better performance, install the protobuf C extension.",
+                "google/protobuf": "To get started using grpc quickly, install the native protobuf library."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Grpc\\": "src/lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "gRPC library for PHP",
+            "homepage": "https://grpc.io",
+            "keywords": [
+                "rpc"
+            ],
+            "time": "2020-01-23T19:27:18+00:00"
+        },
+        {
+>>>>>>> osama
             "name": "guzzlehttp/guzzle",
             "version": "6.5.2",
             "source": {
@@ -984,6 +1537,10 @@
                     "email": "jakub.onderka@gmail.com"
                 }
             ],
+<<<<<<< HEAD
+=======
+            "abandoned": "php-parallel-lint/php-console-color",
+>>>>>>> osama
             "time": "2018-09-29T17:23:10+00:00"
         },
         {
@@ -1030,6 +1587,10 @@
                 }
             ],
             "description": "Highlight PHP code in terminal",
+<<<<<<< HEAD
+=======
+            "abandoned": "php-parallel-lint/php-console-highlighter",
+>>>>>>> osama
             "time": "2018-09-29T18:48:56+00:00"
         },
         {
@@ -1076,6 +1637,7 @@
         },
         {
             "name": "kreait/firebase-php",
+<<<<<<< HEAD
             "version": "4.39.2",
             "source": {
                 "type": "git",
@@ -1086,6 +1648,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/kreait/firebase-php/zipball/c8f6387ef4f0ea707c516ab5f3da34d7730475f5",
                 "reference": "c8f6387ef4f0ea707c516ab5f3da34d7730475f5",
+=======
+            "version": "4.40.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kreait/firebase-php.git",
+                "reference": "208a5d0ee83a0f4c895e59e1b48eded7cb205e5c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kreait/firebase-php/zipball/208a5d0ee83a0f4c895e59e1b48eded7cb205e5c",
+                "reference": "208a5d0ee83a0f4c895e59e1b48eded7cb205e5c",
+>>>>>>> osama
                 "shasum": ""
             },
             "require": {
@@ -1109,6 +1683,10 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.16",
+<<<<<<< HEAD
+=======
+                "google/cloud-firestore": "^1.11",
+>>>>>>> osama
                 "jangregor/phpstan-prophecy": "^0.1.2|^0.2|^0.3|^0.4.2",
                 "phpstan/phpstan-phpunit": "^0.9.4|^0.11.2",
                 "phpunit/phpunit": "^6.5.14|^7.5.17",
@@ -1150,7 +1728,11 @@
                 "google",
                 "sdk"
             ],
+<<<<<<< HEAD
             "time": "2020-02-13T09:36:00+00:00"
+=======
+            "time": "2020-02-29T11:25:17+00:00"
+>>>>>>> osama
         },
         {
             "name": "kreait/firebase-tokens",
@@ -1270,6 +1852,74 @@
             "time": "2018-07-28T13:57:51+00:00"
         },
         {
+<<<<<<< HEAD
+=======
+            "name": "kreait/laravel-firebase",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kreait/laravel-firebase.git",
+                "reference": "670361d36a6d030797763b1d26d979025a1e0417"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kreait/laravel-firebase/zipball/670361d36a6d030797763b1d26d979025a1e0417",
+                "reference": "670361d36a6d030797763b1d26d979025a1e0417",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^5.8|^6.0|^7.0",
+                "illuminate/support": "^5.8|^6.0|^7.0",
+                "kreait/firebase-php": "^4.40.1"
+            },
+            "require-dev": {
+                "laravel/lumen-framework": "^5.8|^6.0|^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Kreait\\Laravel\\Firebase\\ServiceProvider"
+                    ],
+                    "aliases": {
+                        "FirebaseAuth": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseAuth",
+                        "FirebaseDatabase": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseDatabase",
+                        "FirebaseDynamicLinks": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseDynamicLinks",
+                        "FirebaseMessaging": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseMessaging",
+                        "FirebaseRemoteConfig": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseRemoteConfig",
+                        "FirebaseStorage": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseStorage"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Kreait\\Laravel\\Firebase\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jérôme Gamez",
+                    "email": "jerome@gamez.name"
+                }
+            ],
+            "description": "A Laravel package for the Firebase PHP Admin SDK",
+            "keywords": [
+                "FCM",
+                "firebase",
+                "gcm",
+                "laravel"
+            ],
+            "time": "2020-02-29T11:43:39+00:00"
+        },
+        {
+>>>>>>> osama
             "name": "laravel/framework",
             "version": "v6.15.1",
             "source": {
@@ -1694,6 +2344,7 @@
         },
         {
             "name": "maatwebsite/excel",
+<<<<<<< HEAD
             "version": "3.1.18",
             "source": {
                 "type": "git",
@@ -1704,11 +2355,27 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/d0231ab1f4bb93c8695630cb445ada1fdc54add0",
                 "reference": "d0231ab1f4bb93c8695630cb445ada1fdc54add0",
+=======
+            "version": "3.1.19",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Maatwebsite/Laravel-Excel.git",
+                "reference": "96527a9ebc2e79e9a5fa7eaef7e23c9e9bcc587c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/96527a9ebc2e79e9a5fa7eaef7e23c9e9bcc587c",
+                "reference": "96527a9ebc2e79e9a5fa7eaef7e23c9e9bcc587c",
+>>>>>>> osama
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
+<<<<<<< HEAD
                 "illuminate/support": "5.5.*|5.6.*|5.7.*|5.8.*|^6.0",
+=======
+                "illuminate/support": "5.5.*|5.6.*|5.7.*|5.8.*|^6.0|^7.0",
+>>>>>>> osama
                 "php": "^7.0",
                 "phpoffice/phpspreadsheet": "^1.10"
             },
@@ -1757,7 +2424,11 @@
                 "php",
                 "phpspreadsheet"
             ],
+<<<<<<< HEAD
             "time": "2019-12-24T10:40:12+00:00"
+=======
+            "time": "2020-02-28T15:47:45+00:00"
+>>>>>>> osama
         },
         {
             "name": "markbaker/complex",
@@ -2291,6 +2962,7 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
+<<<<<<< HEAD
             "version": "1.10.1",
             "source": {
                 "type": "git",
@@ -2301,6 +2973,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/1648dc9ebef6ebe0c5a172e16cf66732918416e0",
                 "reference": "1648dc9ebef6ebe0c5a172e16cf66732918416e0",
+=======
+            "version": "1.11.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
+                "reference": "c2a205e82f9cf1cc9fab86b79e808d86dd680470"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/c2a205e82f9cf1cc9fab86b79e808d86dd680470",
+                "reference": "c2a205e82f9cf1cc9fab86b79e808d86dd680470",
+>>>>>>> osama
                 "shasum": ""
             },
             "require": {
@@ -2380,7 +3064,11 @@
                 "xls",
                 "xlsx"
             ],
+<<<<<<< HEAD
             "time": "2019-12-01T23:13:51+00:00"
+=======
+            "time": "2020-03-02T13:09:03+00:00"
+>>>>>>> osama
         },
         {
             "name": "phpoption/phpoption",
@@ -4944,6 +5632,7 @@
             "time": "2016-01-20T08:20:44+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "laravel/ui",
             "version": "v1.2.0",
             "source": {
@@ -4998,6 +5687,8 @@
             "time": "2020-02-13T21:12:28+00:00"
         },
         {
+=======
+>>>>>>> osama
             "name": "mockery/mockery",
             "version": "1.3.1",
             "source": {
@@ -5063,6 +5754,59 @@
             "time": "2019-12-26T09:49:15+00:00"
         },
         {
+<<<<<<< HEAD
+=======
+            "name": "morrislaptop/firestore-php",
+            "version": "v2.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/morrislaptop/firestore-php.git",
+                "reference": "39a40fa9ae8995d6319602c68d2093f245d389fd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/morrislaptop/firestore-php/zipball/39a40fa9ae8995d6319602c68d2093f245d389fd",
+                "reference": "39a40fa9ae8995d6319602c68d2093f245d389fd",
+                "shasum": ""
+            },
+            "require": {
+                "google/protobuf": "^3.6",
+                "kreait/firebase-php": "^4.15"
+            },
+            "require-dev": {
+                "morrislaptop/var-dumper-with-context": "^0.2.0",
+                "phpunit/phpunit": "^7.1",
+                "symfony/var-dumper": "^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Morrislaptop\\Firestore\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Craig Morris",
+                    "email": "cr@igmorr.is"
+                }
+            ],
+            "description": "Firestore SDK for PHP without gRPC",
+            "homepage": "https://github.com/morrislaptop/firestore-php",
+            "keywords": [
+                "api",
+                "database",
+                "firestore",
+                "google",
+                "sdk"
+            ],
+            "time": "2018-11-18T10:00:31+00:00"
+        },
+        {
+>>>>>>> osama
             "name": "myclabs/deep-copy",
             "version": "1.9.5",
             "source": {
@@ -6551,6 +7295,7 @@
         },
         {
             "name": "webmozart/assert",
+<<<<<<< HEAD
             "version": "1.6.0",
             "source": {
                 "type": "git",
@@ -6561,6 +7306,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/webmozart/assert/zipball/573381c0a64f155a0d9a23f4b0c797194805b925",
                 "reference": "573381c0a64f155a0d9a23f4b0c797194805b925",
+=======
+            "version": "1.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webmozart/assert.git",
+                "reference": "aed98a490f9a8f78468232db345ab9cf606cf598"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/aed98a490f9a8f78468232db345ab9cf606cf598",
+                "reference": "aed98a490f9a8f78468232db345ab9cf606cf598",
+>>>>>>> osama
                 "shasum": ""
             },
             "require": {
@@ -6595,7 +7352,11 @@
                 "check",
                 "validate"
             ],
+<<<<<<< HEAD
             "time": "2019-11-24T13:36:37+00:00"
+=======
+            "time": "2020-02-14T12:15:55+00:00"
+>>>>>>> osama
         }
     ],
     "aliases": [],

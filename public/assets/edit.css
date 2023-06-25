@@ -1,0 +1,19 @@
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #1f2d3d;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    margin-top: 3px;
+}
+
+.select2-container[dir="rtl"] .select2-selection--single .select2-selection__rendered {
+    padding-top: 4px;
+}
+
+.select2-container--default .select2-selection--single {
+    border: 1px solid #aaa;
+}
+
+.select2-container .select2-selection--single {
+    height: 42px;
+}

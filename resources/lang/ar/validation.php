@@ -175,7 +175,26 @@ return [
         'time'                  => 'الوقت',
         'available'             => 'مُتاح',
         'size'                  => 'الحجم',
+<<<<<<< HEAD
         'mobile_number'         =>'رقم الهاتف',
         'std'                   =>'الرقم الجامعي',
+=======
+        'mobile_number'         => 'رقم الجوال',
+        'std'                   => 'الرقم الجامعي',
+        'sid'                   => 'الرقم الجامعي',
+        'department'            => 'التخصص',
+        'leaderStudentName' => 'اسم منسق المجموعة',
+        'leaderStudentStd' => 'الرقم الجامعي لمنسق المجموعة',
+        'teamMember1' => 'اسم العضو الأول',
+        'teamMemberStd1' => 'الرقم الجامعي للعضو الاول',
+        'teamMember2' => 'اسم العضو الثاني',
+        'teamMemberStd2' => 'الرقم الجامعي للعضو الثاني',
+        'teamMember3' => 'اسم العضو الثالث',
+        'teamMemberStd3' => 'الرقم الجامعي للعضو الثالث',
+        'supervisor' => 'المشرف',
+        'graduateInFirstSemester' => 'خريج الفصل الأول',
+        'initialProjectTitle' => 'العنوان المبدئي للمشروع',
+        '' => '',
+>>>>>>> osama
     ],
 ];
